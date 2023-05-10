@@ -21,7 +21,7 @@ Use this tool with **Cmd** (Doesn't work with **Windows Terminal** app).<br>
 
 - [x] Lobby Revealer (ranked games)
 - [x] Auto-Accept match (auto accept any queue)
-- [x] Auto Lock & Ban champion (PicknBan)
+- [x] Auto Lock & Ban champion (PicknBan / Delay)
 - [x] Get OP.GG stats of your team (SoloQ & DuoQ / FlexQ)
 - [x] Auto update (Github API).<br>
 
@@ -29,7 +29,8 @@ More features coming soon...
 
 ## `❓ Bugs report / Suggestions`
 
-If you want to report a bug or suggest a feature, you can open an issue [here](insert url) or contact me on Discord.
+If you want to report a bug or suggest a feature, you can open an
+issue [here](https://github.com/devRael1/LolyTools/issues) or contact me on Discord.
 
 My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 

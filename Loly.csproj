@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>True</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Alba.CsConsoleFormat" Version="1.0.0" />
+    <PackageReference Include="Colorful.Console" Version="1.2.15" />
+    <PackageReference Include="Costura.Fody" Version="5.7.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Management" Version="8.0.0-preview.3.23174.8" />
+  </ItemGroup>
+
+	<Target Name="AfterResolveReference">
+		<ItemGroup>
+			<EmbeddedResource Include="@(ReferenceCopyLocalPaths)" Condition="'%(ReferenceCopyLocalPaths)' == '.dll'">
+				<LogicalName>%(ReferenceCopyLocalPaths.DestinationSubdirectory)%(ReferenceCopyLocalPaths.FileName)%(ReferenceCopyLocalPaths.Extension)</LogicalName>
+			</EmbeddedResource>
+		</ItemGroup>
+	</Target>
+
+</Project>

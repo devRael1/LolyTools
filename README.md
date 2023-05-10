@@ -38,7 +38,7 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 
 - [ ] Remove all comments and cleanup the code.
 - [ ] Update screen record with new app (tools, menu, etc.).
-- [ ] Make auto-send message in lobby tool.
+- [ ] Make auto-send message when entering in lobby tool.
 
 ## `📝 License`
 

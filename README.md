@@ -32,6 +32,7 @@ More features coming soon...
 ### Tools Menu
 
 ### Settings Menu
+https://github.com/devRael1/LolyTools/assets/91017912/efc35dcd-de48-4fa5-af93-c80148f80d7d
 
 ## `❓ Bugs report / Suggestions`
 

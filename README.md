@@ -3,7 +3,7 @@
 League Of Legends Tools.<br>
 A set of several small tools for league of legends.
 
-<! INSERT VIDEO>
+![Loly - Tools](https://i.imgur.com/50UXcVL.png)
 
 ### Works with the latest `13.9` update of League of Legends.
 
@@ -20,12 +20,18 @@ Use this tool with **Cmd** (Doesn't work with **Windows Terminal** app).<br>
 ## `⚙️ Features`
 
 - [x] Lobby Revealer (ranked games)
-- [x] Auto-Accept match (auto accept any queue)
+- [x] Auto-Accept match (Auto-accept any queue)
 - [x] Auto Lock & Ban champion (PicknBan / Delay)
 - [x] Get OP.GG stats of your team (SoloQ & DuoQ / FlexQ)
-- [x] Auto update (Github API).<br>
+- [x] Auto update (Github API)
 
 More features coming soon...
+
+## `🎥 Screen records`
+
+### Tools Menu
+
+### Settings Menu
 
 ## `❓ Bugs report / Suggestions`
 
@@ -37,9 +43,9 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 ## `🧾 Todo List`
 
 - [ ] Remove all comments and cleanup the code.
-- [ ] Update screen record with new app (tools, menu, etc.).
+- [ ] Update screen records with for all features (tools, menu, etc.).
 - [ ] Make auto-send message when entering in lobby tool.
-- [ ] Make `Logs` menu to show all actions of the tool in real time.
+- [ ] Make `Logs` menu to show all actions of the tool in real time (Use Events system).
 
 ## `📝 License`
 

@@ -53,6 +53,11 @@ public class Utils
             "pnb_ban" => $"{Global.SoftName} by {Global.SoftAuthor} > Pick'n'Ban - Ban Champion Menu",
             "pnb_pick_delay" => $"{Global.SoftName} by {Global.SoftAuthor} > Pick'n'Ban - Pick Champion Delay Menu",
             "pnb_ban_delay" => $"{Global.SoftName} by {Global.SoftAuthor} > Pick'n'Ban - Ban Champion Delay Menu",
+            "ac" => $"{Global.SoftName} by {Global.SoftAuthor} - Auto Chat Menu",
+            "ac_add" => $"{Global.SoftName} by {Global.SoftAuthor} > Auto Chat - Add Message Menu",
+            "ac_del" => $"{Global.SoftName} by {Global.SoftAuthor} > Auto Chat - Delete Message Menu",
+            "ac_see" => $"{Global.SoftName} by {Global.SoftAuthor} > Auto Chat - See Messages Menu",
+            "ac_clear" => $"{Global.SoftName} by {Global.SoftAuthor} > Auto Chat - Clear Messages Menu",
             _ => Console.Title
         };
     }

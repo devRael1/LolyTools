@@ -3,15 +3,21 @@
 League Of Legends Tools.<br>
 A set of several small tools for league of legends.
 
-![Loly - Tools](https://i.imgur.com/50UXcVL.png)
+![Loly - Tools](https://i.imgur.com/vf4ImF9.png)
 
 ### Works with the latest `13.9` update of League of Legends.
 
 ## `❗Usage`
 
-You must install .NET 6.0 SDK - Windows to use this tool.<br>
-[x86 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-6.0.408-windows-x86-installer) /
-[x64 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-6.0.408-windows-x64-installer)
+You must install .NET Desktop Runtime 6 / .NET Runtime 6 - Windows to use this tool.
+
+.NET Desktop Runtime
+6 -> [x86 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.16-windows-x86-installer) /
+[x64 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.16-windows-x64-installer)
+
+.NET Runtime
+6 -> [x86 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-6.0.16-windows-x86-installer) /
+[x64 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-6.0.16-windows-x64-installer)
 
 No need to install this if you have a more recent version installed<br>
 
@@ -32,6 +38,7 @@ More features coming soon...
 ### Tools Menu
 
 ### Settings Menu
+
 https://github.com/devRael1/LolyTools/assets/91017912/efc35dcd-de48-4fa5-af93-c80148f80d7d
 
 ## `❓ Bugs report / Suggestions`
@@ -44,7 +51,7 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 ## `🧾 Todo List`
 
 - [ ] Patch bug with PicknBan tool.
-- [ ] Update screen records with for all features (tools, menu, etc.).
+- [ ] Update screen records for all features (tools, menu, etc.).
 - [ ] Make auto-send message when entering in lobby tool.
 - [ ] Make `Logs` menu to show all actions of the tool in real time (Use Events system).
 

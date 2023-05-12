@@ -43,7 +43,7 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 
 ## `🧾 Todo List`
 
-- [ ] Remove all comments and cleanup the code.
+- [ ] Patch bug with PicknBan tool.
 - [ ] Update screen records with for all features (tools, menu, etc.).
 - [ ] Make auto-send message when entering in lobby tool.
 - [ ] Make `Logs` menu to show all actions of the tool in real time (Use Events system).

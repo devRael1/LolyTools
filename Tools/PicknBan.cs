@@ -102,14 +102,15 @@ public class PicknBan
     private static void HandleChampSelectActions(dynamic currentChampSelectJson, int localPlayerCellId)
     {
         JArray champSelectActions = currentChampSelectJson.actions;
-        foreach (dynamic action in champSelectActions)
+        foreach (dynamic arrActions in champSelectActions)
+        foreach (dynamic action in arrActions)
         {
-            int actorCellId = action[0].actorCellId;
-            bool completed = action[0].completed;
-            string type = action[0].type;
-            int championId = action[0].championId;
-            int actionId = action[0].id;
-            bool actIsInProgress = action[0].isInProgress;
+            int actorCellId = action.actorCellId;
+            bool completed = action.completed;
+            string type = action.type;
+            int championId = action.championId;
+            int actionId = action.id;
+            bool actIsInProgress = action.isInProgress;
 
             if (actorCellId == localPlayerCellId && !completed && type == "pick") HandlePickAction(actionId, championId, actIsInProgress, currentChampSelectJson);
             if (actorCellId == localPlayerCellId && !completed && type == "ban") HandleBanAction(actionId, championId, actIsInProgress, currentChampSelectJson);

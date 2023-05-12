@@ -137,7 +137,7 @@ public class Requests
                 if (phase != "ChampSelect") Global.LastChatRoom = "";
             }
 
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
         }
     }
 }

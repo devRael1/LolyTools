@@ -10,12 +10,14 @@ public class Settings
 
     public static readonly ChampItem ChampSelected = new();
     public static readonly ChampItem ChampBanned = new();
+    public static readonly List<string> ChatMessages = new();
 
     public static bool EnableAutoUpdate { get; set; }
     public static bool LobbyRevealer { get; set; }
     public static bool AutoAccept { get; set; }
     public static bool AutoAcceptOnce { get; set; }
     public static bool PicknBan { get; set; }
+    public static bool AutoChat { get; set; }
     public static int PickDelay { get; set; }
     public static int BanDelay { get; set; }
 
@@ -25,7 +27,12 @@ public class Settings
         {
             { nameof(LobbyRevealer), LobbyRevealer },
             { nameof(AutoAccept), AutoAccept },
-            { nameof(PicknBan), PicknBan }
+            { nameof(PicknBan), PicknBan },
+            { nameof(AutoChat), AutoChat }
+        };
+        JObject autoaccept = new()
+        {
+            { nameof(AutoAcceptOnce), AutoAcceptOnce }
         };
         JObject picknban = new()
         {
@@ -34,17 +41,19 @@ public class Settings
             { nameof(ChampSelected), JObject.FromObject(ChampSelected) },
             { nameof(ChampBanned), JObject.FromObject(ChampBanned) }
         };
-        JObject autoaccept = new()
+        JObject autochat = new()
         {
-            { nameof(AutoAcceptOnce), AutoAcceptOnce }
+            { nameof(ChatMessages), JArray.FromObject(ChatMessages) }
         };
+
 
         return new JObject
         {
             { nameof(EnableAutoUpdate), EnableAutoUpdate },
             { nameof(Tools), tools },
             { nameof(PicknBan), picknban },
-            { nameof(AutoAccept), autoaccept }
+            { nameof(AutoAccept), autoaccept },
+            { nameof(AutoChat), autochat }
         };
     }
 
@@ -81,6 +90,7 @@ public class Settings
             AutoAccept = (bool)obj[nameof(Tools)][nameof(AutoAccept)];
             AutoAcceptOnce = (bool)obj[nameof(AutoAccept)][nameof(AutoAcceptOnce)];
             PicknBan = (bool)obj[nameof(Tools)][nameof(PicknBan)];
+            AutoChat = (bool)obj[nameof(Tools)][nameof(AutoChat)];
 
             PickDelay = (int)obj[nameof(PicknBan)][nameof(PickDelay)];
             BanDelay = (int)obj[nameof(PicknBan)][nameof(BanDelay)];
@@ -92,6 +102,9 @@ public class Settings
             ChampBanned.Id = (string)obj[nameof(PicknBan)][nameof(ChampBanned)][nameof(ChampBanned.Id)];
             ChampBanned.Name = (string)obj[nameof(PicknBan)][nameof(ChampBanned)][nameof(ChampBanned.Name)];
             ChampBanned.Free = (bool)obj[nameof(PicknBan)][nameof(ChampBanned)][nameof(ChampBanned.Free)];
+
+            List<string> allMessages = obj[nameof(AutoChat)][nameof(ChatMessages)].ToObject<List<string>>();
+            ChatMessages.AddRange(allMessages);
         }
     }
 

@@ -11,7 +11,7 @@ public class PicknBan
     private static bool _lockedChamp;
     private static bool _pickedBan;
     private static bool _lockedBan;
-    private static bool _sentChatMessages;
+    private static bool _cansentChatMessages;
     private static long _champSelectStart;
 
     public static void HandleChampSelect()
@@ -28,13 +28,11 @@ public class PicknBan
             _lockedChamp = false;
             _pickedBan = false;
             _lockedBan = false;
-            _sentChatMessages = false;
+            _cansentChatMessages = false;
             _champSelectStart = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         }
 
-        Global.LastChatRoom = currentChatRoom;
-
-        if (_pickedChamp && _lockedChamp && _pickedBan && _lockedBan && _sentChatMessages)
+        if (_pickedChamp && _lockedChamp && _pickedBan && _lockedBan && _cansentChatMessages)
         {
             Thread.Sleep(1000);
         }
@@ -54,13 +52,16 @@ public class PicknBan
                 _lockedBan = true;
             }
 
-            // if (!Global.ChatMessagesEnabled) _sentChatMessages = true;
-            // if (Global.ChatMessages.Count == 0) _sentChatMessages = true;
+            if (Settings.AutoChat && Settings.ChatMessages.Count >= 1)
+                if (Global.LastChatRoom != currentChatRoom)
+                {
+                    _cansentChatMessages = true;
+                    Global.LastChatRoom = currentChatRoom;
+                }
 
             if (!_pickedChamp || !_lockedChamp || !_pickedBan || !_lockedBan) HandleChampSelectActions(currentChampSelectJson, localPlayerCellId);
-
-            // TODO: Faire le système d'envoie de message automatique
-            // if (!sentChatMessages) handleChampSelectChat(currentChatRoom);
+            if (_cansentChatMessages) AutoChat.HandleChampSelectAutoChat();
+            _cansentChatMessages = false;
         }
     }
 
@@ -95,12 +96,13 @@ public class PicknBan
             champs.Add(new ChampItem { Name = champName, Id = champId, Free = isAvailable });
         }
 
-        champs = champs.OrderBy(c => c.Name).ToList();
         foreach (ChampItem champ in champs) Global.ChampionsList.Add(champ);
     }
 
     private static void HandleChampSelectActions(dynamic currentChampSelectJson, int localPlayerCellId)
     {
+        if (!Settings.PicknBan) return;
+
         JArray champSelectActions = currentChampSelectJson.actions;
         foreach (dynamic arrActions in champSelectActions)
         foreach (dynamic action in arrActions)
@@ -121,7 +123,6 @@ public class PicknBan
     {
         if (actionId == Global.LastActionId) return;
         Global.LastActionId = actionId;
-        Global.LastActStartTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
     }
 
     private static void HandlePickAction(int actionId, int championId, bool actIsInProgress, dynamic currentChampSelectJson)

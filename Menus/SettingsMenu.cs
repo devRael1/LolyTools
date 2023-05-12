@@ -23,10 +23,11 @@ public class SettingsMenu
                 $"Auto Update     - {CheckBoolean(Settings.EnableAutoUpdate)}",
                 $"Lobby Revealer  - {CheckBoolean(Settings.LobbyRevealer)}",
                 $"Auto Accept     - {CheckBoolean(Settings.AutoAccept)}",
+                $"Auto Chat       - {CheckBoolean(Settings.AutoChat)}",
                 $"Pick and Ban    - {CheckBoolean(Settings.PicknBan)}",
                 "Back"
             };
-            string[] variables = { "EnableAutoUpdate", "LobbyRevealer", "AutoAccept", "PicknBan" };
+            string[] variables = { "EnableAutoUpdate", "LobbyRevealer", "AutoAccept", "AutoChat", "PicknBan" };
 
             MenuBuilder creditsMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop);
             while (choice == 7) choice = creditsMenu.RunMenu();
@@ -42,7 +43,7 @@ public class SettingsMenu
                 settings[variables[choice - 1]] = !bool.Parse(settings[variables[choice - 1]]?.ToString() ?? string.Empty);
             else
                 settings["Tools"][variables[choice - 1]] = !bool.Parse(settings["Tools"][variables[choice - 1]]?.ToString() ?? string.Empty);
-            
+
             Settings.SaveFileSettings(settings);
             Settings.CreateOrUpdateSettings();
         }

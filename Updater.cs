@@ -89,7 +89,7 @@ public class Updater
 
                 Console.WriteLine("");
                 Console.WriteLine(" [5/5] Done !", Colors.InfoColor);
-                Console.WriteLine($" [!] Note: You can delete this executable and use the latest (LoL - Console Lobby Revealer v{version}.exe).", Colors.InfoColor);
+                Console.WriteLine($" [!] Note: You can delete this executable and use the latest (Loly Tools - v{version}.exe).", Colors.InfoColor);
                 Console.WriteLine(" Press any key to exit...", Colors.InfoColor);
                 Console.ReadKey();
                 Console.Clear();

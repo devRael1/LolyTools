@@ -30,6 +30,7 @@ Use this tool with **Cmd** (Doesn't work with **Windows Terminal** app).<br>
 - [x] Auto Lock & Ban champion (PicknBan / Delay)
 - [x] Get OP.GG stats of your team (SoloQ & DuoQ / FlexQ)
 - [x] Auto update (Github API)
+- [x] Use JSON file to save your settings
 
 More features coming soon...
 
@@ -50,10 +51,10 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 
 ## `🧾 Todo List`
 
-- [ ] Patch bug with PicknBan tool.
-- [ ] Update screen records for all features (tools, menu, etc.).
-- [ ] Make auto-send message when entering in lobby tool.
-- [ ] Make `Logs` menu to show all actions of the tool in real time (Use Events system).
+- [ ] Update screen records for all features (tools menu)
+- [ ] Finish `AutoChat` tool (clear, see, delete messages...)
+- [ ] Test PicknBan tool with all queues (ranked, normal, custom, etc.)
+- [ ] Make `Logs` menu to show all actions of the tool in real time (Use Events system)
 
 ## `📝 License`
 

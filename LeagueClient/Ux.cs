@@ -13,13 +13,12 @@ public class Ux
 
     public static void LeagueClientTask()
     {
-        GetLeagueAuth();
-
         while (true)
         {
             Process client = Process.GetProcessesByName("LeagueClientUx").FirstOrDefault();
             if (client != null)
             {
+                if (Global.AuthClient.Count == 0 && Global.AuthRiot.Count == 0) GetLeagueAuth();
                 Global.IsLeagueOpen = true;
                 if (!_lcuPid.Equals(client.Id)) _lcuPid = client.Id;
             }

@@ -3,9 +3,9 @@
 League Of Legends Tools.<br>
 A set of several small tools for league of legends.
 
-![Loly - Tools](https://i.imgur.com/vf4ImF9.png)
-
 ### Works with the latest `13.9` update of League of Legends.
+
+![Loly - Tools](https://i.imgur.com/vf4ImF9.png)
 
 ## `❗Usage`
 
@@ -20,8 +20,6 @@ You must install .NET Desktop Runtime 6 / .NET Runtime 6 - Windows to use this t
 [x64 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-6.0.16-windows-x64-installer)
 
 No need to install this if you have a more recent version installed<br>
-
-Use this tool with **Cmd** (Doesn't work with **Windows Terminal** app).<br>
 
 ## `⚙️ Features`
 
@@ -42,7 +40,7 @@ More features coming soon...
 
 ### Settings Menu
 
-https://github.com/devRael1/LolyTools/assets/91017912/efc35dcd-de48-4fa5-af93-c80148f80d7d
+### Logs Menu
 
 ## `❓ Bugs report / Suggestions`
 
@@ -54,9 +52,8 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 ## `🧾 Todo List`
 
 - [ ] Update screen records for all features (tools, logs menu)
-- [ ] Test PicknBan tool with all queues (ranked, normal, custom, etc.)
 - [ ] Make `Logs` menu to show all actions of the tool in real time in console
-- [ ] Create PicknBan system with all roles (top, jungle, mid, adc, support = configurable)
+- [ ] Create PicknBan system with all roles (top, jungle, mid, adc, support)
 
 ## `📝 License`
 

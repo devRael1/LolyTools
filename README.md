@@ -25,9 +25,11 @@ Use this tool with **Cmd** (Doesn't work with **Windows Terminal** app).<br>
 
 ## `⚙️ Features`
 
+- [x] Interactive Menu in Console
 - [x] Lobby Revealer (ranked games)
 - [x] Auto-Accept match (Auto-accept any queue)
 - [x] Auto Lock & Ban champion (PicknBan / Delay)
+- [x] Auto Chat (Auto send messages when you are in lobby)
 - [x] Get OP.GG stats of your team (SoloQ & DuoQ / FlexQ)
 - [x] Auto update (Github API)
 - [x] Use JSON file to save your settings
@@ -51,10 +53,10 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 
 ## `🧾 Todo List`
 
-- [ ] Update screen records for all features (tools menu)
-- [ ] Finish `AutoChat` tool (clear, see, delete messages...)
+- [ ] Update screen records for all features (tools, logs menu)
 - [ ] Test PicknBan tool with all queues (ranked, normal, custom, etc.)
-- [ ] Make `Logs` menu to show all actions of the tool in real time (Use Events system)
+- [ ] Make `Logs` menu to show all actions of the tool in real time in console
+- [ ] Create PicknBan system with all roles (top, jungle, mid, adc, support = configurable)
 
 ## `📝 License`
 

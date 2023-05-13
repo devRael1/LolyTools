@@ -38,9 +38,15 @@ More features coming soon...
 
 ### Tools Menu
 
+COMING SOON...
+
 ### Settings Menu
 
+COMING SOON...
+
 ### Logs Menu
+
+COMING SOON...
 
 ## `❓ Bugs report / Suggestions`
 

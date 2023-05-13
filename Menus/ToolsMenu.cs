@@ -21,7 +21,7 @@ public class ToolsMenu
 
             int choice = 7;
             UpdateMenuTitle("tools");
-            string[] choices = { "Lobby Revealer", "Auto Accept", "Pick & Ban", "Auto Chat", "Back" };
+            string[] choices = { "Lobby Revealer", "Auto Accept", "Auto Chat", "Pick & Ban", "Back" };
 
             MenuBuilder creditsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
             while (choice == 7) choice = creditsMenu.RunMenu();
@@ -62,20 +62,6 @@ public class ToolsMenu
 
                     break;
                 case 3:
-                    if (!Settings.PicknBan)
-                    {
-                        Console.WriteLine(" < Pick and Ban > is not enabled in the settings.", Colors.WarningColor);
-                        Console.WriteLine(" Please go to 'Settings' menu and enable it.", Colors.WarningColor);
-                        Console.WriteLine(" Press Enter to continue...", Colors.WarningColor);
-                        Console.ReadKey();
-                    }
-                    else
-                    {
-                        GetPicknBanMenu();
-                    }
-
-                    break;
-                case 4:
                     if (!Settings.AutoChat)
                     {
                         Console.WriteLine(" < Auto Chat > is not enabled in the settings.", Colors.WarningColor);
@@ -86,6 +72,21 @@ public class ToolsMenu
                     else
                     {
                         GetAutoChatMenu();
+                    }
+
+
+                    break;
+                case 4:
+                    if (!Settings.PicknBan)
+                    {
+                        Console.WriteLine(" < Pick and Ban > is not enabled in the settings.", Colors.WarningColor);
+                        Console.WriteLine(" Please go to 'Settings' menu and enable it.", Colors.WarningColor);
+                        Console.WriteLine(" Press Enter to continue...", Colors.WarningColor);
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        GetPicknBanMenu();
                     }
 
                     break;

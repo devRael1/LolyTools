@@ -34,13 +34,13 @@ public class AutoChatMenu
                     AddMessage();
                     break;
                 case 2:
-                    // TODO: Delete a specific message
+                    DeleteMessage();
                     break;
                 case 3:
-                    // TODO: See all messages
+                    SeeMessages();
                     break;
                 case 4:
-                    // TODO: Clear all messages
+                    ClearMessages();
                     break;
             }
         }
@@ -102,7 +102,7 @@ public class AutoChatMenu
                 else if (Settings.ChatMessages.Count >= 5)
                 {
                     Console.WriteLine("[WARNING]» You can't add more than 5 messages ! Please remove 1 message before adding a new one... ", Colors.WarningColor);
-                    Console.WriteLine("Press any key to continue...", Colors.SuccessColor);
+                    Console.WriteLine("Press any key to continue...", Colors.WarningColor);
 
                     Console.ReadKey();
                     Console.Clear();
@@ -136,5 +136,124 @@ public class AutoChatMenu
 
     private static void DeleteMessage()
     {
+        START:
+        int choice = 10;
+        UpdateMenuTitle("ac_del");
+        List<string> choices = Settings.ChatMessages.Select((x, index) => $"Message N°{index + 1}").ToList();
+        choices.Add("Back");
+
+        string[] choices2 = choices.ToArray();
+        while (choice != choices2.Length)
+        {
+            ShowMessages();
+
+            MenuBuilder statsMenu = MenuBuilder.BuildMenu(choices2, Console.CursorTop);
+            choice = 10;
+            while (choice == 10) choice = statsMenu.RunMenu();
+
+            Console.Clear();
+            Interface.ShowArt();
+
+            if (choice == choices2.Length) break;
+
+            Settings.ChatMessages.RemoveAt(choice - 1);
+            Settings.SaveSettings();
+            goto START;
+        }
+
+        GetAutoChatMenu();
+    }
+
+    private static void SeeMessages()
+    {
+        int choice = 10;
+        UpdateMenuTitle("ac_see");
+        string[] choices = { "Back" };
+
+        while (choice == 10)
+        {
+            ShowMessages();
+
+            MenuBuilder statsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+            choice = 10;
+            while (choice == 10) choice = statsMenu.RunMenu();
+
+            Console.Clear();
+            Interface.ShowArt();
+
+            if (choice == choices.Length) break;
+        }
+    }
+
+    private static void ClearMessages()
+    {
+        MenuBuilder.SetCursorVisibility(true);
+
+        UpdateMenuTitle("ac_clear");
+        Console.Write(DateTime.Now.ToString("[hh:mm:ss]"), Colors.PrimaryColor);
+        Console.Write("» Are you sure you want to clear all messages ? (y/n): ", Colors.InfoColor);
+        Console.WriteLine("");
+        Console.Write("» ");
+
+        string choice = Console.ReadLine().ToLower();
+        if (choice == "y")
+        {
+            Settings.ChatMessages.Clear();
+            Settings.SaveSettings();
+
+            Console.WriteLine("");
+            Console.WriteLine("[SUCCESS]» All messages have been cleared successfully...", Colors.SuccessColor);
+            Console.WriteLine("Press any key to continue...", Colors.SuccessColor);
+
+            Console.ReadKey();
+            Console.Clear();
+            Interface.ShowArt();
+        }
+        else
+        {
+            Console.Clear();
+            Interface.ShowArt();
+        }
+    }
+
+    private static void ShowMessages()
+    {
+        Console.SetCursorPosition(0, TopLength);
+
+        Document rectangle = new();
+        Grid grid = new()
+        {
+            Stroke = LineThickness.None,
+            Align = Align.Center,
+            Columns = { GridLength.Char(10), GridLength.Char(90) },
+            Color = Colors.MenuPrimaryColor,
+            MaxWidth = 110,
+            Children =
+            {
+                new Cell("Number") { Stroke = LineThickness.None },
+                new Cell("Message Body") { Stroke = LineThickness.None }
+            }
+        };
+
+        int count = 0;
+        foreach (string message in Settings.ChatMessages)
+        {
+            count++;
+            grid.Children.Add(new Cell($"N°{count}") { Color = Colors.MenuTextColor, Stroke = LineThickness.None, Padding = new Thickness(1) });
+
+            if (message.Length > 90)
+            {
+                string msg = message[..90];
+                msg += "...";
+                grid.Children.Add(new Cell(msg) { Color = Colors.MenuTextColor, Stroke = LineThickness.None, Padding = new Thickness(1) });
+            }
+            else
+            {
+                grid.Children.Add(new Cell(message) { Color = Colors.MenuTextColor, Stroke = LineThickness.None, Padding = new Thickness(1) });
+            }
+        }
+
+        rectangle.Children.Add(grid);
+        ConsoleRenderer.RenderDocument(rectangle);
     }
 }

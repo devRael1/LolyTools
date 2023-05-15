@@ -8,8 +8,8 @@ public class Settings
 {
     private const string FileName = "Loly Settings.json";
 
-    public static readonly ChampItem ChampSelected = new();
-    public static readonly ChampItem ChampBanned = new();
+    public static readonly ChampItem PickChamp = new();
+    public static readonly ChampItem BanChamp = new();
     public static readonly List<string> ChatMessages = new();
 
     public static bool EnableAutoUpdate { get; set; }
@@ -38,8 +38,8 @@ public class Settings
         {
             { nameof(PickDelay), PickDelay },
             { nameof(BanDelay), BanDelay },
-            { nameof(ChampSelected), JObject.FromObject(ChampSelected) },
-            { nameof(ChampBanned), JObject.FromObject(ChampBanned) }
+            { nameof(PickChamp), JObject.FromObject(PickChamp) },
+            { nameof(BanChamp), JObject.FromObject(BanChamp) }
         };
         JObject autochat = new()
         {
@@ -95,13 +95,13 @@ public class Settings
             PickDelay = (int)obj[nameof(PicknBan)][nameof(PickDelay)];
             BanDelay = (int)obj[nameof(PicknBan)][nameof(BanDelay)];
 
-            ChampSelected.Id = (string)obj[nameof(PicknBan)][nameof(ChampSelected)][nameof(ChampSelected.Id)];
-            ChampSelected.Name = (string)obj[nameof(PicknBan)][nameof(ChampSelected)][nameof(ChampSelected.Name)];
-            ChampSelected.Free = (bool)obj[nameof(PicknBan)][nameof(ChampSelected)][nameof(ChampSelected.Free)];
+            PickChamp.Id = (string)obj[nameof(PicknBan)][nameof(PickChamp)][nameof(PickChamp.Id)];
+            PickChamp.Name = (string)obj[nameof(PicknBan)][nameof(PickChamp)][nameof(PickChamp.Name)];
+            PickChamp.Free = (bool)obj[nameof(PicknBan)][nameof(PickChamp)][nameof(PickChamp.Free)];
 
-            ChampBanned.Id = (string)obj[nameof(PicknBan)][nameof(ChampBanned)][nameof(ChampBanned.Id)];
-            ChampBanned.Name = (string)obj[nameof(PicknBan)][nameof(ChampBanned)][nameof(ChampBanned.Name)];
-            ChampBanned.Free = (bool)obj[nameof(PicknBan)][nameof(ChampBanned)][nameof(ChampBanned.Free)];
+            BanChamp.Id = (string)obj[nameof(PicknBan)][nameof(BanChamp)][nameof(BanChamp.Id)];
+            BanChamp.Name = (string)obj[nameof(PicknBan)][nameof(BanChamp)][nameof(BanChamp.Name)];
+            BanChamp.Free = (bool)obj[nameof(PicknBan)][nameof(BanChamp)][nameof(BanChamp.Free)];
 
             List<string> allMessages = obj[nameof(AutoChat)][nameof(ChatMessages)].ToObject<List<string>>();
             ChatMessages.AddRange(allMessages);

@@ -116,15 +116,15 @@ public class PicknBanMenu
                 {
                     if (action == "pick")
                     {
-                        Settings.ChampSelected.Name = champ.Name;
-                        Settings.ChampSelected.Id = champ.Id;
-                        Settings.ChampSelected.Free = champ.Free;
+                        Settings.PickChamp.Name = champ.Name;
+                        Settings.PickChamp.Id = champ.Id;
+                        Settings.PickChamp.Free = champ.Free;
                     }
                     else
                     {
-                        Settings.ChampBanned.Name = champ.Name;
-                        Settings.ChampBanned.Id = champ.Id;
-                        Settings.ChampBanned.Free = champ.Free;
+                        Settings.BanChamp.Name = champ.Name;
+                        Settings.BanChamp.Id = champ.Id;
+                        Settings.BanChamp.Free = champ.Free;
                     }
 
                     Settings.SaveSettings();

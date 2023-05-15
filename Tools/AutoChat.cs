@@ -1,6 +1,7 @@
 ﻿using Loly.LeagueClient;
 using Loly.Variables;
 using Newtonsoft.Json;
+using static Loly.Logs;
 
 namespace Loly.Tools;
 
@@ -12,6 +13,7 @@ public class AutoChat
     {
         GetChatId();
 
+        Log(LogType.AutoChat, $"Sending {Settings.ChatMessages.Count} messages in chat...");
         string timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
         foreach (string message in Settings.ChatMessages)
         {
@@ -38,6 +40,7 @@ public class AutoChat
 
     private static void GetChatId()
     {
+        Log(LogType.AutoChat, "Getting chat & summoner id...");
         string[] myChatProfile = Requests.ClientRequest("GET", "lol-chat/v1/me", true);
         dynamic chatProfileJson = JsonConvert.DeserializeObject(myChatProfile[1]);
         _currentChatId = chatProfileJson.id;

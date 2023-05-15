@@ -5,6 +5,7 @@ using Loly.Tools;
 using Loly.Variables;
 using static Loly.Tools.Utils;
 using static Loly.Menus.ToolsMenu;
+using static Loly.Logs;
 using Console = Colorful.Console;
 
 namespace Loly.Menus;
@@ -49,6 +50,7 @@ public class LobbyRevealerMenu
 
                         foreach (Player player in Global.PlayerList) Global.UsernameList.Add(player.Username);
 
+                        Log(LogType.LobbyRevealer, "Get advanced players stats in background...");
                         new Thread(() =>
                         {
                             OrderablePartitioner<string> source = Partitioner.Create(Global.UsernameList, EnumerablePartitionerOptions.NoBuffering);

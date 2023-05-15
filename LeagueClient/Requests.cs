@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
+using System.Text.RegularExpressions;
 using Loly.Variables;
 using Newtonsoft.Json;
 using static Loly.LeagueClient.Ux;
@@ -101,6 +102,9 @@ public class Requests
                 dynamic session = JsonConvert.DeserializeObject(gameSession[1]);
                 string phase = session.phase;
 
+                string phaseName = Regex.Replace(phase, "(\\B[A-Z])", " $1");
+                if (Global.Session != phaseName) Global.Session = phaseName;
+
                 switch (phase)
                 {
                     case "Lobby":
@@ -112,13 +116,13 @@ public class Requests
                     case "ReadyCheck":
                         if (Settings.AutoAccept)
                             AutoAcceptQueue();
-
                         break;
                     case "ChampSelect":
+                        // TODO: Créer l'envoie auto de messages (peut etre en système de tache)
                         HandleChampSelect();
                         break;
                     case "InProgress":
-                        Thread.Sleep(9000);
+                        Thread.Sleep(10000);
                         break;
                     case "WaitingForStats":
                         Thread.Sleep(10000);
@@ -130,7 +134,7 @@ public class Requests
                         Thread.Sleep(15000);
                         break;
                     default:
-                        Thread.Sleep(3000);
+                        Thread.Sleep(5000);
                         break;
                 }
 

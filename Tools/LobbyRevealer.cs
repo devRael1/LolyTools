@@ -1,6 +1,7 @@
 ﻿using Loly.LeagueClient;
 using Loly.Variables;
 using Newtonsoft.Json;
+using static Loly.Logs;
 
 namespace Loly.Tools;
 
@@ -11,11 +12,20 @@ public class LobbyRevealer
 
     public static void GetAllNames()
     {
-        Global.PlayerList.Clear();
-        Global.UsernameList.Clear();
-        Ux.GetLeagueAuth();
-        _myregion = GetRegion(Requests.WaitSuccessClientRequest("GET", "/riotclient/get_region_locale", true)[1]).ToLower();
-        GetPlayers(Requests.WaitSuccessClientRequest("GET", "/chat/v5/participants/champ-select", false)[1]);
+        while (true)
+        {
+            if (!Settings.LobbyRevealer || Global.Session != "Champ Select" || Global.PlayerList.Count > 0)
+            {
+                Thread.Sleep(5000);
+                continue;
+            }
+
+            Global.PlayerList.Clear();
+            Global.UsernameList.Clear();
+            _myregion = GetRegion(Requests.WaitSuccessClientRequest("GET", "/riotclient/get_region_locale", true)[1]).ToLower();
+            GetPlayers(Requests.ClientRequest("GET", "/chat/v5/participants/champ-select", false)[1]);
+            Thread.Sleep(5000);
+        }
     }
 
     private static string GetRegion(string request)
@@ -25,12 +35,14 @@ public class LobbyRevealer
 
     private static void GetTokenOpGg()
     {
+        Log(LogType.LobbyRevealer, "Getting OP.GG Token...");
         string response = Requests.WebRequest("https://www.op.gg/multisearch");
         _opggtoken = Utils.LrParse(response, "\"buildId\":\"", "\",\"assetPrefix") ?? "null";
     }
 
     private static void GetPlayers(string req)
     {
+        Log(LogType.LobbyRevealer, "Getting Players for revealing lobby...");
         Players deserialized = JsonConvert.DeserializeObject<Players>(req);
         List<PlayerIn> participants = deserialized.Participants;
         string names = "";
@@ -47,20 +59,24 @@ public class LobbyRevealer
 
         GetTokenOpGg();
 
+        Log(LogType.LobbyRevealer, "Getting Players Stats with OP.GG...");
         string stats = Requests.WebRequest($"https://www.op.gg/_next/data/{_opggtoken}/multisearch/{_myregion}.json?summoners={names}&region={_myregion}");
         if (stats == null) return;
 
         dynamic json = JsonConvert.DeserializeObject(stats);
-        dynamic summoners = json["pageProps"]["summoners"];
+        dynamic summoners = json.pageProps.summoners;
 
         foreach (dynamic sum in summoners)
         {
             Player player = Global.PlayerList.Find(x => x.Username.ToLower().Equals(sum["name"].ToString().ToLower()));
 
-            player.Level = sum["level"];
-            player.SoloDuoQ.Division = sum["solo_tier_info"]["division"] >= 1 ? sum["solo_tier_info"]["division"] : 0;
-            player.SoloDuoQ.Tier = sum["solo_tier_info"]["tier"] != null ? sum["solo_tier_info"]["tier"] : "Unranked";
-            player.SoloDuoQ.Lp = sum["solo_tier_info"]["lp"] >= 0 ? sum["solo_tier_info"]["lp"] : 0;
+            player.Level = sum.level;
+            dynamic soloTierInfo = sum.solo_tier_info;
+            if (soloTierInfo == null) continue;
+
+            player.SoloDuoQ.Division = soloTierInfo.division >= 1 ? soloTierInfo.division : 0;
+            player.SoloDuoQ.Tier = soloTierInfo.tier != null ? soloTierInfo.tier : "Unranked";
+            player.SoloDuoQ.Lp = soloTierInfo.lp >= 0 ? soloTierInfo.lp : 0;
         }
     }
 
@@ -70,15 +86,15 @@ public class LobbyRevealer
         if (stats == null) return;
 
         dynamic json = JsonConvert.DeserializeObject(stats);
-        dynamic summoner = json["pageProps"]["data"]["league_stats"];
+        dynamic summoner = json.pageProps.data.league_stats;
 
-        player.SoloDuoQ.Wins = summoner[0]["win"] >= 1 ? summoner[0]["win"] : 0;
-        player.SoloDuoQ.Losses = summoner[0]["lose"] >= 1 ? summoner[0]["lose"] : 0;
+        player.SoloDuoQ.Wins = summoner[0].win >= 1 ? summoner[0].win : 0;
+        player.SoloDuoQ.Losses = summoner[0].lose >= 1 ? summoner[0].lose : 0;
 
-        player.FlexQ.Wins = summoner[1]["win"] >= 1 ? summoner[1]["win"] : 0;
-        player.FlexQ.Losses = summoner[1]["lose"] >= 1 ? summoner[1]["lose"] : 0;
-        player.FlexQ.Division = summoner[1]["division"] >= 1 ? summoner[1]["division"] : 0;
-        player.FlexQ.Tier = summoner[1]["tier"] != null ? summoner[1]["tier"] : "Unranked";
-        player.FlexQ.Lp = summoner[1]["lp"] >= 0 ? summoner[1]["lp"] : 0;
+        player.FlexQ.Wins = summoner[1].win >= 1 ? summoner[1].win : 0;
+        player.FlexQ.Losses = summoner[1].lose >= 1 ? summoner[1].lose : 0;
+        player.FlexQ.Division = summoner[1].division >= 1 ? summoner[1].division : 0;
+        player.FlexQ.Tier = summoner[1].tier != null ? summoner[1].tier : "Unranked";
+        player.FlexQ.Lp = summoner[1].lp >= 0 ? summoner[1].lp : 0;
     }
 }

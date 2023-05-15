@@ -13,6 +13,8 @@ public class Ux
 
     public static void LeagueClientTask()
     {
+        GetLeagueAuth();
+
         while (true)
         {
             Process client = Process.GetProcessesByName("LeagueClientUx").FirstOrDefault();
@@ -37,7 +39,7 @@ public class Ux
         return client != null;
     }
 
-    public static void GetLeagueAuth()
+    private static void GetLeagueAuth()
     {
         Global.IsLeagueOpen = false;
         Global.AuthRiot.Clear();

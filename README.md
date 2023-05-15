@@ -5,7 +5,7 @@ A set of several small tools for league of legends.
 
 ### Works with the latest `13.9` update of League of Legends.
 
-![Loly - Tools](https://i.imgur.com/vf4ImF9.png)
+![Loly - Tools](https://i.imgur.com/8o9dfBC.png)
 
 ## `❗Usage`
 
@@ -25,7 +25,7 @@ No need to install this if you have a more recent version installed<br>
 
 - [x] Interactive Menu in Console
 - [x] Lobby Revealer (ranked games)
-- [x] Auto-Accept match (Auto-accept any queue)
+- [x] Auto-Accept match (Auto accept any queue)
 - [x] Auto Lock & Ban champion (PicknBan / Delay)
 - [x] Auto Chat (Auto send messages when you are in lobby)
 - [x] Get OP.GG stats of your team (SoloQ & DuoQ / FlexQ)
@@ -58,8 +58,10 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 ## `🧾 Todo List`
 
 - [ ] Update screen records for all features (tools, logs menu)
-- [ ] Make `Logs` menu to show all actions of the tool in real time in console
 - [ ] Create PicknBan system with all roles (top, jungle, mid, adc, support)
+- [ ] Delete `Get All Names` from Menu (automatically get all names when you start the tool with Task System now)
+- [ ] Found a solution to bypass the Delay for PicknBan champs to send auto messages direct when we are in lobby
+- [ ] Found a solution to auto lobby revealer in ranked games (wihout using the console app, Creating new task)
 
 ## `📝 License`
 

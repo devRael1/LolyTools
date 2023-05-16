@@ -14,7 +14,8 @@ public class Ux
 
     public static void LeagueClientTask()
     {
-        GetLeagueAuth();
+        if (LeagueClientIsOpen())
+            GetLeagueAuth();
 
         while (true)
         {

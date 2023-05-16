@@ -57,9 +57,8 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 
 ## `🧾 Todo List`
 
-- [ ] Update screen records for all features (tools, logs menu)
+- [ ] Update screen records for all features (tools, logs, settings menu)
 - [ ] Create PicknBan system with all roles (top, jungle, mid, adc, support)
-- [ ] Delete `Get All Names` from Menu (automatically get all names when you start the tool with Task System now)
 - [ ] Found a solution to bypass the Delay for PicknBan champs to send auto messages direct when we are in lobby
 - [ ] Found a solution to auto lobby revealer in ranked games (wihout using the console app, Creating new task)
 

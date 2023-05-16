@@ -151,10 +151,10 @@ public class LobbyRevealerMenu
     {
         int choice = 10;
         UpdateMenuTitle("lv_get_stats");
-        List<string> choices = Global.PlayerList.Select(t => $"[STATS] - {t.Username}").ToList();
+        List<string> choices = Global.PlayerList.Select(t => $"{t.Username}'s Stats").ToList();
 
         if (Global.PlayerList.Count > 0)
-            choices.Add("Global Stats");
+            choices.Add("[GLOBAL] Stats");
         choices.Add("Back");
 
         string[] choices2 = choices.ToArray();

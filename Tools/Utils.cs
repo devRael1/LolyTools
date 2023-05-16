@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Alba.CsConsoleFormat;
 using Loly.Variables;
+using Newtonsoft.Json;
 using Console = Colorful.Console;
 
 namespace Loly.Tools;
@@ -86,5 +87,10 @@ public class Utils
     {
         str = str.ToLower();
         return string.Concat(str[0].ToString().ToUpper(), str.AsSpan(1));
+    }
+
+    public static string GetRegion(string request)
+    {
+        return JsonConvert.DeserializeObject<PlayerRegion>(request).Region;
     }
 }

@@ -119,7 +119,6 @@ public class Requests
                             AutoAcceptQueue();
                         break;
                     case "ChampSelect":
-                        // TODO: Créer l'envoie auto de messages (peut etre en système de tache)
                         Global.AcceptedCurrentMatch = false;
                         HandleChampSelect();
                         break;

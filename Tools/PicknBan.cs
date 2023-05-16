@@ -59,8 +59,8 @@ public class PicknBan
 
             Global.LastChatRoom = currentChatRoom;
 
-            if (!_pickedChamp || !_lockedChamp || !_pickedBan || !_lockedBan) HandleChampSelectActions(currentChampSelectJson, localPlayerCellId);
             if (_cansentChatMessages) AutoChat.HandleChampSelectAutoChat();
+            if (!_pickedChamp || !_lockedChamp || !_pickedBan || !_lockedBan) HandleChampSelectActions(currentChampSelectJson, localPlayerCellId);
             _cansentChatMessages = false;
         }
     }

@@ -3,6 +3,7 @@ using System.Management;
 using System.Text;
 using Loly.Menus.Core;
 using Loly.Variables;
+using static Loly.Tools.Utils;
 using Console = Colorful.Console;
 
 namespace Loly.LeagueClient;
@@ -21,6 +22,7 @@ public class Ux
             if (client != null)
             {
                 if (Global.AuthClient.Count == 0 && Global.AuthRiot.Count == 0) GetLeagueAuth();
+                Global.Region ??= GetRegion(Requests.WaitSuccessClientRequest("GET", "/riotclient/get_region_locale", true)[1]).ToLower();
                 Global.IsLeagueOpen = true;
                 if (!_lcuPid.Equals(client.Id)) _lcuPid = client.Id;
             }

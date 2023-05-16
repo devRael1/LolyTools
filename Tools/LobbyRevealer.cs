@@ -8,29 +8,27 @@ namespace Loly.Tools;
 
 public class LobbyRevealer
 {
-    private static string _myregion;
     private static string _opggtoken;
 
     public static void GetAllNames()
     {
         while (true)
         {
-            if (!Settings.LobbyRevealer || Global.Session != "Champ Select" || Global.PlayerList.Count > 0)
+            if (!Settings.LobbyRevealer || Global.Session != "Champ Select")
             {
-                Thread.Sleep(5000);
+                Thread.Sleep(3000);
                 continue;
             }
 
             Global.PlayerList.Clear();
             Global.UsernameList.Clear();
 
-            _myregion = GetRegion(Requests.WaitSuccessClientRequest("GET", "/riotclient/get_region_locale", true)[1]).ToLower();
             GetPlayers(Requests.ClientRequest("GET", "/chat/v5/participants/champ-select", false)[1]);
 
             foreach (Player player in Global.PlayerList) Global.UsernameList.Add(player.Username);
             new Thread(() =>
             {
-                Log(LogType.LobbyRevealer, "Get advanced players stats in background...");
+                Log(LogType.LobbyRevealer, $"Getting advanced stats of {Global.PlayerList.Count} players in background...");
 
                 OrderablePartitioner<string> source = Partitioner.Create(Global.UsernameList, EnumerablePartitionerOptions.NoBuffering);
                 ParallelOptions parallelOptions = new()
@@ -51,11 +49,6 @@ public class LobbyRevealer
         }
     }
 
-    private static string GetRegion(string request)
-    {
-        return JsonConvert.DeserializeObject<PlayerRegion>(request).Region;
-    }
-
     private static void GetTokenOpGg()
     {
         Log(LogType.LobbyRevealer, "Getting OP.GG Token...");
@@ -72,18 +65,15 @@ public class LobbyRevealer
 
         foreach (PlayerIn player in participants)
         {
-            Player p = new(player.Name, "https://www.op.gg/summoners/" + _myregion + "/" + player.Name);
+            Player p = new(player.Name, "https://www.op.gg/summoners/" + Global.Region + "/" + player.Name);
             names += player.Name;
             if (player != participants.Last()) names += ",";
             Global.PlayerList.Add(p);
         }
 
-        Global.Region = _myregion;
-
         GetTokenOpGg();
 
-        Log(LogType.LobbyRevealer, "Getting Players Stats with OP.GG...");
-        string stats = Requests.WebRequest($"https://www.op.gg/_next/data/{_opggtoken}/multisearch/{_myregion}.json?summoners={names}&region={_myregion}");
+        string stats = Requests.WebRequest($"https://www.op.gg/_next/data/{_opggtoken}/multisearch/{Global.Region}.json?summoners={names}&region={Global.Region}");
         if (stats == null) return;
 
         dynamic json = JsonConvert.DeserializeObject(stats);
@@ -103,9 +93,10 @@ public class LobbyRevealer
         }
     }
 
-    public static void GetPlayerStats(Player player)
+    private static void GetPlayerStats(Player player)
     {
-        string stats = Requests.WebRequest($"https://www.op.gg/_next/data/{_opggtoken}/summoners/{_myregion}/{player.Username}.json?region={_myregion}&summoner={player.Username}");
+        string stats = Requests.WebRequest(
+            $"https://www.op.gg/_next/data/{_opggtoken}/summoners/{Global.Region}/{player.Username}.json?region={Global.Region}&summoner={player.Username}");
         if (stats == null) return;
 
         dynamic json = JsonConvert.DeserializeObject(stats);

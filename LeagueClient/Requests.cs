@@ -111,6 +111,7 @@ public class Requests
                         Thread.Sleep(5000);
                         break;
                     case "Matchmaking":
+                        Global.AcceptedCurrentMatch = false;
                         Thread.Sleep(5000);
                         break;
                     case "ReadyCheck":
@@ -119,6 +120,7 @@ public class Requests
                         break;
                     case "ChampSelect":
                         // TODO: Créer l'envoie auto de messages (peut etre en système de tache)
+                        Global.AcceptedCurrentMatch = false;
                         HandleChampSelect();
                         break;
                     case "InProgress":

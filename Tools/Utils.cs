@@ -44,7 +44,6 @@ public class Utils
             "settings" => $"{Global.SoftName} by {Global.SoftAuthor} - Settings Menu",
             "credits" => $"{Global.SoftName} by {Global.SoftAuthor} - Credits Menu",
             "lv" => $"{Global.SoftName} by {Global.SoftAuthor} - Lobby Revealer Menu",
-            "lv_get_names" => $"{Global.SoftName} by {Global.SoftAuthor} > Lobby Revealer - Get Names Menu",
             "lv_get_opgg" => $"{Global.SoftName} by {Global.SoftAuthor} > Lobby Revealer - Get OP.GG Menu",
             "lv_get_stats" => $"{Global.SoftName} by {Global.SoftAuthor} > Lobby Revealer - Get Stats Menu",
             "aa" => $"{Global.SoftName} by {Global.SoftAuthor} - Auto Accept Menu",

@@ -15,6 +15,7 @@ public class Global
     public static string CurrentSummonerId { get; set; }
     public static string LastChatRoom { get; set; }
     public static int LastActionId { get; set; }
+    public static bool AcceptedCurrentMatch { get; set; }
     public static bool IsLeagueOpen { get; set; }
     public static bool LogsMenuEnable { get; set; }
     public static string Region { get; set; }

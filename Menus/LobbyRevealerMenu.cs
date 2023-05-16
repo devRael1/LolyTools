@@ -1,11 +1,8 @@
-﻿using System.Collections.Concurrent;
-using Alba.CsConsoleFormat;
+﻿using Alba.CsConsoleFormat;
 using Loly.Menus.Core;
-using Loly.Tools;
 using Loly.Variables;
 using static Loly.Tools.Utils;
 using static Loly.Menus.ToolsMenu;
-using static Loly.Logs;
 using Console = Colorful.Console;
 
 namespace Loly.Menus;
@@ -18,7 +15,7 @@ public class LobbyRevealerMenu
         {
             int choice = 7;
             UpdateMenuTitle("lv");
-            string[] choices = { "Get Names", "Get OP.GG", "Get Stats", "Back" };
+            string[] choices = { "Get OP.GG", "Get Stats", "Back" };
 
             MenuBuilder mainMenu = MenuBuilder.BuildMenu(choices, TopLength);
             while (choice == 7) choice = mainMenu.RunMenu();
@@ -31,52 +28,9 @@ public class LobbyRevealerMenu
             switch (choice)
             {
                 case 1:
-                    UpdateMenuTitle("lv_get_names");
-                    Console.WriteLine(" Waiting to get all names...", Colors.InfoColor);
-                    LobbyRevealer.GetAllNames();
-                    Console.Clear();
-                    Interface.ShowArt();
-                    if (Global.PlayerList.Count == 0)
-                    {
-                        Console.WriteLine(" No Players found. Press Enter to continue...", Colors.ErrorColor);
-                    }
-                    else
-                    {
-                        foreach (Player player in Global.PlayerList)
-                            Console.WriteLine($" [x] Player found: {player.Username}", Colors.SuccessColor);
-
-                        Console.WriteLine(" \n Players found. Go to the 'Get OP.GG' Menu to get the OP.GG links.", Colors.SuccessColor);
-                        Console.WriteLine(" Press Enter to continue...", Colors.SuccessColor);
-
-                        foreach (Player player in Global.PlayerList) Global.UsernameList.Add(player.Username);
-
-                        Log(LogType.LobbyRevealer, "Get advanced players stats in background...");
-                        new Thread(() =>
-                        {
-                            OrderablePartitioner<string> source = Partitioner.Create(Global.UsernameList, EnumerablePartitionerOptions.NoBuffering);
-                            ParallelOptions parallelOptions = new()
-                            {
-                                MaxDegreeOfParallelism = Global.PlayerList.Count
-                            };
-
-                            Parallel.ForEach(source, parallelOptions, delegate(string username, ParallelLoopState _)
-                            {
-                                Player player = Global.PlayerList.Find(x => string.Equals(x.Username, username, StringComparison.Ordinal));
-                                LobbyRevealer.GetPlayerStats(player);
-                            });
-
-                            Thread.CurrentThread.Join();
-                        }).Start();
-                    }
-
-                    Console.ReadKey();
-                    Console.Clear();
-                    Interface.ShowArt();
-                    continue;
-                case 2:
                     GetOpggMenu();
                     break;
-                case 3:
+                case 2:
                     if (Global.PlayerList.Count == 0)
                     {
                         Console.WriteLine(" No Players in the list. ", Colors.WarningColor);

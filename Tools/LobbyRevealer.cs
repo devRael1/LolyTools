@@ -1,4 +1,5 @@
-﻿using Loly.LeagueClient;
+﻿using System.Collections.Concurrent;
+using Loly.LeagueClient;
 using Loly.Variables;
 using Newtonsoft.Json;
 using static Loly.Logs;
@@ -22,8 +23,30 @@ public class LobbyRevealer
 
             Global.PlayerList.Clear();
             Global.UsernameList.Clear();
+
             _myregion = GetRegion(Requests.WaitSuccessClientRequest("GET", "/riotclient/get_region_locale", true)[1]).ToLower();
             GetPlayers(Requests.ClientRequest("GET", "/chat/v5/participants/champ-select", false)[1]);
+
+            foreach (Player player in Global.PlayerList) Global.UsernameList.Add(player.Username);
+            new Thread(() =>
+            {
+                Log(LogType.LobbyRevealer, "Get advanced players stats in background...");
+
+                OrderablePartitioner<string> source = Partitioner.Create(Global.UsernameList, EnumerablePartitionerOptions.NoBuffering);
+                ParallelOptions parallelOptions = new()
+                {
+                    MaxDegreeOfParallelism = Global.PlayerList.Count
+                };
+
+                Parallel.ForEach(source, parallelOptions, delegate(string username, ParallelLoopState _)
+                {
+                    Player player = Global.PlayerList.Find(x => string.Equals(x.Username, username, StringComparison.Ordinal));
+                    GetPlayerStats(player);
+                });
+
+                Thread.CurrentThread.Join();
+            }).Start();
+
             Thread.Sleep(5000);
         }
     }

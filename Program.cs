@@ -16,6 +16,7 @@ internal class Program
         Global.SoftVersion = "1.1";
         Global.CurrentSummonerId = "";
         Global.LastChatRoom = "";
+        Global.AcceptedCurrentMatch = false;
         Global.LogsMenuEnable = false;
 
         Settings.EnableAutoUpdate = true;

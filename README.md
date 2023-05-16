@@ -59,9 +59,7 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 
 - [ ] Update screen records for all features (tools, logs, settings menu)
 - [ ] Create PicknBan system with all roles (top, jungle, mid, adc, support)
-- [ ] Found a solution to bypass the Delay for PicknBan champs to send auto messages direct when we are in lobby
-- [ ] Found a solution to auto lobby revealer in ranked games (wihout using the console app, Creating new task)
-
+ 
 ## `📝 License`
 
 Copyright © 2023 devRael<br>

@@ -53,7 +53,7 @@ public class PicknBan
                 _lockedBan = true;
             }
 
-            if (Settings.AutoChat && Settings.ChatMessages.Count >= 1)
+            if (Settings.AutoChat && Settings.ChatMessages.Count > 0)
                 if (Global.LastChatRoom != currentChatRoom)
                     _cansentChatMessages = true;
 

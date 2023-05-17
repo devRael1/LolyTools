@@ -14,7 +14,7 @@ public class LobbyRevealer
     {
         while (true)
         {
-            if (!Settings.LobbyRevealer || Global.Session != "Champ Select")
+            if (!Settings.LobbyRevealer || Global.Session != "Champ Select" || Global.FetchedPlayers)
             {
                 Thread.Sleep(3000);
                 continue;
@@ -45,7 +45,8 @@ public class LobbyRevealer
                 Thread.CurrentThread.Join();
             }).Start();
 
-            Thread.Sleep(5000);
+            Global.FetchedPlayers = true;
+            Thread.Sleep(1000);
         }
     }
 

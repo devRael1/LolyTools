@@ -38,15 +38,15 @@ More features coming soon...
 
 ### Tools Menu
 
-COMING SOON...
+![Loly - Tools > Tools Menu](https://i.imgur.com/Dnmqt3Y.png)
 
 ### Settings Menu
 
-COMING SOON...
+![Loly - Tools > Settings Menu](https://i.imgur.com/pbCghK5.png)
 
 ### Logs Menu
 
-COMING SOON...
+![Loly - Tools > Logs Menu](https://i.imgur.com/1ggLk5l.png)
 
 ## `❓ Bugs report / Suggestions`
 
@@ -57,8 +57,8 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 
 ## `🧾 Todo List`
 
-- [ ] Update screenshots (tools, logs, settings menu)
 - [ ] Create PicknBan system with all roles (top, jungle, mid, adc, support)
+- [ ] Update OP.GG Token system (check if OP.GG token exist and catch error in op.gg request to get new token if needed)
 
 ## `📝 License`
 

@@ -108,13 +108,17 @@ public class Requests
                 switch (phase)
                 {
                     case "Lobby":
+                        Global.FetchedPlayers = false;
+                        Global.AcceptedCurrentMatch = false;
                         Thread.Sleep(5000);
                         break;
                     case "Matchmaking":
+                        Global.FetchedPlayers = false;
                         Global.AcceptedCurrentMatch = false;
                         Thread.Sleep(5000);
                         break;
                     case "ReadyCheck":
+                        Global.FetchedPlayers = false;
                         if (Settings.AutoAccept)
                             AutoAcceptQueue();
                         break;
@@ -139,7 +143,7 @@ public class Requests
                         break;
                 }
 
-                if (phase != "ChampSelect") Global.LastChatRoom = "";
+                if (phaseName != "Champ Select") Global.LastChatRoom = "";
             }
 
             Thread.Sleep(500);

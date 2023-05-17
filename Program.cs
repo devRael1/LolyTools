@@ -18,6 +18,7 @@ internal class Program
         Global.LastChatRoom = "";
         Global.AcceptedCurrentMatch = false;
         Global.LogsMenuEnable = false;
+        Global.FetchedPlayers = false;
 
         Settings.EnableAutoUpdate = true;
         Settings.LobbyRevealer = false;

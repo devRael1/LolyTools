@@ -31,6 +31,8 @@ public class AutoChat
                 Thread.Sleep(attempts * 100);
             }
         }
+
+        Log(LogType.AutoChat, "Messages sended successfully !");
     }
 
     public static string FormatMessage(string message)

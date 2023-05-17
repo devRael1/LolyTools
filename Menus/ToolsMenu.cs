@@ -74,7 +74,6 @@ public class ToolsMenu
                         GetAutoChatMenu();
                     }
 
-
                     break;
                 case 4:
                     if (!Settings.PicknBan)

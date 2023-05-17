@@ -57,8 +57,8 @@ public class PicknBanMenu
         Document rectangle = new();
         Border border1 = new()
         {
-            MinWidth = 60,
-            MaxWidth = 60,
+            MinWidth = 65,
+            MaxWidth = 65,
             Stroke = LineThickness.None,
             Align = Align.Center,
             TextAlign = TextAlign.Center,
@@ -68,9 +68,30 @@ public class PicknBanMenu
             {
                 CreateSpan("Pick and Ban", 0, Colors.MenuTextColor),
                 new Separator(),
-                CreateSpan("Configure which champion to auto pick / ban and delays.", 0, Colors.MenuTextColor)
+                CreateSpan("Configure which champion to auto pick / ban and delays.\n", 0, Colors.MenuTextColor)
             }
         };
+
+        if (Settings.PickChamp.Id != null || Settings.BanChamp.Id != null)
+        {
+            Border border2 = new()
+            {
+                MinWidth = 60,
+                MaxWidth = 60,
+                Stroke = LineThickness.None,
+                Align = Align.Center,
+                TextAlign = TextAlign.Justify,
+                Color = Colors.MenuPrimaryColor,
+                TextWrap = TextWrap.WordWrap
+            };
+
+            if (Settings.PickChamp.Id != null)
+                border2.Children.Add(CreateSpan($"Current Pick      - {FormatStr(Settings.PickChamp.Name)} (Delay: {Settings.PickDelay}ms)\n", 7, Colors.MenuTextColor));
+            if (Settings.BanChamp.Id != null)
+                border2.Children.Add(CreateSpan($"Current Ban       - {FormatStr(Settings.BanChamp.Name)} (Delay: {Settings.BanDelay}ms)", 7, Colors.MenuTextColor));
+
+            border1.Children.Add(border2);
+        }
 
         rectangle.Children.Add(border1);
         ConsoleRenderer.RenderDocument(rectangle);

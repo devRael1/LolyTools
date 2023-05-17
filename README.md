@@ -34,7 +34,7 @@ No need to install this if you have a more recent version installed<br>
 
 More features coming soon...
 
-## `🎥 Screen records`
+## `📷 Screenshots`
 
 ### Tools Menu
 
@@ -57,9 +57,9 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 
 ## `🧾 Todo List`
 
-- [ ] Update screen records for all features (tools, logs, settings menu)
+- [ ] Update screenshots (tools, logs, settings menu)
 - [ ] Create PicknBan system with all roles (top, jungle, mid, adc, support)
- 
+
 ## `📝 License`
 
 Copyright © 2023 devRael<br>

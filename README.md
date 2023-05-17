@@ -30,6 +30,7 @@ No need to install this if you have a more recent version installed<br>
 - [x] Auto Chat (Auto send messages when you are in lobby)
 - [x] Get OP.GG stats of your team (SoloQ & DuoQ / FlexQ)
 - [x] Auto update (Github API)
+- [x] Logs Menu (Real Time)
 - [x] Use JSON file to save your settings
 
 More features coming soon...

@@ -72,7 +72,7 @@ public class LobbyRevealer
             Global.PlayerList.Add(p);
         }
 
-        GetTokenOpGg();
+        if (_opggtoken == null) GetTokenOpGg();
 
         string stats = Requests.WebRequest($"https://www.op.gg/_next/data/{_opggtoken}/multisearch/{Global.Region}.json?summoners={names}&region={Global.Region}");
         if (stats == null) return;

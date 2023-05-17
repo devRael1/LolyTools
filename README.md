@@ -58,7 +58,6 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 ## `🧾 Todo List`
 
 - [ ] Create PicknBan system with all roles (top, jungle, mid, adc, support)
-- [ ] Update OP.GG Token system (check if OP.GG token exist and catch error in op.gg request to get new token if needed)
 
 ## `📝 License`
 

@@ -75,14 +75,11 @@ public class Requests
     {
         using HttpClient client = new();
         HttpResponseMessage response = client.GetAsync(url).Result;
-        if (response.IsSuccessStatusCode)
-        {
-            HttpContent responseContent = response.Content;
-            string responseString = responseContent.ReadAsStringAsync().Result;
-            return responseString;
-        }
+        if (!response.IsSuccessStatusCode) return null;
 
-        throw new Exception($"The request failed with status code {response.StatusCode}");
+        HttpContent responseContent = response.Content;
+        string responseString = responseContent.ReadAsStringAsync().Result;
+        return responseString;
     }
 
     public static void AnalyzeSession()

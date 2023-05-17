@@ -13,7 +13,9 @@ public class AutoChat
     {
         GetChatId();
 
-        Log(LogType.AutoChat, $"Sending {Settings.ChatMessages.Count} messages in chat...");
+        Log(LogType.AutoChat, $"Sending {Settings.ChatMessages.Count} message(s) in chat...");
+
+        int count = 0;
         string timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
         foreach (string message in Settings.ChatMessages)
         {
@@ -28,11 +30,12 @@ public class AutoChat
                 string[] response = Requests.ClientRequest("POST", "lol-chat/v1/conversations/" + Global.LastChatRoom + "/messages", true, body);
                 attempts++;
                 httpRes = response[0];
+                if (httpRes == "200") count++;
                 Thread.Sleep(attempts * 100);
             }
         }
 
-        Log(LogType.AutoChat, "Messages sended successfully !");
+        Log(LogType.AutoChat, $"{count} message(s) sended successfully !");
     }
 
     public static string FormatMessage(string message)

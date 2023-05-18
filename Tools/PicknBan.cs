@@ -20,6 +20,7 @@ public class PicknBan
     {
         string[] currentChampSelect = Requests.ClientRequest("GET", "lol-champ-select/v1/session", true);
         if (currentChampSelect[0] != "200") return;
+
         dynamic currentChampSelectJson = JsonConvert.DeserializeObject(currentChampSelect[1]);
         string currentChatRoom = currentChampSelectJson.chatDetails.multiUserChatId;
         if (Global.LastChatRoom != currentChatRoom || Global.LastChatRoom == "")
@@ -43,7 +44,7 @@ public class PicknBan
             JArray myTeam = currentChampSelectJson.myTeam;
             foreach (dynamic member in myTeam)
             {
-                if (member.summonerId != Global.CurrentSummonerId) continue;
+                if (member.summonerId.ToString() != Global.CurrentSummonerId) continue;
                 string assigned = member.assignedPosition;
                 _currentRole = assigned switch
                 {

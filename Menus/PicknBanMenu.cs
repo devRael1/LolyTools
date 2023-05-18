@@ -1,8 +1,9 @@
 ﻿using Alba.CsConsoleFormat;
+using Loly.LeagueClient;
 using Loly.Menus.Core;
 using Loly.Variables;
+using Newtonsoft.Json;
 using static Loly.Tools.Utils;
-using static Loly.Tools.PicknBan;
 using static Loly.Menus.ToolsMenu;
 using Console = Colorful.Console;
 
@@ -283,5 +284,38 @@ public class PicknBanMenu
                 delay = 0;
             }
         }
+    }
+
+    private static void LoadChampionsList()
+    {
+        if (Global.ChampionsList.Any()) return;
+
+        List<ChampItem> champs = new();
+
+        string[] ownedChamps = Requests.WaitSuccessClientRequest("GET", "lol-champions/v1/inventories/" + Global.CurrentSummonerId + "/champions-minimal", true);
+        dynamic champsSplit = JsonConvert.DeserializeObject(ownedChamps[1]);
+
+        foreach (dynamic champ in champsSplit)
+        {
+            if (champ.id == -1) continue;
+
+            string champName = champ.name;
+            string champId = champ.id;
+            bool champOwned = champ.ownership.owned;
+            bool champFreeXboxPass = champ.ownership.xboxGPReward;
+            bool champFree = champ.freeToPlay;
+
+            if (champName == "Nunu & Willump") champName = "Nunu";
+
+            bool isAvailable;
+            if (champOwned || champFree || champFreeXboxPass)
+                isAvailable = true;
+            else
+                isAvailable = false;
+
+            champs.Add(new ChampItem { Name = champName, Id = champId, Free = isAvailable });
+        }
+
+        foreach (ChampItem champ in champs) Global.ChampionsList.Add(champ);
     }
 }

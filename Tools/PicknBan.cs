@@ -41,18 +41,18 @@ public class PicknBan
         else
         {
             JArray myTeam = currentChampSelectJson.myTeam;
-            foreach (dynamic summoner in myTeam)
+            foreach (dynamic member in myTeam)
             {
-                if (summoner.summonerId != Global.CurrentSummonerId) continue;
-                string assinged = summoner.assignedPosition;
-                _currentRole = assinged switch
+                if (member.summonerId != Global.CurrentSummonerId) continue;
+                string assigned = member.assignedPosition;
+                _currentRole = assigned switch
                 {
                     "utility" => (InitRole)Settings.LoLRoles.GetType().GetProperty("Support").GetValue(Settings.LoLRoles),
                     "middle" => (InitRole)Settings.LoLRoles.GetType().GetProperty("Mid").GetValue(Settings.LoLRoles),
                     "jungle" => (InitRole)Settings.LoLRoles.GetType().GetProperty("Jungle").GetValue(Settings.LoLRoles),
                     "bottom" => (InitRole)Settings.LoLRoles.GetType().GetProperty("Adc").GetValue(Settings.LoLRoles),
                     "top" => (InitRole)Settings.LoLRoles.GetType().GetProperty("Top").GetValue(Settings.LoLRoles),
-                    _ => _currentRole
+                    _ => (InitRole)Settings.LoLRoles.GetType().GetProperty("Mid").GetValue(Settings.LoLRoles) // Default
                 };
                 break;
             }
@@ -80,41 +80,6 @@ public class PicknBan
             if (!_pickedChamp || !_lockedChamp || !_pickedBan || !_lockedBan) HandleChampSelectActions(currentChampSelectJson, localPlayerCellId);
             _cansentChatMessages = false;
         }
-    }
-
-    public static void LoadChampionsList()
-    {
-        if (Global.ChampionsList.Any()) return;
-
-        Log(LogType.PicknBan, "Loading champions list of your account...");
-
-        List<ChampItem> champs = new();
-
-        string[] ownedChamps = Requests.WaitSuccessClientRequest("GET", "lol-champions/v1/inventories/" + Global.CurrentSummonerId + "/champions-minimal", true);
-        dynamic champsSplit = JsonConvert.DeserializeObject(ownedChamps[1]);
-
-        foreach (dynamic champ in champsSplit)
-        {
-            if (champ.id == -1) continue;
-
-            string champName = champ.name;
-            string champId = champ.id;
-            bool champOwned = champ.ownership.owned;
-            bool champFreeXboxPass = champ.ownership.xboxGPReward;
-            bool champFree = champ.freeToPlay;
-
-            if (champName == "Nunu & Willump") champName = "Nunu";
-
-            bool isAvailable;
-            if (champOwned || champFree || champFreeXboxPass)
-                isAvailable = true;
-            else
-                isAvailable = false;
-
-            champs.Add(new ChampItem { Name = champName, Id = champId, Free = isAvailable });
-        }
-
-        foreach (ChampItem champ in champs) Global.ChampionsList.Add(champ);
     }
 
     private static void HandleChampSelectActions(dynamic currentChampSelectJson, int localPlayerCellId)

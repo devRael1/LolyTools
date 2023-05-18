@@ -18,8 +18,8 @@ public class Ux
     {
         if (LeagueClientIsOpen())
         {
-            LoadSummonerId();
             GetLeagueAuth();
+            LoadSummonerId();
         }
 
         while (true)
@@ -100,7 +100,7 @@ public class Ux
 
     private static void LoadSummonerId()
     {
-        if (Global.CurrentSummonerId != "") return;
+        if (Global.CurrentSummonerId != null) return;
         Log(LogType.Global, "Getting your summoner id...");
         string[] currentSummoner = Requests.WaitSuccessClientRequest("GET", "lol-summoner/v1/current-summoner", true);
         dynamic currentSummonerSplit = JsonConvert.DeserializeObject(currentSummoner[1]);

@@ -59,6 +59,7 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 ## `🧾 Todo List`
 
 - [ ] Test new Pick and Ban system with Roles (in ranked too)
+- [ ] Create verification of enabled / disabled tool (features)
 
 ## `📝 License`
 

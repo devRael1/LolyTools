@@ -119,9 +119,10 @@ public class PicknBanMenu
             TextWrap = TextWrap.WordWrap,
             Children =
             {
-                CreateSpan("Pick and Ban", 0, Colors.MenuTextColor),
+                CreateSpan("Pick and Ban\n", 0, Colors.MenuTextColor),
+                CreateSpan(_role, 0, Colors.MenuTextColor),
                 new Separator(),
-                CreateSpan($"Configure which champion to auto pick ban and delay ({_role})\n", 0, Colors.MenuTextColor)
+                CreateSpan("Configure which champion to auto pick ban and delay\n", 0, Colors.MenuTextColor)
             }
         };
 

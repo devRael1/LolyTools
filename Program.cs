@@ -14,8 +14,6 @@ internal class Program
         Global.SoftAuthor = "devRael";
         Global.SoftAuthorDiscord = "devRael#0123";
         Global.SoftVersion = "1.2";
-        Global.CurrentSummonerId = "";
-        Global.LastChatRoom = "";
         Global.AcceptedCurrentMatch = false;
         Global.LogsMenuEnable = false;
         Global.FetchedPlayers = false;
@@ -26,15 +24,6 @@ internal class Program
         Settings.AutoAcceptOnce = false;
         Settings.AutoChat = false;
         Settings.PicknBan = false;
-        Settings.PickDelay = 1500;
-        Settings.BanDelay = 1500;
-
-        Settings.PickChamp.Name = null;
-        Settings.PickChamp.Id = null;
-        Settings.PickChamp.Free = false;
-        Settings.BanChamp.Name = null;
-        Settings.BanChamp.Id = null;
-        Settings.BanChamp.Free = false;
 
         Settings.CreateOrUpdateSettings();
 

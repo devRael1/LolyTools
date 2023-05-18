@@ -3,7 +3,9 @@ using System.Management;
 using System.Text;
 using Loly.Menus.Core;
 using Loly.Variables;
+using Newtonsoft.Json;
 using static Loly.Tools.Utils;
+using static Loly.Logs;
 using Console = Colorful.Console;
 
 namespace Loly.LeagueClient;
@@ -15,7 +17,10 @@ public class Ux
     public static void LeagueClientTask()
     {
         if (LeagueClientIsOpen())
+        {
+            LoadSummonerId();
             GetLeagueAuth();
+        }
 
         while (true)
         {
@@ -23,6 +28,7 @@ public class Ux
             if (client != null)
             {
                 if (Global.AuthClient.Count == 0 && Global.AuthRiot.Count == 0) GetLeagueAuth();
+                if (Global.CurrentSummonerId == null) LoadSummonerId();
                 Global.Region ??= GetRegion(Requests.WaitSuccessClientRequest("GET", "/riotclient/get_region_locale", true)[1]).ToLower();
                 Global.IsLeagueOpen = true;
                 if (!_lcuPid.Equals(client.Id)) _lcuPid = client.Id;
@@ -90,5 +96,14 @@ public class Ux
         int pTo = text.LastIndexOf(to, StringComparison.Ordinal);
 
         return text.Substring(pFrom, pTo - pFrom);
+    }
+
+    private static void LoadSummonerId()
+    {
+        if (Global.CurrentSummonerId != "") return;
+        Log(LogType.Global, "Getting your summoner id...");
+        string[] currentSummoner = Requests.WaitSuccessClientRequest("GET", "lol-summoner/v1/current-summoner", true);
+        dynamic currentSummonerSplit = JsonConvert.DeserializeObject(currentSummoner[1]);
+        Global.CurrentSummonerId = currentSummonerSplit.summonerId;
     }
 }

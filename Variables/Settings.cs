@@ -8,8 +8,7 @@ public class Settings
 {
     private const string FileName = "Loly Settings.json";
 
-    public static readonly ChampItem PickChamp = new();
-    public static readonly ChampItem BanChamp = new();
+    public static readonly PnBRoles LoLRoles = new();
     public static readonly List<string> ChatMessages = new();
 
     public static bool EnableAutoUpdate { get; set; }
@@ -18,8 +17,6 @@ public class Settings
     public static bool AutoAcceptOnce { get; set; }
     public static bool PicknBan { get; set; }
     public static bool AutoChat { get; set; }
-    public static int PickDelay { get; set; }
-    public static int BanDelay { get; set; }
 
     private static JObject GetJObj()
     {
@@ -34,26 +31,26 @@ public class Settings
         {
             { nameof(AutoAcceptOnce), AutoAcceptOnce }
         };
-        JObject picknban = new()
-        {
-            { nameof(PickDelay), PickDelay },
-            { nameof(BanDelay), BanDelay },
-            { nameof(PickChamp), JObject.FromObject(PickChamp) },
-            { nameof(BanChamp), JObject.FromObject(BanChamp) }
-        };
         JObject autochat = new()
         {
             { nameof(ChatMessages), JArray.FromObject(ChatMessages) }
         };
-
+        JObject picknban = new()
+        {
+            { nameof(LoLRoles.Top), JObject.FromObject(LoLRoles.Top) },
+            { nameof(LoLRoles.Jungle), JObject.FromObject(LoLRoles.Jungle) },
+            { nameof(LoLRoles.Mid), JObject.FromObject(LoLRoles.Mid) },
+            { nameof(LoLRoles.Adc), JObject.FromObject(LoLRoles.Adc) },
+            { nameof(LoLRoles.Support), JObject.FromObject(LoLRoles.Support) }
+        };
 
         return new JObject
         {
             { nameof(EnableAutoUpdate), EnableAutoUpdate },
             { nameof(Tools), tools },
-            { nameof(PicknBan), picknban },
             { nameof(AutoAccept), autoaccept },
-            { nameof(AutoChat), autochat }
+            { nameof(AutoChat), autochat },
+            { nameof(PicknBan), picknban }
         };
     }
 
@@ -92,19 +89,14 @@ public class Settings
             PicknBan = (bool)obj[nameof(Tools)][nameof(PicknBan)];
             AutoChat = (bool)obj[nameof(Tools)][nameof(AutoChat)];
 
-            PickDelay = (int)obj[nameof(PicknBan)][nameof(PickDelay)];
-            BanDelay = (int)obj[nameof(PicknBan)][nameof(BanDelay)];
-
-            PickChamp.Id = (string)obj[nameof(PicknBan)][nameof(PickChamp)][nameof(PickChamp.Id)];
-            PickChamp.Name = (string)obj[nameof(PicknBan)][nameof(PickChamp)][nameof(PickChamp.Name)];
-            PickChamp.Free = (bool)obj[nameof(PicknBan)][nameof(PickChamp)][nameof(PickChamp.Free)];
-
-            BanChamp.Id = (string)obj[nameof(PicknBan)][nameof(BanChamp)][nameof(BanChamp.Id)];
-            BanChamp.Name = (string)obj[nameof(PicknBan)][nameof(BanChamp)][nameof(BanChamp.Name)];
-            BanChamp.Free = (bool)obj[nameof(PicknBan)][nameof(BanChamp)][nameof(BanChamp.Free)];
-
             List<string> allMessages = obj[nameof(AutoChat)][nameof(ChatMessages)].ToObject<List<string>>();
             ChatMessages.AddRange(allMessages);
+
+            LoLRoles.Top = obj[nameof(PicknBan)][nameof(LoLRoles.Top)].ToObject<InitRole>();
+            LoLRoles.Jungle = obj[nameof(PicknBan)][nameof(LoLRoles.Jungle)].ToObject<InitRole>();
+            LoLRoles.Mid = obj[nameof(PicknBan)][nameof(LoLRoles.Mid)].ToObject<InitRole>();
+            LoLRoles.Adc = obj[nameof(PicknBan)][nameof(LoLRoles.Adc)].ToObject<InitRole>();
+            LoLRoles.Support = obj[nameof(PicknBan)][nameof(LoLRoles.Support)].ToObject<InitRole>();
         }
     }
 

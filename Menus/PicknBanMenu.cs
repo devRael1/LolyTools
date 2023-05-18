@@ -10,7 +10,34 @@ namespace Loly.Menus;
 
 public class PicknBanMenu
 {
+    private static string _role;
+
     public static void GetPicknBanMenu()
+    {
+        while (true)
+        {
+            ShowRoleMenu();
+
+            int choice = 7;
+            UpdateMenuTitle("pnb");
+            string[] choices = { "Top", "Jungle", "Mid", "Adc", "Support", "Back" };
+
+            MenuBuilder mainMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+            while (choice == 7) choice = mainMenu.RunMenu();
+
+            Console.Clear();
+            Interface.ShowArt();
+
+            if (choice == choices.Length) break;
+
+            _role = choices[choice - 1];
+            GetOptionPicknBanMenu();
+        }
+
+        GetToolsMenu();
+    }
+
+    private static void GetOptionPicknBanMenu()
     {
         while (true)
         {
@@ -47,7 +74,33 @@ public class PicknBanMenu
             }
         }
 
-        GetToolsMenu();
+        GetPicknBanMenu();
+    }
+
+    private static void ShowRoleMenu()
+    {
+        Console.SetCursorPosition(0, TopLength);
+
+        Document rectangle = new();
+        Border border1 = new()
+        {
+            MinWidth = 60,
+            MaxWidth = 60,
+            Stroke = LineThickness.None,
+            Align = Align.Center,
+            TextAlign = TextAlign.Center,
+            Color = Colors.MenuPrimaryColor,
+            TextWrap = TextWrap.WordWrap,
+            Children =
+            {
+                CreateSpan("Pick and Ban", 0, Colors.MenuTextColor),
+                new Separator(),
+                CreateSpan("Choose role to configure Pick and Ban.", 0, Colors.MenuTextColor)
+            }
+        };
+
+        rectangle.Children.Add(border1);
+        ConsoleRenderer.RenderDocument(rectangle);
     }
 
     private static void ShowPicknBanMenu()
@@ -68,11 +121,12 @@ public class PicknBanMenu
             {
                 CreateSpan("Pick and Ban", 0, Colors.MenuTextColor),
                 new Separator(),
-                CreateSpan("Configure which champion to auto pick / ban and delays.\n", 0, Colors.MenuTextColor)
+                CreateSpan($"Configure which champion to auto pick ban and delay ({_role})\n", 0, Colors.MenuTextColor)
             }
         };
 
-        if (Settings.PickChamp.Id != null || Settings.BanChamp.Id != null)
+        InitRole role = (InitRole)Settings.LoLRoles.GetType().GetProperty(_role).GetValue(Settings.LoLRoles);
+        if (role.PickChamp.Id != null || role.BanChamp.Id != null)
         {
             Border border2 = new()
             {
@@ -85,10 +139,10 @@ public class PicknBanMenu
                 TextWrap = TextWrap.WordWrap
             };
 
-            if (Settings.PickChamp.Id != null)
-                border2.Children.Add(CreateSpan($"Current Pick      - {FormatStr(Settings.PickChamp.Name)} (Delay: {Settings.PickDelay}ms)\n", 7, Colors.MenuTextColor));
-            if (Settings.BanChamp.Id != null)
-                border2.Children.Add(CreateSpan($"Current Ban       - {FormatStr(Settings.BanChamp.Name)} (Delay: {Settings.BanDelay}ms)", 7, Colors.MenuTextColor));
+            if (role.PickChamp.Id != null)
+                border2.Children.Add(CreateSpan($"Current Pick      - {FormatStr(role.PickChamp.Name)} (Delay: {role.PickChamp.Delay}ms)\n", 7, Colors.MenuTextColor));
+            if (role.BanChamp.Id != null)
+                border2.Children.Add(CreateSpan($"Current Ban       - {FormatStr(role.BanChamp.Name)} (Delay: {role.BanChamp.Delay}ms)", 7, Colors.MenuTextColor));
 
             border1.Children.Add(border2);
         }
@@ -135,19 +189,22 @@ public class PicknBanMenu
                 }
                 else
                 {
+                    InitRole role = (InitRole)Settings.LoLRoles.GetType().GetProperty(_role).GetValue(Settings.LoLRoles);
+
                     if (action == "pick")
                     {
-                        Settings.PickChamp.Name = champ.Name;
-                        Settings.PickChamp.Id = champ.Id;
-                        Settings.PickChamp.Free = champ.Free;
+                        role.PickChamp.Name = champ.Name;
+                        role.PickChamp.Id = champ.Id;
+                        role.PickChamp.Free = champ.Free;
                     }
                     else
                     {
-                        Settings.BanChamp.Name = champ.Name;
-                        Settings.BanChamp.Id = champ.Id;
-                        Settings.BanChamp.Free = champ.Free;
+                        role.BanChamp.Name = champ.Name;
+                        role.BanChamp.Id = champ.Id;
+                        role.BanChamp.Free = champ.Free;
                     }
 
+                    Settings.LoLRoles.GetType().GetProperty(_role).SetValue(Settings.LoLRoles, role);
                     Settings.SaveSettings();
 
                     Console.WriteLine("");
@@ -198,11 +255,14 @@ public class PicknBanMenu
                 }
                 else
                 {
-                    if (action == "pick")
-                        Settings.PickDelay = delay;
-                    else
-                        Settings.BanDelay = delay;
+                    InitRole role = (InitRole)Settings.LoLRoles.GetType().GetProperty(_role).GetValue(Settings.LoLRoles);
 
+                    if (action == "pick")
+                        role.PickChamp.Delay = delay;
+                    else
+                        role.BanChamp.Delay = delay;
+
+                    Settings.LoLRoles.GetType().GetProperty(_role).SetValue(Settings.LoLRoles, role);
                     Settings.SaveSettings();
 
                     Console.WriteLine("");

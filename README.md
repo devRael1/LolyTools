@@ -58,7 +58,7 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 
 ## `🧾 Todo List`
 
-- [ ] Create PicknBan system with all roles (top, jungle, mid, adc, support)
+- [ ] Test new Pick and Ban system with Roles (in ranked too)
 
 ## `📝 License`
 

@@ -14,6 +14,7 @@ public class PicknBan
     private static bool _lockedBan;
     private static bool _cansentChatMessages;
     private static long _champSelectStart;
+    private static InitRole _currentRole;
 
     public static void HandleChampSelect()
     {
@@ -39,15 +40,31 @@ public class PicknBan
         }
         else
         {
-            int localPlayerCellId = currentChampSelectJson.localPlayerCellId;
+            JArray myTeam = currentChampSelectJson.myTeam;
+            foreach (dynamic summoner in myTeam)
+            {
+                if (summoner.summonerId != Global.CurrentSummonerId) continue;
+                string assinged = summoner.assignedPosition;
+                _currentRole = assinged switch
+                {
+                    "utility" => (InitRole)Settings.LoLRoles.GetType().GetProperty("Support").GetValue(Settings.LoLRoles),
+                    "middle" => (InitRole)Settings.LoLRoles.GetType().GetProperty("Mid").GetValue(Settings.LoLRoles),
+                    "jungle" => (InitRole)Settings.LoLRoles.GetType().GetProperty("Jungle").GetValue(Settings.LoLRoles),
+                    "bottom" => (InitRole)Settings.LoLRoles.GetType().GetProperty("Adc").GetValue(Settings.LoLRoles),
+                    "top" => (InitRole)Settings.LoLRoles.GetType().GetProperty("Top").GetValue(Settings.LoLRoles),
+                    _ => _currentRole
+                };
+                break;
+            }
 
-            if (Settings.PickChamp.Id == null)
+            int localPlayerCellId = currentChampSelectJson.localPlayerCellId;
+            if (_currentRole.PickChamp.Id == null)
             {
                 _pickedChamp = true;
                 _lockedChamp = true;
             }
 
-            if (Settings.BanChamp.Id == null)
+            if (_currentRole.BanChamp.Id == null)
             {
                 _pickedBan = true;
                 _lockedBan = true;
@@ -68,7 +85,6 @@ public class PicknBan
     public static void LoadChampionsList()
     {
         if (Global.ChampionsList.Any()) return;
-        LoadSummonerId();
 
         Log(LogType.PicknBan, "Loading champions list of your account...");
 
@@ -140,7 +156,7 @@ public class PicknBan
         MarkPhaseStart(actionId);
         if (_lockedChamp) return;
 
-        Thread.Sleep(Settings.PickDelay);
+        Thread.Sleep(_currentRole.PickChamp.Delay);
         LockChampion(actionId, "pick");
     }
 
@@ -154,13 +170,13 @@ public class PicknBan
         if (!_pickedBan) HoverChampion(actionId, "ban");
         if (_lockedBan) return;
 
-        Thread.Sleep(Settings.BanDelay);
+        Thread.Sleep(_currentRole.BanChamp.Delay);
         LockChampion(actionId, "ban");
     }
 
     private static void HoverChampion(int actionId, string actType)
     {
-        ChampItem champion = actType == "pick" ? Settings.PickChamp : Settings.BanChamp;
+        ChampItem champion = actType == "pick" ? _currentRole.PickChamp : _currentRole.BanChamp;
         Log(LogType.PicknBan, $"Hover {champion.Name} champion for {actType}...");
 
         string[] champSelectAction =
@@ -179,7 +195,7 @@ public class PicknBan
 
     private static void LockChampion(int actionId, string actType)
     {
-        ChampItem champion = actType == "pick" ? Settings.PickChamp : Settings.BanChamp;
+        ChampItem champion = actType == "pick" ? _currentRole.PickChamp : _currentRole.BanChamp;
         Log(LogType.PicknBan, $"Locking {champion.Name} champion for {actType}...");
 
         string[] champSelectAction =
@@ -194,14 +210,5 @@ public class PicknBan
                 _lockedBan = true;
                 break;
         }
-    }
-
-    private static void LoadSummonerId()
-    {
-        if (Global.CurrentSummonerId != "") return;
-        Log(LogType.PicknBan, "Getting your summoner id...");
-        string[] currentSummoner = Requests.WaitSuccessClientRequest("GET", "lol-summoner/v1/current-summoner", true);
-        dynamic currentSummonerSplit = JsonConvert.DeserializeObject(currentSummoner[1]);
-        Global.CurrentSummonerId = currentSummonerSplit.summonerId;
     }
 }

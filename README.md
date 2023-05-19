@@ -1,5 +1,7 @@
 ﻿# `🎮 Loly - Tools`
 
+<img src="https://i.imgur.com/irDTPDC.png" width="150" alt=""/>
+
 League Of Legends Tools.<br>
 A set of several small tools for league of legends.
 

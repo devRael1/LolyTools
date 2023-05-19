@@ -1,5 +1,6 @@
 ﻿using Loly.Menus.Core;
 using Loly.Variables;
+using static Loly.Tools.Utils;
 using static Loly.Menus.MainMenu;
 using Console = Colorful.Console;
 
@@ -9,6 +10,7 @@ public class LogsMenu
 {
     public static void GetLogsMenu()
     {
+        UpdateMenuTitle("logs");
         Console.Clear();
         Interface.ShowLogsArt();
 

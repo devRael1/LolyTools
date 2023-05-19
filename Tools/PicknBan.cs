@@ -18,6 +18,8 @@ public class PicknBan
 
     public static void HandleChampSelect()
     {
+        if (!Settings.AutoChat && !Settings.PicknBan) return;
+
         string[] currentChampSelect = Requests.ClientRequest("GET", "lol-champ-select/v1/session", true);
         if (currentChampSelect[0] != "200") return;
 
@@ -78,7 +80,7 @@ public class PicknBan
             Global.LastChatRoom = currentChatRoom;
 
             if (_cansentChatMessages) AutoChat.HandleChampSelectAutoChat();
-            if (!_pickedChamp || !_lockedChamp || !_pickedBan || !_lockedBan) HandleChampSelectActions(currentChampSelectJson, localPlayerCellId);
+            if (Settings.PicknBan && (!_pickedChamp || !_lockedChamp || !_pickedBan || !_lockedBan)) HandleChampSelectActions(currentChampSelectJson, localPlayerCellId);
             _cansentChatMessages = false;
         }
     }

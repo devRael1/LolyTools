@@ -41,6 +41,7 @@ public class Utils
         Console.Title = active switch
         {
             "main" => $"{Global.SoftName} by {Global.SoftAuthor} - Main Menu",
+            "logs" => $"{Global.SoftName} by {Global.SoftAuthor} - Logs Menu",
             "tools" => $"{Global.SoftName} by {Global.SoftAuthor} - Tools Menu",
             "settings" => $"{Global.SoftName} by {Global.SoftAuthor} - Settings Menu",
             "credits" => $"{Global.SoftName} by {Global.SoftAuthor} - Credits Menu",

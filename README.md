@@ -5,7 +5,7 @@
 League Of Legends Tools.<br>
 A set of several small tools for league of legends.
 
-### Works with the latest `13.9` update of League of Legends.
+### Works with the latest `13.10` update of League of Legends.
 
 ![Loly - Tools](https://i.imgur.com/8o9dfBC.png)
 
@@ -61,7 +61,6 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 ## `🧾 Todo List`
 
 - [ ] Test new Pick and Ban system with Roles (in ranked too)
-- [ ] Create verification of enabled / disabled tool (features)
 
 ## `📝 License`
 

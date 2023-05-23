@@ -11,6 +11,6 @@ public class PnBRoles
 
 public class InitRole
 {
-    public ChampItem PickChamp { get; set; } = new();
-    public ChampItem BanChamp { get; set; } = new();
+    public ChampItem PickChamp { get; } = new();
+    public ChampItem BanChamp { get; } = new();
 }

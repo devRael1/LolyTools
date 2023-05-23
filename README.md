@@ -60,9 +60,7 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 
 ## `🧾 Todo List`
 
-- [ ] Test new Pick and Ban system with Roles (in ranked too)
-- [ ] Create new background thread system for `Lobby Revealer`
-- [ ] Found a solution to get stats for players without OP.GG stats account
+Empty...
 
 ## `📝 License`
 

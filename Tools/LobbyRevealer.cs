@@ -26,26 +26,14 @@ public class LobbyRevealer
             GetPlayers(Requests.ClientRequest("GET", "/chat/v5/participants/champ-select", false)[1]);
 
             foreach (Player player in Global.PlayerList) Global.UsernameList.Add(player.Username);
-            new Thread(() =>
+            Thread background = new(GetAdvancedPlayersStats)
             {
-                Log(LogType.LobbyRevealer, $"Getting advanced stats of {Global.PlayerList.Count} players in background...");
-
-                OrderablePartitioner<string> source = Partitioner.Create(Global.UsernameList, EnumerablePartitionerOptions.NoBuffering);
-                ParallelOptions parallelOptions = new()
-                {
-                    MaxDegreeOfParallelism = Global.PlayerList.Count
-                };
-
-                Parallel.ForEach(source, parallelOptions, delegate(string username, ParallelLoopState _)
-                {
-                    Player player = Global.PlayerList.Find(x => string.Equals(x.Username, username, StringComparison.Ordinal));
-                    GetPlayerStats(player);
-                });
-
-                Thread.CurrentThread.Join();
-            }).Start();
-
+                IsBackground = true
+            };
+            background.Start();
             Global.FetchedPlayers = true;
+            background.Join();
+
             Thread.Sleep(1000);
         }
     }
@@ -111,5 +99,22 @@ public class LobbyRevealer
         player.FlexQ.Division = summoner[1].division >= 1 ? summoner[1].division : 0;
         player.FlexQ.Tier = summoner[1].tier != null ? summoner[1].tier : "Unranked";
         player.FlexQ.Lp = summoner[1].lp >= 0 ? summoner[1].lp : 0;
+    }
+
+    private static void GetAdvancedPlayersStats()
+    {
+        Log(LogType.LobbyRevealer, $"Getting advanced stats of {Global.PlayerList.Count} players in background...");
+
+        OrderablePartitioner<string> source = Partitioner.Create(Global.UsernameList, EnumerablePartitionerOptions.NoBuffering);
+        ParallelOptions parallelOptions = new()
+        {
+            MaxDegreeOfParallelism = Global.PlayerList.Count
+        };
+
+        Parallel.ForEach(source, parallelOptions, delegate(string username, ParallelLoopState _)
+        {
+            Player player = Global.PlayerList.Find(x => string.Equals(x.Username, username, StringComparison.Ordinal));
+            GetPlayerStats(player);
+        });
     }
 }

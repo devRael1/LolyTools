@@ -28,12 +28,12 @@ No need to install this if you have a more recent version installed<br>
 - [x] Interactive Menu in Console
 - [x] Lobby Revealer (ranked games)
 - [x] Auto-Accept match (Auto accept any queue)
-- [x] Auto Lock & Ban champion (PicknBan / Delay)
+- [x] Auto Pick & Ban champion (By roles => Top, Jungle, Mid, ADC, Support)
 - [x] Auto Chat (Auto send messages when you are in lobby)
 - [x] Get OP.GG stats of your team (SoloQ & DuoQ / FlexQ)
-- [x] Auto update (Github API)
 - [x] Logs Menu (Real Time)
 - [x] Use JSON file to save your settings
+- [x] Auto update (Github API)
 
 More features coming soon...
 

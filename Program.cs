@@ -13,7 +13,7 @@ internal class Program
         Global.SoftName = "League of Legends - Loly Tools";
         Global.SoftAuthor = "devRael";
         Global.SoftAuthorDiscord = "devRael#0123";
-        Global.SoftVersion = "1.2";
+        Global.SoftVersion = "1.3";
         Global.AcceptedCurrentMatch = false;
         Global.LogsMenuEnable = false;
         Global.FetchedPlayers = false;

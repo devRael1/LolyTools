@@ -60,7 +60,8 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 
 ## `🧾 Todo List`
 
-Empty...
+- [ ] Make default for `Pick and Ban` tool (for Blind mode)
+- [ ] Patch error with background system to get advanced players stats (test async system)
 
 ## `📝 License`
 

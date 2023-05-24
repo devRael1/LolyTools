@@ -59,6 +59,10 @@ public class Utils
             "ac_del" => $"{Global.SoftName} by {Global.SoftAuthor} > Auto Chat - Delete Message Menu",
             "ac_see" => $"{Global.SoftName} by {Global.SoftAuthor} > Auto Chat - See Messages Menu",
             "ac_clear" => $"{Global.SoftName} by {Global.SoftAuthor} > Auto Chat - Clear Messages Menu",
+            "lc" => $"{Global.SoftName} by {Global.SoftAuthor} - Language Changer Menu",
+            "lc_languages" => $"{Global.SoftName} by {Global.SoftAuthor} > Language Changer - Languages Menu",
+            "lc_exe" => $"{Global.SoftName} by {Global.SoftAuthor} > Language Changer - Get League Client Exe Menu",
+            "lc_confirm" => $"{Global.SoftName} by {Global.SoftAuthor} > Language Changer - Confirm Menu",
             _ => Console.Title
         };
     }

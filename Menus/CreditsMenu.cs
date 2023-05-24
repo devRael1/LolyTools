@@ -23,19 +23,13 @@ public class CreditsMenu
             Console.Clear();
             Interface.ShowArt();
 
-            if (choice == 2)
-            {
-                MainMenu.StartMenu();
-            }
-            else
-            {
-                ShowCreditsMenu();
-                OpenUrl(Global.DiscordInvite);
-                continue;
-            }
+            if (choice == choices.Length) break;
 
-            break;
+            ShowCreditsMenu();
+            OpenUrl(Global.DiscordInvite);
         }
+
+        MainMenu.StartMenu();
     }
 
     private static void ShowCreditsMenu()

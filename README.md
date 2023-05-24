@@ -32,6 +32,7 @@ No need to install this if you have a more recent version installed<br>
 - [x] Auto Chat (Auto send messages when you are in lobby)
 - [x] Get OP.GG stats of your team (SoloQ & DuoQ / FlexQ)
 - [x] Logs Menu (Real Time)
+- [x] Change League of Legends Language (Shortcuts)
 - [x] Use JSON file to save your settings
 - [x] Auto update (Github API)
 
@@ -72,7 +73,6 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 - [ ] Make default for `Pick and Ban` tool (for Blind mode)
 - [ ] Update `Pick and Ban` system (new menu for Pick & Ban) / (add delete option)
 - [ ] Patch error with background system to get advanced players stats (test async system)
-- [ ] Try to add a league langue changer (need to find a way to do it)
 
 ## `📝 License`
 

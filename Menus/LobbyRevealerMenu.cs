@@ -33,8 +33,8 @@ public class LobbyRevealerMenu
                 case 2:
                     if (Global.PlayerList.Count == 0)
                     {
-                        Console.WriteLine(" No Players in the list. ", Colors.WarningColor);
-                        Console.WriteLine(" Please use 'Get Names' to get players before trying to get the stats. ", Colors.WarningColor);
+                        Console.WriteLine(" No Players in the list.", Colors.WarningColor);
+                        Console.WriteLine(" Application did not detect a champ select in progress.", Colors.WarningColor);
                         Console.WriteLine(" Press Enter to continue...", Colors.WarningColor);
 
                         Console.ReadKey();

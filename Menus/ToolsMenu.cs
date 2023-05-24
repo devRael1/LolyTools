@@ -6,6 +6,7 @@ using static Loly.Menus.LobbyRevealerMenu;
 using static Loly.Menus.AutoAcceptMenu;
 using static Loly.Menus.PicknBanMenu;
 using static Loly.Menus.AutoChatMenu;
+using static Loly.Menus.LanguageChangerMenu;
 using static Loly.Menus.MainMenu;
 using Console = Colorful.Console;
 
@@ -21,7 +22,7 @@ public class ToolsMenu
 
             int choice = 7;
             UpdateMenuTitle("tools");
-            string[] choices = { "Lobby Revealer", "Auto Accept", "Auto Chat", "Pick & Ban", "Back" };
+            string[] choices = { "Lobby Revealer", "Auto Accept", "Auto Chat", "Pick & Ban", "Language Changer", "Back" };
 
             MenuBuilder creditsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
             while (choice == 7) choice = creditsMenu.RunMenu();
@@ -88,6 +89,9 @@ public class ToolsMenu
                         GetPicknBanMenu();
                     }
 
+                    break;
+                case 5:
+                    GetLanguageChangerMenu();
                     break;
             }
         }

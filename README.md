@@ -41,15 +41,24 @@ More features coming soon...
 
 ### Tools Menu
 
-![Loly - Tools > Tools Menu](https://i.imgur.com/Dnmqt3Y.png)
+<details>
+<summary>See screenshot...</summary>
+<img src="https://i.imgur.com/Dnmqt3Y.png" alt="devRael1">
+</details>
 
 ### Settings Menu
 
-![Loly - Tools > Settings Menu](https://i.imgur.com/pbCghK5.png)
+<details>
+<summary>See screenshot...</summary>
+<img src="https://i.imgur.com/pbCghK5.png" alt="devRael1">
+</details>
 
 ### Logs Menu
 
-![Loly - Tools > Logs Menu](https://i.imgur.com/1ggLk5l.png)
+<details>
+<summary>See screenshot...</summary>
+<img src="https://i.imgur.com/1ggLk5l.png" alt="devRael1">
+</details>
 
 ## `❓ Bugs report / Suggestions`
 

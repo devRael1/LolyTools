@@ -61,7 +61,9 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 ## `🧾 Todo List`
 
 - [ ] Make default for `Pick and Ban` tool (for Blind mode)
+- [ ] Update `Pick and Ban` system (new menu for Pick & Ban) / (add delete option)
 - [ ] Patch error with background system to get advanced players stats (test async system)
+- [ ] Try to add a league langue changer (need to find a way to do it)
 
 ## `📝 License`
 

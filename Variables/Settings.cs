@@ -37,6 +37,7 @@ public class Settings
         };
         JObject picknban = new()
         {
+            { nameof(LoLRoles.Default), JObject.FromObject(LoLRoles.Default) },
             { nameof(LoLRoles.Top), JObject.FromObject(LoLRoles.Top) },
             { nameof(LoLRoles.Jungle), JObject.FromObject(LoLRoles.Jungle) },
             { nameof(LoLRoles.Mid), JObject.FromObject(LoLRoles.Mid) },
@@ -92,6 +93,7 @@ public class Settings
             List<string> allMessages = obj[nameof(AutoChat)][nameof(ChatMessages)].ToObject<List<string>>();
             ChatMessages.AddRange(allMessages);
 
+            LoLRoles.Default = obj[nameof(PicknBan)][nameof(LoLRoles.Default)].ToObject<InitRole>();
             LoLRoles.Top = obj[nameof(PicknBan)][nameof(LoLRoles.Top)].ToObject<InitRole>();
             LoLRoles.Jungle = obj[nameof(PicknBan)][nameof(LoLRoles.Jungle)].ToObject<InitRole>();
             LoLRoles.Mid = obj[nameof(PicknBan)][nameof(LoLRoles.Mid)].ToObject<InitRole>();

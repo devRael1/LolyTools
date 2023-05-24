@@ -22,7 +22,7 @@ public class ToolsMenu
 
             int choice = 7;
             UpdateMenuTitle("tools");
-            string[] choices = { "Lobby Revealer", "Auto Accept", "Auto Chat", "Pick & Ban", "Language Changer", "Back" };
+            string[] choices = { "Lobby Revealer", "Auto Accept", "Auto Chat", "Pick and Ban", "Language Changer", "Back" };
 
             MenuBuilder creditsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
             while (choice == 7) choice = creditsMenu.RunMenu();

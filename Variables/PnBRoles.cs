@@ -2,6 +2,7 @@
 
 public class PnBRoles
 {
+    public InitRole Default { get; set; } = new();
     public InitRole Top { get; set; } = new();
     public InitRole Jungle { get; set; } = new();
     public InitRole Mid { get; set; } = new();

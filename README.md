@@ -70,7 +70,7 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 
 ## `🧾 Todo List`
 
-- [ ] Make default for `Pick and Ban` tool (for Blind mode)
+- [ ] Patch error with `Pick and Ban` tool (No ban champ when no pick champ is configured)
 - [ ] Update `Pick and Ban` system (new menu for Pick & Ban) / (add delete option)
 - [ ] Patch error with background system to get advanced players stats (test async system)
 

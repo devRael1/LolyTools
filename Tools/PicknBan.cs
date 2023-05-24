@@ -8,9 +8,9 @@ namespace Loly.Tools;
 
 public class PicknBan
 {
-    private static bool _pickedChamp;
-    private static bool _lockedChamp;
-    private static bool _pickedBan;
+    private static bool _hoverPick;
+    private static bool _lockedPick;
+    private static bool _hoverBan;
     private static bool _lockedBan;
     private static bool _cansentChatMessages;
     private static long _champSelectStart;
@@ -27,16 +27,16 @@ public class PicknBan
         string currentChatRoom = currentChampSelectJson.chatDetails.multiUserChatId;
         if (Global.LastChatRoom != currentChatRoom || Global.LastChatRoom == "")
         {
-            _pickedChamp = false;
-            _lockedChamp = false;
-            _pickedBan = false;
+            _hoverPick = false;
+            _lockedPick = false;
+            _hoverBan = false;
             _lockedBan = false;
             _cansentChatMessages = false;
             _champSelectStart = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             Log(LogType.PicknBan, "New game start, champ select started now...");
         }
 
-        if (_lockedChamp)
+        if (_lockedPick)
         {
             Log(LogType.PicknBan, "Waiting for game to start...");
             Thread.Sleep(10000);
@@ -55,7 +55,7 @@ public class PicknBan
                     "jungle" => (InitRole)Settings.LoLRoles.GetType().GetProperty("Jungle").GetValue(Settings.LoLRoles),
                     "bottom" => (InitRole)Settings.LoLRoles.GetType().GetProperty("Adc").GetValue(Settings.LoLRoles),
                     "top" => (InitRole)Settings.LoLRoles.GetType().GetProperty("Top").GetValue(Settings.LoLRoles),
-                    _ => (InitRole)Settings.LoLRoles.GetType().GetProperty("Mid").GetValue(Settings.LoLRoles) // Default
+                    _ => (InitRole)Settings.LoLRoles.GetType().GetProperty("Default").GetValue(Settings.LoLRoles)
                 };
                 break;
             }
@@ -63,13 +63,13 @@ public class PicknBan
             int localPlayerCellId = currentChampSelectJson.localPlayerCellId;
             if (_currentRole.PickChamp.Id == null)
             {
-                _pickedChamp = true;
-                _lockedChamp = true;
+                _hoverPick = true;
+                _lockedPick = true;
             }
 
             if (_currentRole.BanChamp.Id == null)
             {
-                _pickedBan = true;
+                _hoverBan = true;
                 _lockedBan = true;
             }
 
@@ -80,7 +80,7 @@ public class PicknBan
             Global.LastChatRoom = currentChatRoom;
 
             if (_cansentChatMessages) AutoChat.HandleChampSelectAutoChat();
-            if (Settings.PicknBan && (!_pickedChamp || !_lockedChamp || !_pickedBan || !_lockedBan)) HandleChampSelectActions(currentChampSelectJson, localPlayerCellId);
+            if (!_hoverPick || !_lockedPick || !_hoverBan || !_lockedBan) HandleChampSelectActions(currentChampSelectJson, localPlayerCellId);
             _cansentChatMessages = false;
         }
     }
@@ -112,7 +112,7 @@ public class PicknBan
 
     private static void HandlePickAction(int actionId, bool actIsInProgress, dynamic currentChampSelectJson)
     {
-        if (!_pickedChamp)
+        if (!_hoverPick)
         {
             string champSelectPhase = currentChampSelectJson.timer.phase;
             long currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
@@ -122,7 +122,7 @@ public class PicknBan
 
         if (!actIsInProgress) return;
         MarkPhaseStart(actionId);
-        if (_lockedChamp) return;
+        if (_lockedPick) return;
 
         Thread.Sleep(_currentRole.PickChamp.Delay);
         LockChampion(actionId, "pick");
@@ -135,7 +135,7 @@ public class PicknBan
         if (!actIsInProgress || champSelectPhase == "PLANNING") return;
         MarkPhaseStart(actionId);
 
-        if (!_pickedBan) HoverChampion(actionId, "ban");
+        if (!_hoverBan) HoverChampion(actionId, "ban");
         if (_lockedBan) return;
 
         Thread.Sleep(_currentRole.BanChamp.Delay);
@@ -153,10 +153,10 @@ public class PicknBan
         switch (actType)
         {
             case "pick":
-                _pickedChamp = true;
+                _hoverPick = true;
                 break;
             case "ban":
-                _pickedBan = true;
+                _hoverBan = true;
                 break;
         }
     }
@@ -172,7 +172,7 @@ public class PicknBan
         switch (actType)
         {
             case "pick":
-                _lockedChamp = true;
+                _lockedPick = true;
                 break;
             case "ban":
                 _lockedBan = true;

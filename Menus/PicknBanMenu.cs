@@ -19,19 +19,19 @@ public class PicknBanMenu
         {
             ShowRoleMenu();
 
-            int choice = 7;
+            int choice = 10;
             UpdateMenuTitle("pnb");
-            string[] choices = { "Top", "Jungle", "Mid", "Adc", "Support", "Back" };
+            string[] choices = { "Default (Blind mode)", "Top", "Jungle", "Mid", "Adc", "Support", "Back" };
 
             MenuBuilder mainMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
-            while (choice == 7) choice = mainMenu.RunMenu();
+            while (choice == 10) choice = mainMenu.RunMenu();
 
             Console.Clear();
             Interface.ShowArt();
 
             if (choice == choices.Length) break;
 
-            _role = choices[choice - 1];
+            _role = choice == 1 ? "Default" : choices[choice - 1];
             GetOptionPicknBanMenu();
         }
 

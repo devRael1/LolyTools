@@ -12,6 +12,7 @@ namespace Loly.Menus;
 public class PicknBanMenu
 {
     private static string _role;
+    private static InitRole _cachedRole;
 
     public static void GetPicknBanMenu()
     {
@@ -32,21 +33,22 @@ public class PicknBanMenu
             if (choice == choices.Length) break;
 
             _role = choice == 1 ? "Default" : choices[choice - 1];
-            GetOptionPicknBanMenu();
+            _cachedRole = (InitRole)Settings.LoLRoles.GetType().GetProperty(_role).GetValue(Settings.LoLRoles);
+            GetChoicePickorBanMenu();
         }
 
         GetToolsMenu();
     }
 
-    private static void GetOptionPicknBanMenu()
+    private static void GetChoicePickorBanMenu()
     {
         while (true)
         {
-            ShowPicknBanMenu();
+            ShowPickorBanMenu();
 
             int choice = 7;
-            UpdateMenuTitle("pnb");
-            string[] choices = { "Pick Champion", "Pick Delay", "Ban Champion", "Ban Delay", "Back" };
+            UpdateMenuTitle("pnb_pob");
+            string[] choices = { "Pick", "Ban", "Back" };
 
             MenuBuilder mainMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
             while (choice == 7) choice = mainMenu.RunMenu();
@@ -56,26 +58,125 @@ public class PicknBanMenu
 
             if (choice == choices.Length) break;
 
-            LoadChampionsList();
+            GetOptionPicknBanMenu(choice == 1);
+        }
+
+        GetPicknBanMenu();
+    }
+
+    private static void GetOptionPicknBanMenu(bool pick)
+    {
+        while (true)
+        {
+            ShowPicknBanMenu(pick);
+
+            int choice = 7;
+            UpdateMenuTitle(pick ? "pnb_pick" : "pnb_ban");
+            string[] choices = pick ? new[] { "Pick Champion", "Remove Champion", "Pick Delay", "Back" } : new[] { "Ban Champion", "Remove Champion", "Ban Delay", "Back" };
+
+            MenuBuilder mainMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+            while (choice == 7) choice = mainMenu.RunMenu();
+
+            Console.Clear();
+            Interface.ShowArt();
+
+            if (choice == choices.Length) break;
 
             switch (choice)
             {
                 case 1:
-                    AskChampionName(true);
+                    LoadChampionsList();
+
+                    if (Global.ChampionsList.Any())
+                    {
+                        AskChampionName(pick);
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Interface.ShowArt();
+
+                        Console.WriteLine("[WARNING]» To configure pick / ban champion, you need to open 'League of Legends' game.", Colors.WarningColor);
+                        Console.WriteLine("[WARNING]» Please start your 'League of Legends' game and try again...", Colors.WarningColor);
+                        Console.WriteLine("[WARNING]» Press any key to continue...", Colors.WarningColor);
+
+                        Console.ReadKey();
+                    }
+
                     break;
                 case 2:
-                    AskDelay(true);
+                    ChampItem champ = pick ? _cachedRole.PickChamp : _cachedRole.BanChamp;
+                    if (champ.Id == null)
+                    {
+                        Console.Clear();
+                        Interface.ShowArt();
+
+                        Console.WriteLine("[WARNING]» You can't remove the champion because it is not configured.", Colors.WarningColor);
+                        Console.WriteLine("[WARNING]» Press any key to continue...", Colors.WarningColor);
+
+                        Console.ReadKey();
+                        Console.Clear();
+                        Interface.ShowArt();
+                    }
+                    else
+                    {
+                        ConfirmRemoveChampion(pick);
+                    }
+
                     break;
-                case 3:
-                    AskChampionName(false);
-                    break;
-                case 4:
-                    AskDelay(false);
+                default:
+                    AskDelay(pick);
                     break;
             }
         }
 
-        GetPicknBanMenu();
+        GetChoicePickorBanMenu();
+    }
+
+    private static void ShowPickorBanMenu()
+    {
+        Console.SetCursorPosition(0, TopLength);
+
+        Document rectangle = new();
+        Border border1 = new()
+        {
+            MinWidth = 60,
+            MaxWidth = 60,
+            Stroke = LineThickness.None,
+            Align = Align.Center,
+            TextAlign = TextAlign.Center,
+            Color = Colors.MenuPrimaryColor,
+            TextWrap = TextWrap.WordWrap,
+            Children =
+            {
+                CreateSpan("Pick or Ban", 0, Colors.MenuTextColor),
+                new Separator(),
+                CreateSpan("Choose pick or ban to configure champion and delay\n", 0, Colors.MenuTextColor)
+            }
+        };
+
+        Border border2 = new()
+        {
+            MinWidth = 60,
+            MaxWidth = 60,
+            Stroke = LineThickness.None,
+            Align = Align.Center,
+            TextAlign = TextAlign.Justify,
+            Color = Colors.MenuPrimaryColor,
+            TextWrap = TextWrap.WordWrap,
+            Children =
+            {
+                CreateSpan("Current Pick    - ", 8, Colors.MenuTextColor),
+                CreateSpan($"{FormatStr(_cachedRole.PickChamp.Name ?? "None")} (Delay: {_cachedRole.PickChamp.Delay}ms)\n", 0, Colors.MenuPrimaryColor),
+                CreateSpan("Current Ban     - ", 8, Colors.MenuTextColor),
+                CreateSpan($"{FormatStr(_cachedRole.BanChamp.Name ?? "None")} (Delay: {_cachedRole.BanChamp.Delay}ms)\n", 0, Colors.MenuPrimaryColor)
+            }
+        };
+
+        border1.Children.Add(border2);
+
+        rectangle.Children.Add(border1);
+        ConsoleRenderer.RenderDocument(rectangle);
     }
 
     private static void ShowRoleMenu()
@@ -104,7 +205,7 @@ public class PicknBanMenu
         ConsoleRenderer.RenderDocument(rectangle);
     }
 
-    private static void ShowPicknBanMenu()
+    private static void ShowPicknBanMenu(bool pick)
     {
         Console.SetCursorPosition(0, TopLength);
 
@@ -127,8 +228,10 @@ public class PicknBanMenu
             }
         };
 
-        InitRole role = (InitRole)Settings.LoLRoles.GetType().GetProperty(_role).GetValue(Settings.LoLRoles);
-        if (role.PickChamp.Id != null || role.BanChamp.Id != null)
+        string action = pick ? "Pick" : "Ban";
+        ChampItem selected = pick ? _cachedRole.PickChamp : _cachedRole.BanChamp;
+
+        if (selected.Id != null)
         {
             Border border2 = new()
             {
@@ -141,10 +244,8 @@ public class PicknBanMenu
                 TextWrap = TextWrap.WordWrap
             };
 
-            if (role.PickChamp.Id != null)
-                border2.Children.Add(CreateSpan($"Current Pick      - {FormatStr(role.PickChamp.Name)} (Delay: {role.PickChamp.Delay}ms)\n", 7, Colors.MenuTextColor));
-            if (role.BanChamp.Id != null)
-                border2.Children.Add(CreateSpan($"Current Ban       - {FormatStr(role.BanChamp.Name)} (Delay: {role.BanChamp.Delay}ms)", 7, Colors.MenuTextColor));
+            if (selected.Id != null)
+                border2.Children.Add(CreateSpan($"Current {action}      - {FormatStr(selected.Name)} (Delay: {selected.Delay}ms)\n", 7, Colors.MenuTextColor));
 
             border1.Children.Add(border2);
         }
@@ -153,10 +254,40 @@ public class PicknBanMenu
         ConsoleRenderer.RenderDocument(rectangle);
     }
 
+    private static void ShowConfirmMenu(bool pick)
+    {
+        Console.SetCursorPosition(0, TopLength);
+
+        string action = pick ? "Pick" : "Ban";
+
+        Document rectangle = new();
+        Border border1 = new()
+        {
+            MinWidth = 65,
+            MaxWidth = 65,
+            Stroke = LineThickness.None,
+            Align = Align.Center,
+            TextAlign = TextAlign.Center,
+            Color = Colors.MenuPrimaryColor,
+            TextWrap = TextWrap.WordWrap,
+            Children =
+            {
+                CreateSpan("Confirmation", 0, Colors.MenuTextColor),
+                new Separator(),
+                CreateSpan($"Confirm if you want to delete the champion for '{action}'\n\n", 0, Colors.MenuTextColor),
+                CreateSpan("Champion     - ", 0, Colors.MenuTextColor),
+                CreateSpan(pick ? FormatStr(_cachedRole.PickChamp.Name) : FormatStr(_cachedRole.BanChamp.Name), 0, Colors.MenuPrimaryColor)
+            }
+        };
+
+        rectangle.Children.Add(border1);
+        ConsoleRenderer.RenderDocument(rectangle);
+    }
+
     private static void AskChampionName(bool pick)
     {
         MenuBuilder.SetCursorVisibility(true);
-        UpdateMenuTitle(pick ? "pnb_pick" : "pnb_ban");
+        UpdateMenuTitle(pick ? "pnb_pick_c" : "pnb_ban_c");
 
         string action = pick ? "pick" : "ban";
         string champName = "";
@@ -206,12 +337,13 @@ public class PicknBanMenu
                         role.BanChamp.Free = champ.Free;
                     }
 
-                    Settings.LoLRoles.GetType().GetProperty(_role).SetValue(Settings.LoLRoles, role);
+                    Settings.LoLRoles.GetType().GetProperty(_role).SetValue(Settings.LoLRoles, _cachedRole);
                     Settings.SaveSettings();
+                    _cachedRole = role;
 
                     Console.WriteLine("");
                     Console.WriteLine($"[SUCCESS]» Champion '{FormatStr(champName)}' selected successfully for {action} !", Colors.SuccessColor);
-                    Console.WriteLine("Press any key to continue...", Colors.SuccessColor);
+                    Console.WriteLine("[SUCCESS]» Press any key to continue...", Colors.SuccessColor);
 
                     Console.ReadKey();
                     Console.Clear();
@@ -257,14 +389,12 @@ public class PicknBanMenu
                 }
                 else
                 {
-                    InitRole role = (InitRole)Settings.LoLRoles.GetType().GetProperty(_role).GetValue(Settings.LoLRoles);
-
                     if (action == "pick")
-                        role.PickChamp.Delay = delay;
+                        _cachedRole.PickChamp.Delay = delay;
                     else
-                        role.BanChamp.Delay = delay;
+                        _cachedRole.BanChamp.Delay = delay;
 
-                    Settings.LoLRoles.GetType().GetProperty(_role).SetValue(Settings.LoLRoles, role);
+                    Settings.LoLRoles.GetType().GetProperty(_role).SetValue(Settings.LoLRoles, _cachedRole);
                     Settings.SaveSettings();
 
                     Console.WriteLine("");
@@ -286,14 +416,64 @@ public class PicknBanMenu
         }
     }
 
+    private static void ConfirmRemoveChampion(bool pick)
+    {
+        UpdateMenuTitle(pick ? "pnb_pick_del_c" : "pnb_ban_del_c");
+
+        Console.Clear();
+        Interface.ShowArt();
+        ShowConfirmMenu(pick);
+
+        int choice = 5;
+        string[] choices = { "Yes", "No" };
+
+        MenuBuilder creditsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+        while (choice == 5) choice = creditsMenu.RunMenu();
+
+        if (choice == 1)
+        {
+            InitRole role = (InitRole)Settings.LoLRoles.GetType().GetProperty(_role).GetValue(Settings.LoLRoles);
+            string cacheName = pick ? role.PickChamp.Name : role.BanChamp.Name;
+            string action = pick ? "pick" : "ban";
+
+            if (pick)
+            {
+                role.PickChamp.Name = null;
+                role.PickChamp.Id = null;
+                role.PickChamp.Free = false;
+            }
+            else
+            {
+                role.BanChamp.Name = null;
+                role.BanChamp.Id = null;
+                role.BanChamp.Free = false;
+            }
+
+            Settings.LoLRoles.GetType().GetProperty(_role).SetValue(Settings.LoLRoles, role);
+            Settings.SaveSettings();
+            _cachedRole = role;
+
+            Console.Clear();
+            Interface.ShowArt();
+
+            Console.WriteLine($"[SUCCESS]» Champion '{FormatStr(cacheName)}' removed successfully for {action} !", Colors.SuccessColor);
+            Console.WriteLine("Press any key to continue...", Colors.SuccessColor);
+
+            Console.ReadKey();
+        }
+
+        Console.Clear();
+        Interface.ShowArt();
+        GetOptionPicknBanMenu(pick);
+    }
+
     private static void LoadChampionsList()
     {
-        if (Global.ChampionsList.Any()) return;
-
         List<ChampItem> champs = new();
 
         string[] ownedChamps = Requests.WaitSuccessClientRequest("GET", "lol-champions/v1/inventories/" + Global.CurrentSummonerId + "/champions-minimal", true);
         dynamic champsSplit = JsonConvert.DeserializeObject(ownedChamps[1]);
+        if (champsSplit == null) return;
 
         foreach (dynamic champ in champsSplit)
         {

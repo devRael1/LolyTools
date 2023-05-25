@@ -33,8 +33,8 @@ public class LanguageChangerMenu
             UpdateMenuTitle("lc");
             string[] choices = { "Create new Shortcut", "Back" };
 
-            MenuBuilder creditsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
-            while (choice == 7) choice = creditsMenu.RunMenu();
+            MenuBuilder languageChangerMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+            while (choice == 7) choice = languageChangerMenu.RunMenu();
 
             Console.Clear();
             Interface.ShowArt();
@@ -65,8 +65,8 @@ public class LanguageChangerMenu
                 "Back"
             };
 
-            MenuBuilder creditsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
-            while (choice == 40) choice = creditsMenu.RunMenu();
+            MenuBuilder languagesMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+            while (choice == 40) choice = languagesMenu.RunMenu();
 
             Console.Clear();
             Interface.ShowArt();
@@ -134,8 +134,8 @@ public class LanguageChangerMenu
         UpdateMenuTitle("lc_confirm");
         string[] choices = { "Yes", "No" };
 
-        MenuBuilder creditsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
-        while (choice == 5) choice = creditsMenu.RunMenu();
+        MenuBuilder languageMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+        while (choice == 5) choice = languageMenu.RunMenu();
 
         if (choice == 1)
         {

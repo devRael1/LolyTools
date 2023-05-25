@@ -24,8 +24,8 @@ public class ToolsMenu
             UpdateMenuTitle("tools");
             string[] choices = { "Lobby Revealer", "Auto Accept", "Auto Chat", "Pick and Ban", "Language Changer", "Back" };
 
-            MenuBuilder creditsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
-            while (choice == 7) choice = creditsMenu.RunMenu();
+            MenuBuilder toolsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+            while (choice == 7) choice = toolsMenu.RunMenu();
 
             Console.Clear();
             Interface.ShowArt();

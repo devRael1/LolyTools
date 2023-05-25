@@ -24,8 +24,8 @@ public class PicknBanMenu
             UpdateMenuTitle("pnb");
             string[] choices = { "Default (Blind mode)", "Top", "Jungle", "Mid", "Adc", "Support", "Back" };
 
-            MenuBuilder mainMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
-            while (choice == 10) choice = mainMenu.RunMenu();
+            MenuBuilder pickNBanMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+            while (choice == 10) choice = pickNBanMenu.RunMenu();
 
             Console.Clear();
             Interface.ShowArt();
@@ -50,8 +50,8 @@ public class PicknBanMenu
             UpdateMenuTitle("pnb_pob");
             string[] choices = { "Pick", "Ban", "Back" };
 
-            MenuBuilder mainMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
-            while (choice == 7) choice = mainMenu.RunMenu();
+            MenuBuilder pickOrBanMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+            while (choice == 7) choice = pickOrBanMenu.RunMenu();
 
             Console.Clear();
             Interface.ShowArt();
@@ -74,8 +74,8 @@ public class PicknBanMenu
             UpdateMenuTitle(pick ? "pnb_pick" : "pnb_ban");
             string[] choices = pick ? new[] { "Pick Champion", "Remove Champion", "Pick Delay", "Back" } : new[] { "Ban Champion", "Remove Champion", "Ban Delay", "Back" };
 
-            MenuBuilder mainMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
-            while (choice == 7) choice = mainMenu.RunMenu();
+            MenuBuilder pickNBanMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+            while (choice == 7) choice = pickNBanMenu.RunMenu();
 
             Console.Clear();
             Interface.ShowArt();
@@ -425,8 +425,8 @@ public class PicknBanMenu
         int choice = 5;
         string[] choices = { "Yes", "No" };
 
-        MenuBuilder creditsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
-        while (choice == 5) choice = creditsMenu.RunMenu();
+        MenuBuilder removeChampMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+        while (choice == 5) choice = removeChampMenu.RunMenu();
 
         if (choice == 1)
         {

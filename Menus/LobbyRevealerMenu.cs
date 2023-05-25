@@ -17,8 +17,8 @@ public class LobbyRevealerMenu
             UpdateMenuTitle("lv");
             string[] choices = { "Get OP.GG", "Get Stats", "Back" };
 
-            MenuBuilder mainMenu = MenuBuilder.BuildMenu(choices, TopLength);
-            while (choice == 7) choice = mainMenu.RunMenu();
+            MenuBuilder lobbyRevealerMenu = MenuBuilder.BuildMenu(choices, TopLength);
+            while (choice == 7) choice = lobbyRevealerMenu.RunMenu();
 
             Console.Clear();
             Interface.ShowArt();
@@ -67,9 +67,9 @@ public class LobbyRevealerMenu
         {
             ShowOpggMenu();
 
-            MenuBuilder proxyMenu = MenuBuilder.BuildMenu(choices2, Console.CursorTop);
+            MenuBuilder opGgMenu = MenuBuilder.BuildMenu(choices2, Console.CursorTop);
             choice = 10;
-            while (choice == 10) choice = proxyMenu.RunMenu();
+            while (choice == 10) choice = opGgMenu.RunMenu();
 
             System.Console.Clear();
             Interface.ShowArt();

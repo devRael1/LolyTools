@@ -18,8 +18,8 @@ public class MainMenu
             UpdateMenuTitle("main");
             string[] choices = { "Use Tools", "Show Logs", "Settings", "Credits", "Exit" };
 
-            MenuBuilder mainMenu = MenuBuilder.BuildMenu(choices, TopLength);
-            while (choice == 7) choice = mainMenu.RunMenu();
+            MenuBuilder startMenu = MenuBuilder.BuildMenu(choices, TopLength);
+            while (choice == 7) choice = startMenu.RunMenu();
 
             Console.Clear();
             Interface.ShowArt();

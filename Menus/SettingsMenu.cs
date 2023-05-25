@@ -29,8 +29,8 @@ public class SettingsMenu
             };
             string[] variables = { "EnableAutoUpdate", "LobbyRevealer", "AutoAccept", "AutoChat", "PicknBan" };
 
-            MenuBuilder creditsMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop);
-            while (choice == 7) choice = creditsMenu.RunMenu();
+            MenuBuilder settingsMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop);
+            while (choice == 7) choice = settingsMenu.RunMenu();
 
             Console.Clear();
             Interface.ShowArt();

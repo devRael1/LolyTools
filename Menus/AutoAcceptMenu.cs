@@ -21,8 +21,8 @@ public class AutoAcceptMenu
             string[] choices = { $"Auto Accept Once    - {CheckBoolean(Settings.AutoAcceptOnce)}", "Back" };
             string[] variables = { "AutoAcceptOnce" };
 
-            MenuBuilder mainMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
-            while (choice == 7) choice = mainMenu.RunMenu();
+            MenuBuilder autoAcceptMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+            while (choice == 7) choice = autoAcceptMenu.RunMenu();
 
             Console.Clear();
             Interface.ShowArt();

@@ -20,8 +20,8 @@ public class AutoChatMenu
             UpdateMenuTitle("ac");
             string[] choices = { "Add Message", "Delete Message", "See Messages", "Clear Messages", "Back" };
 
-            MenuBuilder mainMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
-            while (choice == 7) choice = mainMenu.RunMenu();
+            MenuBuilder autoChatMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+            while (choice == 7) choice = autoChatMenu.RunMenu();
 
             Console.Clear();
             Interface.ShowArt();
@@ -147,9 +147,9 @@ public class AutoChatMenu
         {
             ShowMessages();
 
-            MenuBuilder statsMenu = MenuBuilder.BuildMenu(choices2, Console.CursorTop);
+            MenuBuilder delMessageMenu = MenuBuilder.BuildMenu(choices2, Console.CursorTop);
             choice = 10;
-            while (choice == 10) choice = statsMenu.RunMenu();
+            while (choice == 10) choice = delMessageMenu.RunMenu();
 
             Console.Clear();
             Interface.ShowArt();
@@ -174,9 +174,9 @@ public class AutoChatMenu
         {
             ShowMessages();
 
-            MenuBuilder statsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+            MenuBuilder seeMessageMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
             choice = 10;
-            while (choice == 10) choice = statsMenu.RunMenu();
+            while (choice == 10) choice = seeMessageMenu.RunMenu();
 
             Console.Clear();
             Interface.ShowArt();

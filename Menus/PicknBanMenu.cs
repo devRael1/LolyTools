@@ -231,25 +231,23 @@ public class PicknBanMenu
         string action = pick ? "Pick" : "Ban";
         ChampItem selected = pick ? _cachedRole.PickChamp : _cachedRole.BanChamp;
 
-        if (selected.Id != null)
+        Border border2 = new()
         {
-            Border border2 = new()
+            MinWidth = 60,
+            MaxWidth = 60,
+            Stroke = LineThickness.None,
+            Align = Align.Center,
+            TextAlign = TextAlign.Justify,
+            Color = Colors.MenuPrimaryColor,
+            TextWrap = TextWrap.WordWrap,
+            Children =
             {
-                MinWidth = 60,
-                MaxWidth = 60,
-                Stroke = LineThickness.None,
-                Align = Align.Center,
-                TextAlign = TextAlign.Justify,
-                Color = Colors.MenuPrimaryColor,
-                TextWrap = TextWrap.WordWrap
-            };
+                CreateSpan($"Current {action}      - ", 8, Colors.MenuTextColor),
+                CreateSpan($"{FormatStr(selected.Name ?? "None")} (Delay: {selected.Delay}ms)\n", 0, Colors.MenuPrimaryColor)
+            }
+        };
 
-            if (selected.Id != null)
-                border2.Children.Add(CreateSpan($"Current {action}      - {FormatStr(selected.Name)} (Delay: {selected.Delay}ms)\n", 7, Colors.MenuTextColor));
-
-            border1.Children.Add(border2);
-        }
-
+        border1.Children.Add(border2);
         rectangle.Children.Add(border1);
         ConsoleRenderer.RenderDocument(rectangle);
     }

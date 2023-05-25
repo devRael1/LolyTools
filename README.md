@@ -27,12 +27,12 @@ No need to install this if you have a more recent version installed<br>
 
 - [x] Interactive Menu in Console
 - [x] Lobby Revealer (ranked games)
-- [x] Auto-Accept match (Auto accept any queue)
-- [x] Auto Pick & Ban champion (By roles => Top, Jungle, Mid, ADC, Support)
+- [x] Auto Accept match (Auto accept queue)
+- [x] Auto Pick and Ban champion (By roles => Top, Jungle, Mid, ADC, Support)
 - [x] Auto Chat (Auto send messages when you are in lobby)
 - [x] Get OP.GG stats of your team (SoloQ & DuoQ / FlexQ)
 - [x] Logs Menu (Real Time)
-- [x] Change League of Legends Language (Shortcuts)
+- [x] Language Changer (Shortcuts on Desktop)
 - [x] Use JSON file to save your settings
 - [x] Auto update (Github API)
 
@@ -71,7 +71,6 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 ## `🧾 Todo List`
 
 - [ ] Patch error with `Pick and Ban` tool (No ban champ when no pick champ is configured)
-- [ ] Update `Pick and Ban` system (new menu for Pick & Ban) / (add delete option)
 - [ ] Patch error with background system to get advanced players stats (test async system)
 
 ## `📝 License`

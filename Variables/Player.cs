@@ -7,6 +7,7 @@ public class Player
         Username = username;
         Link = link;
 
+        Id = 0;
         Level = 0;
         SoloDuoQ = new SoloDuoQ();
         FlexQ = new FlexQ();
@@ -14,6 +15,7 @@ public class Player
 
     public string Username { get; }
     public string Link { get; }
+    public int Id { get; set; }
     public int Level { get; set; }
     public SoloDuoQ SoloDuoQ { get; }
     public FlexQ FlexQ { get; }

@@ -82,6 +82,17 @@ public class Requests
         return responseString;
     }
 
+    public static async Task<string> WebRequestAsync(string url)
+    {
+        using HttpClient client = new();
+
+        HttpResponseMessage response = await client.GetAsync(url);
+        if (!response.IsSuccessStatusCode) return null;
+
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadAsStringAsync();
+    }
+
     public static void AnalyzeSession()
     {
         while (true)

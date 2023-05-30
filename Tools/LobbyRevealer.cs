@@ -9,7 +9,7 @@ public class LobbyRevealer
 {
     private static string _opggtoken;
 
-    public static void GetAllNames()
+    public static void GetLobbyRevealing()
     {
         while (true)
         {
@@ -20,17 +20,13 @@ public class LobbyRevealer
             }
 
             Global.PlayerList.Clear();
-            Global.UsernameList.Clear();
 
             if (_opggtoken == null) GetTokenOpGg();
             GetPlayers(Requests.ClientRequest("GET", "/chat/v5/participants/champ-select", false)[1]);
-
-            foreach (Player player in Global.PlayerList) Global.UsernameList.Add(player.Username);
-
             GetAdvancedPlayersStats();
-            Global.FetchedPlayers = true;
 
-            Thread.Sleep(1000);
+            Global.FetchedPlayers = true;
+            PicknBan.LinkRolesToPlayers();
         }
     }
 
@@ -58,7 +54,7 @@ public class LobbyRevealer
 
         foreach (dynamic sum in summoners)
         {
-            Player player = Global.PlayerList.Find(x => x.Username.ToLower().Equals(sum.name.ToString().ToLower()));
+            Player player = Global.FindPlayer(sum.name.ToString());
             player.Id = sum.id;
 
             player.Level = sum.level;
@@ -91,7 +87,7 @@ public class LobbyRevealer
             dynamic summoner = json.pageProps.data.league_stats;
             int sumId = json.pageProps.data.id;
 
-            Player player = Global.PlayerList.Find(x => x.Id == sumId);
+            Player player = Global.FindPlayer(sumId.ToString());
 
             player.SoloDuoQ.Wins = summoner[0].win >= 1 ? summoner[0].win : 0;
             player.SoloDuoQ.Losses = summoner[0].lose >= 1 ? summoner[0].lose : 0;

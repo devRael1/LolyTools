@@ -68,40 +68,54 @@ public class LobbyRevealerMenu
             MenuBuilder opGgMenu = MenuBuilder.BuildMenu(choices2, Console.CursorTop);
             choice = 10;
             while (choice == 10) choice = opGgMenu.RunMenu();
-
             ResetConsole();
 
             if (choice == choices2.Length) break;
-
-            switch (choice)
+            if (choice == choices2.Length - 1)
             {
-                case 1:
-                    OpenUrl(Global.PlayerList[0].Link);
-                    break;
-                case 2:
-                    OpenUrl(Global.PlayerList[1].Link);
-                    break;
-                case 3:
-                    OpenUrl(Global.PlayerList[2].Link);
-                    break;
-                case 4:
-                    OpenUrl(Global.PlayerList[3].Link);
-                    break;
-                case 5:
-                    OpenUrl(Global.PlayerList[4].Link);
-                    break;
-                case 6:
-                    string url = $"https://www.op.gg/multisearch/{Global.Region}?summoners=";
-                    for (int i = 0; i < Global.PlayerList.Count; i++)
-                    {
-                        url += $"{Global.PlayerList[i].Username}";
-                        if (i != Global.PlayerList.Count - 1)
-                            url += ",";
-                    }
+                string url = $"https://www.op.gg/multisearch/{Global.Region}?summoners=";
+                for (int i = 0; i < Global.PlayerList.Count; i++)
+                {
+                    url += $"{Global.PlayerList[i].Username}";
+                    if (i != Global.PlayerList.Count - 1)
+                        url += ",";
+                }
 
-                    OpenUrl(url);
-                    break;
+                OpenUrl(url);
             }
+            else
+            {
+                OpenUrl(Global.PlayerList[choice - 1].Link);
+            }
+        }
+
+        GetLobbyRevealerMenu();
+    }
+
+    private static void GetStatsMenu()
+    {
+        int choice = 10;
+        UpdateMenuTitle("lv_get_stats");
+        List<string> choices = Global.PlayerList.Select(t => $"{t.Username}'s Stats").ToList();
+
+        if (Global.PlayerList.Count > 0)
+            choices.Add("[GLOBAL] Stats");
+        choices.Add("Back");
+
+        string[] choices2 = choices.ToArray();
+
+        ShowGlobalStatsMenu();
+
+        while (choice != choices2.Length)
+        {
+            MenuBuilder statsMenu = MenuBuilder.BuildMenu(choices2, Console.CursorTop);
+            choice = 10;
+            while (choice == 10) choice = statsMenu.RunMenu();
+            ResetConsole();
+
+            if (choice == choices2.Length) break;
+            if (choice == choices2.Length - 1) ShowGlobalStatsMenu();
+            else ShowPlayerStats(Global.PlayerList[choice - 1]);
         }
 
         GetLobbyRevealerMenu();
@@ -144,40 +158,10 @@ public class LobbyRevealerMenu
         ConsoleRenderer.RenderDocument(rectangle);
     }
 
-    private static void GetStatsMenu()
-    {
-        int choice = 10;
-        UpdateMenuTitle("lv_get_stats");
-        List<string> choices = Global.PlayerList.Select(t => $"{t.Username}'s Stats").ToList();
-
-        if (Global.PlayerList.Count > 0)
-            choices.Add("[GLOBAL] Stats");
-        choices.Add("Back");
-
-        string[] choices2 = choices.ToArray();
-
-        ShowGlobalStatsMenu();
-
-        while (choice != choices2.Length)
-        {
-            MenuBuilder statsMenu = MenuBuilder.BuildMenu(choices2, Console.CursorTop);
-            choice = 10;
-            while (choice == 10) choice = statsMenu.RunMenu();
-            ResetConsole();
-
-            if (choice == choices2.Length) break;
-            if (choice == choices2.Length - 1) ShowGlobalStatsMenu();
-            else ShowPlayerStats(Global.PlayerList[choice - 1]);
-        }
-
-        MainMenu.StartMenu();
-    }
-
     private static void ShowGlobalStatsMenu()
     {
         Console.SetCursorPosition(0, TopLength);
 
-        int count = 0;
         Document rectangle = new();
         Grid grid = new()
         {
@@ -188,7 +172,7 @@ public class LobbyRevealerMenu
             MaxWidth = 110,
             Children =
             {
-                new Cell("Player") { Stroke = LineThickness.Single },
+                new Cell("Role") { Stroke = LineThickness.Single },
                 new Cell("Level") { Stroke = LineThickness.Single },
                 new Cell("Name") { Stroke = LineThickness.Single },
                 new Cell("Rank") { Stroke = LineThickness.Single }
@@ -197,7 +181,7 @@ public class LobbyRevealerMenu
 
         foreach (Player player in Global.PlayerList)
         {
-            Cell playerCell = new($"N°{count + 1}") { Color = Colors.MenuTextColor };
+            Cell playerCell = new(player.Role) { Color = Colors.MenuTextColor };
             Cell levelCell = new(player.Level) { Color = Colors.MenuTextColor };
             Cell nameCell = new(player.Username) { Color = Colors.MenuTextColor };
             string rank = $"{player.SoloDuoQ.Tier} {player.SoloDuoQ.Division} ({player.SoloDuoQ.Lp} LP)";
@@ -211,8 +195,6 @@ public class LobbyRevealerMenu
             grid.Children.Add(levelCell);
             grid.Children.Add(nameCell);
             grid.Children.Add(rankCell);
-
-            count++;
         }
 
         rectangle.Children.Add(grid);
@@ -263,7 +245,7 @@ public class LobbyRevealerMenu
                     Children =
                     {
                         CreateSpan("\n", 0, Colors.MenuTextColor),
-                        CreateSpan("[Ranked]", 11, Colors.MenuTextColor),
+                        CreateSpan("───────── Ranked ─────────", 1, Colors.MenuTextColor),
                         CreateSpan("\nRank       - ", 0, Colors.MenuTextColor),
                         CreateSpan($"{FormatStr(player.SoloDuoQ.Tier)} {player.SoloDuoQ.Division}", 0, Colors.MenuPrimaryColor),
                         CreateSpan("\nLP         - ", 0, Colors.MenuTextColor),
@@ -286,7 +268,7 @@ public class LobbyRevealerMenu
                     Children =
                     {
                         CreateSpan("\n", 0, Colors.MenuTextColor),
-                        CreateSpan("  [Ranked]", 11, Colors.MenuTextColor),
+                        CreateSpan("  ───────── Ranked ─────────", 1, Colors.MenuTextColor),
                         CreateSpan("\n  Rank       - ", 0, Colors.MenuTextColor),
                         CreateSpan($"{FormatStr(player.FlexQ.Tier)} {player.FlexQ.Division}", 0, Colors.MenuPrimaryColor),
                         CreateSpan("\n  LP         - ", 0, Colors.MenuTextColor),

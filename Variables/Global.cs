@@ -6,7 +6,6 @@ public class Global
     private static string _session;
 
     public static readonly List<Player> PlayerList = new();
-    public static readonly List<string> UsernameList = new();
     public static readonly List<ChampItem> ChampionsList = new();
 
     public static readonly Dictionary<string, string> AuthRiot = new();
@@ -33,5 +32,10 @@ public class Global
             _session = value;
             Logs.Log(Logs.LogType.Global, $"Getting session - Phase Detected: {_session}");
         }
+    }
+
+    public static Player FindPlayer(string value)
+    {
+        return PlayerList.Find(x => string.Equals(x.Username.ToLower(), value.ToLower(), StringComparison.Ordinal) || x.Id == Convert.ToInt32(value));
     }
 }

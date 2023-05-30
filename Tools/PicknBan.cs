@@ -15,11 +15,10 @@ public class PicknBan
     private static bool _cansentChatMessages;
     private static long _champSelectStart;
     private static InitRole _currentRole;
+    private static readonly List<string[]> CacheMembersTeam = new();
 
     public static void HandleChampSelect()
     {
-        if (!Settings.AutoChat && !Settings.PicknBan) return;
-
         string[] currentChampSelect = Requests.ClientRequest("GET", "lol-champ-select/v1/session", true);
         if (currentChampSelect[0] != "200") return;
 
@@ -33,6 +32,8 @@ public class PicknBan
             _lockedBan = false;
             _cansentChatMessages = false;
             _champSelectStart = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            CacheMembersTeam.Clear();
+
             Log(LogType.PicknBan, "New game start, champ select started now...");
         }
 
@@ -46,17 +47,19 @@ public class PicknBan
             JArray myTeam = currentChampSelectJson.myTeam;
             foreach (dynamic member in myTeam)
             {
-                if (member.summonerId.ToString() != Global.CurrentSummonerId) continue;
-                string assigned = member.assignedPosition;
-                _currentRole = assigned switch
+                string assignedRole = member.assignedPosition switch
                 {
-                    "utility" => (InitRole)Settings.LoLRoles.GetType().GetProperty("Support").GetValue(Settings.LoLRoles),
-                    "middle" => (InitRole)Settings.LoLRoles.GetType().GetProperty("Mid").GetValue(Settings.LoLRoles),
-                    "jungle" => (InitRole)Settings.LoLRoles.GetType().GetProperty("Jungle").GetValue(Settings.LoLRoles),
-                    "bottom" => (InitRole)Settings.LoLRoles.GetType().GetProperty("Adc").GetValue(Settings.LoLRoles),
-                    "top" => (InitRole)Settings.LoLRoles.GetType().GetProperty("Top").GetValue(Settings.LoLRoles),
-                    _ => (InitRole)Settings.LoLRoles.GetType().GetProperty("Default").GetValue(Settings.LoLRoles)
+                    "utility" => "Support",
+                    "middle" => "Mid",
+                    "jungle" => "Jungle",
+                    "bottom" => "Adc",
+                    "top" => "Top",
+                    _ => "Default"
                 };
+                CacheMembersTeam.Add(new string[] { member.summonerId.ToString(), assignedRole });
+
+                if (member.summonerId.ToString() != Global.CurrentSummonerId) continue;
+                _currentRole = (InitRole)Settings.LoLRoles.GetType().GetProperty(assignedRole).GetValue(Settings.LoLRoles);
                 break;
             }
 
@@ -82,6 +85,16 @@ public class PicknBan
             if (_cansentChatMessages) AutoChat.HandleChampSelectAutoChat();
             if (!_hoverPick || !_lockedPick || !_hoverBan || !_lockedBan) HandleChampSelectActions(currentChampSelectJson, localPlayerCellId);
             _cansentChatMessages = false;
+        }
+    }
+
+    public static void LinkRolesToPlayers()
+    {
+        foreach (string[] member in CacheMembersTeam)
+        {
+            Player currentPlayer = Global.FindPlayer(member[0]);
+            if (currentPlayer == null) return;
+            currentPlayer.Role = member[1];
         }
     }
 

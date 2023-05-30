@@ -9,12 +9,14 @@ public class Player
 
         Id = 0;
         Level = 0;
+        Role = "Unknown";
         SoloDuoQ = new SoloDuoQ();
         FlexQ = new FlexQ();
     }
 
     public string Username { get; }
     public string Link { get; }
+    public string Role { get; set; }
     public int Id { get; set; }
     public int Level { get; set; }
     public SoloDuoQ SoloDuoQ { get; }

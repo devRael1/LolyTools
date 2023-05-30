@@ -115,7 +115,7 @@ public class LanguageChangerMenu
             catch
             {
                 Console.WriteLine("[WARNING]» Unable to get path of the file !", Colors.WarningColor);
-                Console.WriteLine("Please try again... ", Colors.WarningColor);
+                Console.WriteLine("[WARNING]» Please try again... ", Colors.WarningColor);
                 path = "";
             }
         }

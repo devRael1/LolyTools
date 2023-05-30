@@ -37,7 +37,7 @@ internal class Program
             Task taskAutoAccept = new(Requests.AnalyzeSession);
             taskAutoAccept.Start();
 
-            Task taskLobbyRevealer = new(LobbyRevealer.GetAllNames);
+            Task taskLobbyRevealer = new(LobbyRevealer.GetLobbyRevealing);
             taskLobbyRevealer.Start();
 
             Task[] tasks = { taskLeagueClient, taskAutoAccept, taskLobbyRevealer };

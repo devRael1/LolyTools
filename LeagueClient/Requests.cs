@@ -118,12 +118,12 @@ public class Requests
                     case "Lobby":
                         Global.FetchedPlayers = false;
                         Global.AcceptedCurrentMatch = false;
-                        Thread.Sleep(5000);
+                        Thread.Sleep(3000);
                         break;
                     case "Matchmaking":
                         Global.FetchedPlayers = false;
                         Global.AcceptedCurrentMatch = false;
-                        Thread.Sleep(5000);
+                        Thread.Sleep(3000);
                         break;
                     case "ReadyCheck":
                         Global.FetchedPlayers = false;
@@ -132,7 +132,8 @@ public class Requests
                         break;
                     case "ChampSelect":
                         Global.AcceptedCurrentMatch = false;
-                        HandleChampSelect();
+                        if (Settings.AutoChat || Settings.PicknBan)
+                            HandleChampSelect();
                         break;
                     case "InProgress":
                         Thread.Sleep(10000);

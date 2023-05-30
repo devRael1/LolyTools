@@ -46,7 +46,7 @@ public class PicknBanMenu
 
             int choice = 7;
             UpdateMenuTitle("pnb_pob");
-            string[] choices = { "Pick", "Ban", "Back" };
+            string[] choices = { "Pick Options", "Ban Options", "Back" };
 
             MenuBuilder pickOrBanMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
             while (choice == 7) choice = pickOrBanMenu.RunMenu();
@@ -140,7 +140,8 @@ public class PicknBanMenu
             TextWrap = TextWrap.WordWrap,
             Children =
             {
-                CreateSpan("Pick or Ban", 0, Colors.MenuTextColor),
+                CreateSpan("Pick or Ban\nRole: ", 0, Colors.MenuTextColor),
+                CreateSpan(_role, 0, Colors.MenuPrimaryColor),
                 new Separator(),
                 CreateSpan("Choose pick or ban to configure champion and delay\n", 0, Colors.MenuTextColor)
             }
@@ -306,7 +307,7 @@ public class PicknBanMenu
                 else if (!champ.Free && action != "ban")
                 {
                     Console.WriteLine($"[WARNING]» You can't select the '{FormatStr(champName)}' champion because you don't own it.", Colors.WarningColor);
-                    Console.WriteLine("Please buy the champion, restart the software and try again !", Colors.WarningColor);
+                    Console.WriteLine("[WARNING]» Please buy the champion, restart the software and try again !", Colors.WarningColor);
                     champName = "";
                 }
                 else
@@ -387,7 +388,7 @@ public class PicknBanMenu
 
                     Console.WriteLine("");
                     Console.WriteLine($"[SUCCESS]» The {delay}ms delay has been configured correctly for auto {action} !", Colors.SuccessColor);
-                    Console.WriteLine("Press any key to continue...", Colors.SuccessColor);
+                    Console.WriteLine("[SUCCESS]» Press any key to continue...", Colors.SuccessColor);
 
                     Console.ReadKey();
                     ResetConsole();
@@ -396,7 +397,7 @@ public class PicknBanMenu
             catch
             {
                 Console.WriteLine($"[WARNING]» Unable to convert '{input}' to delay !", Colors.WarningColor);
-                Console.WriteLine("Please try again... ", Colors.WarningColor);
+                Console.WriteLine("[WARNING]» Please try again... ", Colors.WarningColor);
                 input = "";
                 delay = 0;
             }
@@ -440,7 +441,7 @@ public class PicknBanMenu
             ResetConsole();
 
             Console.WriteLine($"[SUCCESS]» Champion '{FormatStr(cacheName)}' removed successfully for {action} !", Colors.SuccessColor);
-            Console.WriteLine("Press any key to continue...", Colors.SuccessColor);
+            Console.WriteLine("[SUCCESS]» Press any key to continue...", Colors.SuccessColor);
 
             Console.ReadKey();
         }

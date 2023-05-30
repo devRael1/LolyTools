@@ -101,7 +101,7 @@ public class AutoChatMenu
                 else if (Settings.ChatMessages.Count >= 5)
                 {
                     Console.WriteLine("[WARNING]» You can't add more than 5 messages ! Please remove 1 message before adding a new one... ", Colors.WarningColor);
-                    Console.WriteLine("Press any key to continue...", Colors.WarningColor);
+                    Console.WriteLine("[WARNING]» Press any key to continue...", Colors.WarningColor);
 
                     Console.ReadKey();
                     ResetConsole();
@@ -116,7 +116,7 @@ public class AutoChatMenu
 
                     Console.WriteLine("");
                     Console.WriteLine("[SUCCESS]» Your message has been added successfully...", Colors.SuccessColor);
-                    Console.WriteLine("Press any key to continue...", Colors.SuccessColor);
+                    Console.WriteLine("[SUCCESS]» Press any key to continue...", Colors.SuccessColor);
 
                     Console.ReadKey();
                     ResetConsole();
@@ -197,7 +197,7 @@ public class AutoChatMenu
 
             Console.WriteLine("");
             Console.WriteLine("[SUCCESS]» All messages have been cleared successfully...", Colors.SuccessColor);
-            Console.WriteLine("Press any key to continue...", Colors.SuccessColor);
+            Console.WriteLine("[SUCCESS]» Press any key to continue...", Colors.SuccessColor);
 
             Console.ReadKey();
             ResetConsole();

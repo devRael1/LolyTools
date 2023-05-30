@@ -71,7 +71,6 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 ## `🧾 Todo List`
 
 - [ ] Patch error with `Pick and Ban` tool (No ban champ when no pick champ is configured)
-- [ ] Patch error with background system to get advanced players stats (test async system)
 - [ ] Make dodge (champ select) detection for logs system
 
 ## `📝 License`

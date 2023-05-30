@@ -26,7 +26,7 @@ No need to install this if you have a more recent version installed<br>
 ## `⚙️ Features`
 
 - [x] Interactive Menu in Console
-- [x] Lobby Revealer (ranked games)
+- [x] Lobby Revealer (ranked games / reveal team roles)
 - [x] Auto Accept match (Auto accept queue)
 - [x] Auto Pick and Ban champion (By roles => Top, Jungle, Mid, ADC, Support)
 - [x] Auto Chat (Auto send messages when you are in lobby)
@@ -72,8 +72,6 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 
 - [ ] Patch error with `Pick and Ban` tool (No ban champ when no pick champ is configured)
 - [ ] Make dodge (champ select) detection for logs system
-- [ ] Found solution to link `Lobby Revealer` system and `Pick and Ban` system to get role of each player in ranked
-  games (with stats)
 
 ## `📝 License`
 

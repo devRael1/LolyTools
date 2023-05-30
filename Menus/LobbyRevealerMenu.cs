@@ -163,32 +163,11 @@ public class LobbyRevealerMenu
             MenuBuilder statsMenu = MenuBuilder.BuildMenu(choices2, Console.CursorTop);
             choice = 10;
             while (choice == 10) choice = statsMenu.RunMenu();
-
             ResetConsole();
 
             if (choice == choices2.Length) break;
-
-            switch (choice)
-            {
-                case 1:
-                    ShowPlayerStats(Global.PlayerList[0]);
-                    break;
-                case 2:
-                    ShowPlayerStats(Global.PlayerList[1]);
-                    break;
-                case 3:
-                    ShowPlayerStats(Global.PlayerList[2]);
-                    break;
-                case 4:
-                    ShowPlayerStats(Global.PlayerList[3]);
-                    break;
-                case 5:
-                    ShowPlayerStats(Global.PlayerList[4]);
-                    break;
-                case 6:
-                    ShowGlobalStatsMenu();
-                    break;
-            }
+            if (choice == choices2.Length - 1) ShowGlobalStatsMenu();
+            else ShowPlayerStats(Global.PlayerList[choice - 1]);
         }
 
         MainMenu.StartMenu();

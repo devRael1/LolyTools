@@ -72,6 +72,8 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 
 - [ ] Patch error with `Pick and Ban` tool (No ban champ when no pick champ is configured)
 - [ ] Make dodge (champ select) detection for logs system
+- [ ] Found solution to link `Lobby Revealer` system and `Pick and Ban` system to get role of each player in ranked
+  games (with stats)
 
 ## `📝 License`
 

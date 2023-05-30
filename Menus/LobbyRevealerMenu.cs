@@ -183,7 +183,7 @@ public class LobbyRevealerMenu
         {
             Stroke = LineThickness.None,
             Align = Align.Center,
-            Columns = { GridLength.Char(8), GridLength.Char(7), GridLength.Char(40), GridLength.Char(23) },
+            Columns = { GridLength.Char(8), GridLength.Char(7), GridLength.Char(35), GridLength.Char(26) },
             Color = Colors.MenuPrimaryColor,
             MaxWidth = 110,
             Children =
@@ -200,7 +200,12 @@ public class LobbyRevealerMenu
             Cell playerCell = new($"N°{count + 1}") { Color = Colors.MenuTextColor };
             Cell levelCell = new(player.Level) { Color = Colors.MenuTextColor };
             Cell nameCell = new(player.Username) { Color = Colors.MenuTextColor };
-            Cell rankCell = new($"{player.SoloDuoQ.Tier} {player.SoloDuoQ.Division} ({player.SoloDuoQ.Lp} LP)") { Color = Colors.MenuTextColor };
+            string rank = $"{player.SoloDuoQ.Tier} {player.SoloDuoQ.Division} ({player.SoloDuoQ.Lp} LP)";
+
+            int winrate = (int)Math.Round((double)player.SoloDuoQ.Wins / (player.SoloDuoQ.Wins + player.SoloDuoQ.Losses) * 100);
+            if (winrate >= 0) rank += $" | {winrate}%";
+
+            Cell rankCell = new(rank) { Color = Colors.MenuTextColor };
 
             grid.Children.Add(playerCell);
             grid.Children.Add(levelCell);
@@ -265,7 +270,7 @@ public class LobbyRevealerMenu
                         CreateSpan($"{player.SoloDuoQ.Lp}", 0, Colors.MenuPrimaryColor),
                         CreateSpan("\nWinrate    - ", 0, Colors.MenuTextColor),
                         CreateSpan($"{winratesoloq}%\n\n", 0, Colors.MenuPrimaryColor),
-                        CreateSpan("[Games Stats]", 8, Colors.MenuTextColor),
+                        CreateSpan("────── Games Stats ──────", 1, Colors.MenuTextColor),
                         CreateSpan("\nWins       - ", 0, Colors.MenuTextColor),
                         CreateSpan($"{player.SoloDuoQ.Wins}", 0, Colors.MenuPrimaryColor),
                         CreateSpan("\nLosses     - ", 0, Colors.MenuTextColor),
@@ -288,7 +293,7 @@ public class LobbyRevealerMenu
                         CreateSpan($"{player.FlexQ.Lp}", 0, Colors.MenuPrimaryColor),
                         CreateSpan("\n  Winrate    - ", 0, Colors.MenuTextColor),
                         CreateSpan($"{winrateflex}%\n\n", 0, Colors.MenuPrimaryColor),
-                        CreateSpan("  [Games Stats]", 8, Colors.MenuTextColor),
+                        CreateSpan("  ────── Games Stats ──────", 1, Colors.MenuTextColor),
                         CreateSpan("\n  Wins       - ", 0, Colors.MenuTextColor),
                         CreateSpan($"{player.FlexQ.Wins}", 0, Colors.MenuPrimaryColor),
                         CreateSpan("\n  Losses     - ", 0, Colors.MenuTextColor),

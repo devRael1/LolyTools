@@ -15,6 +15,16 @@ public class Logs
         PicknBan
     }
 
+    public static void Log(LogType logType, string message)
+    {
+        if (!Global.LogsMenuEnable) return;
+
+        Console.Write(DateTime.Now.ToString("[hh:mm:ss]"), GetColor(logType));
+        Console.Write($"[{GetPrefix(logType)}]» ", GetColor(logType));
+        Console.Write(message, GetColor(logType));
+        Console.WriteLine("");
+    }
+
     private static Color GetColor(LogType logType)
     {
         return logType switch
@@ -36,18 +46,8 @@ public class Logs
             LogType.LobbyRevealer => "LOBBY REVEALER",
             LogType.AutoChat => "AUTO CHAT",
             LogType.AutoAccept => "AUTO ACCEPT",
-            LogType.PicknBan => "PICK N BAN",
+            LogType.PicknBan => "PICK AND BAN",
             _ => "Unknown"
         };
-    }
-
-    public static void Log(LogType logType, string message)
-    {
-        if (!Global.LogsMenuEnable) return;
-
-        Console.Write(DateTime.Now.ToString("[hh:mm:ss]"), GetColor(logType));
-        Console.Write($"[{GetPrefix(logType)}]» ", GetColor(logType));
-        Console.Write(message, GetColor(logType));
-        Console.WriteLine("");
     }
 }

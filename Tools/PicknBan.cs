@@ -36,7 +36,7 @@ public class PicknBan
             Log(LogType.PicknBan, "New game start, champ select started now...");
         }
 
-        if (_lockedPick)
+        if (_lockedPick && _lockedBan)
         {
             Log(LogType.PicknBan, "Waiting for game to start...");
             Thread.Sleep(10000);
@@ -112,6 +112,8 @@ public class PicknBan
 
     private static void HandlePickAction(int actionId, bool actIsInProgress, dynamic currentChampSelectJson)
     {
+        if (_currentRole.PickChamp.Id == null) return;
+
         if (!_hoverPick)
         {
             string champSelectPhase = currentChampSelectJson.timer.phase;
@@ -130,6 +132,8 @@ public class PicknBan
 
     private static void HandleBanAction(int actionId, bool actIsInProgress, dynamic currentChampSelectJson)
     {
+        if (_currentRole.BanChamp.Id == null) return;
+
         string champSelectPhase = currentChampSelectJson.timer.phase;
 
         if (!actIsInProgress || champSelectPhase == "PLANNING") return;

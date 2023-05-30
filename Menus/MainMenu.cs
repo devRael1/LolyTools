@@ -4,7 +4,6 @@ using static Loly.Menus.CreditsMenu;
 using static Loly.Menus.ToolsMenu;
 using static Loly.Menus.LogsMenu;
 using static Loly.Menus.SettingsMenu;
-using Console = Colorful.Console;
 
 namespace Loly.Menus;
 
@@ -20,9 +19,7 @@ public class MainMenu
 
             MenuBuilder startMenu = MenuBuilder.BuildMenu(choices, TopLength);
             while (choice == 7) choice = startMenu.RunMenu();
-
-            Console.Clear();
-            Interface.ShowArt();
+            ResetConsole();
 
             switch (choice)
             {

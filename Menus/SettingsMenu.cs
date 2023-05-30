@@ -31,9 +31,7 @@ public class SettingsMenu
 
             MenuBuilder settingsMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop);
             while (choice == 7) choice = settingsMenu.RunMenu();
-
-            Console.Clear();
-            Interface.ShowArt();
+            ResetConsole();
 
             if (choice == choices.Count) break;
 

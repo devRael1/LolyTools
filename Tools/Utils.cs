@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Alba.CsConsoleFormat;
+using Loly.Menus.Core;
 using Loly.Variables;
 using Newtonsoft.Json;
 using Console = Colorful.Console;
@@ -102,5 +103,11 @@ public class Utils
     public static string GetRegion(string request)
     {
         return JsonConvert.DeserializeObject<PlayerRegion>(request).Region;
+    }
+
+    public static void ResetConsole()
+    {
+        System.Console.Clear();
+        Interface.ShowArt();
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Management;
 using System.Text;
-using Loly.Menus.Core;
 using Loly.Variables;
 using Newtonsoft.Json;
 using static Loly.Tools.Utils;
@@ -69,8 +68,7 @@ public class Ux
         }
         catch
         {
-            Console.Clear();
-            Interface.ShowArt();
+            ResetConsole();
             Console.WriteLine(" Unable to find League Client running on your computer.\n Press Enter to close application...", Colors.ErrorColor);
             Console.ReadKey();
             Environment.Exit(0);

@@ -24,8 +24,7 @@ public class AutoAcceptMenu
             MenuBuilder autoAcceptMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
             while (choice == 7) choice = autoAcceptMenu.RunMenu();
 
-            Console.Clear();
-            Interface.ShowArt();
+            ResetConsole();
 
             if (choice == choices.Length) break;
 

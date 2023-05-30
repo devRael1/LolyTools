@@ -26,9 +26,7 @@ public class PicknBanMenu
 
             MenuBuilder pickNBanMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
             while (choice == 10) choice = pickNBanMenu.RunMenu();
-
-            Console.Clear();
-            Interface.ShowArt();
+            ResetConsole();
 
             if (choice == choices.Length) break;
 
@@ -52,9 +50,7 @@ public class PicknBanMenu
 
             MenuBuilder pickOrBanMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
             while (choice == 7) choice = pickOrBanMenu.RunMenu();
-
-            Console.Clear();
-            Interface.ShowArt();
+            ResetConsole();
 
             if (choice == choices.Length) break;
 
@@ -76,9 +72,7 @@ public class PicknBanMenu
 
             MenuBuilder pickNBanMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
             while (choice == 7) choice = pickNBanMenu.RunMenu();
-
-            Console.Clear();
-            Interface.ShowArt();
+            ResetConsole();
 
             if (choice == choices.Length) break;
 
@@ -93,8 +87,7 @@ public class PicknBanMenu
                     }
                     else
                     {
-                        Console.Clear();
-                        Interface.ShowArt();
+                        ResetConsole();
 
                         Console.WriteLine("[WARNING]» To configure pick / ban champion, you need to open 'League of Legends' game.", Colors.WarningColor);
                         Console.WriteLine("[WARNING]» Please start your 'League of Legends' game and try again...", Colors.WarningColor);
@@ -108,15 +101,13 @@ public class PicknBanMenu
                     ChampItem champ = pick ? _cachedRole.PickChamp : _cachedRole.BanChamp;
                     if (champ.Id == null)
                     {
-                        Console.Clear();
-                        Interface.ShowArt();
+                        ResetConsole();
 
                         Console.WriteLine("[WARNING]» You can't remove the champion because it is not configured.", Colors.WarningColor);
                         Console.WriteLine("[WARNING]» Press any key to continue...", Colors.WarningColor);
 
                         Console.ReadKey();
-                        Console.Clear();
-                        Interface.ShowArt();
+                        ResetConsole();
                     }
                     else
                     {
@@ -344,8 +335,7 @@ public class PicknBanMenu
                     Console.WriteLine("[SUCCESS]» Press any key to continue...", Colors.SuccessColor);
 
                     Console.ReadKey();
-                    Console.Clear();
-                    Interface.ShowArt();
+                    ResetConsole();
                 }
             }
             catch
@@ -400,8 +390,7 @@ public class PicknBanMenu
                     Console.WriteLine("Press any key to continue...", Colors.SuccessColor);
 
                     Console.ReadKey();
-                    Console.Clear();
-                    Interface.ShowArt();
+                    ResetConsole();
                 }
             }
             catch
@@ -417,9 +406,7 @@ public class PicknBanMenu
     private static void ConfirmRemoveChampion(bool pick)
     {
         UpdateMenuTitle(pick ? "pnb_pick_del_c" : "pnb_ban_del_c");
-
-        Console.Clear();
-        Interface.ShowArt();
+        ResetConsole();
         ShowConfirmMenu(pick);
 
         int choice = 5;
@@ -450,9 +437,7 @@ public class PicknBanMenu
             Settings.LoLRoles.GetType().GetProperty(_role).SetValue(Settings.LoLRoles, role);
             Settings.SaveSettings();
             _cachedRole = role;
-
-            Console.Clear();
-            Interface.ShowArt();
+            ResetConsole();
 
             Console.WriteLine($"[SUCCESS]» Champion '{FormatStr(cacheName)}' removed successfully for {action} !", Colors.SuccessColor);
             Console.WriteLine("Press any key to continue...", Colors.SuccessColor);
@@ -460,8 +445,7 @@ public class PicknBanMenu
             Console.ReadKey();
         }
 
-        Console.Clear();
-        Interface.ShowArt();
+        ResetConsole();
         GetOptionPicknBanMenu(pick);
     }
 

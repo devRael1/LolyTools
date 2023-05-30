@@ -20,8 +20,7 @@ public class LobbyRevealerMenu
             MenuBuilder lobbyRevealerMenu = MenuBuilder.BuildMenu(choices, TopLength);
             while (choice == 7) choice = lobbyRevealerMenu.RunMenu();
 
-            Console.Clear();
-            Interface.ShowArt();
+            ResetConsole();
 
             if (choice == choices.Length) break;
 
@@ -38,8 +37,7 @@ public class LobbyRevealerMenu
                         Console.WriteLine(" Press Enter to continue...", Colors.WarningColor);
 
                         Console.ReadKey();
-                        Console.Clear();
-                        Interface.ShowArt();
+                        ResetConsole();
                         continue;
                     }
 
@@ -71,8 +69,7 @@ public class LobbyRevealerMenu
             choice = 10;
             while (choice == 10) choice = opGgMenu.RunMenu();
 
-            System.Console.Clear();
-            Interface.ShowArt();
+            ResetConsole();
 
             if (choice == choices2.Length) break;
 
@@ -167,8 +164,7 @@ public class LobbyRevealerMenu
             choice = 10;
             while (choice == 10) choice = statsMenu.RunMenu();
 
-            Console.Clear();
-            Interface.ShowArt();
+            ResetConsole();
 
             if (choice == choices2.Length) break;
 

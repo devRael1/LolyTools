@@ -26,9 +26,7 @@ public class ToolsMenu
 
             MenuBuilder toolsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
             while (choice == 7) choice = toolsMenu.RunMenu();
-
-            Console.Clear();
-            Interface.ShowArt();
+            ResetConsole();
 
             if (choice == choices.Length) break;
 

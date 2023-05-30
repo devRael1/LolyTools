@@ -36,8 +36,7 @@ public class LanguageChangerMenu
             MenuBuilder languageChangerMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
             while (choice == 7) choice = languageChangerMenu.RunMenu();
 
-            Console.Clear();
-            Interface.ShowArt();
+            ResetConsole();
 
             if (choice == choices.Length) break;
 
@@ -68,8 +67,7 @@ public class LanguageChangerMenu
             MenuBuilder languagesMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
             while (choice == 40) choice = languagesMenu.RunMenu();
 
-            Console.Clear();
-            Interface.ShowArt();
+            ResetConsole();
 
             if (choice == choices.Length) break;
 
@@ -125,9 +123,7 @@ public class LanguageChangerMenu
 
     private static void ChangeLanguage()
     {
-        Console.Clear();
-        Interface.ShowArt();
-
+        ResetConsole();
         ShowConfirmMenu();
 
         int choice = 5;
@@ -139,9 +135,7 @@ public class LanguageChangerMenu
 
         if (choice == 1)
         {
-            Console.Clear();
-            Interface.ShowArt();
-
+            ResetConsole();
             try
             {
                 CreateShortcut(_codeLanguageChoosed, _exePath);
@@ -160,8 +154,7 @@ public class LanguageChangerMenu
             Console.ReadKey();
         }
 
-        Console.Clear();
-        Interface.ShowArt();
+        ResetConsole();
         GetLanguageChangerMenu();
     }
 

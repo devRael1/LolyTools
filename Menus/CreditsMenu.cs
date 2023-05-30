@@ -20,8 +20,7 @@ public class CreditsMenu
             MenuBuilder creditsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
             while (choice == 7) choice = creditsMenu.RunMenu();
 
-            Console.Clear();
-            Interface.ShowArt();
+            ResetConsole();
 
             if (choice == choices.Length) break;
 

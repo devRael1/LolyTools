@@ -1,5 +1,4 @@
-﻿using Loly.Menus.Core;
-using Loly.Variables;
+﻿using Loly.Variables;
 using static Loly.Tools.Utils;
 using static Loly.Menus.MainMenu;
 using Console = Colorful.Console;
@@ -11,8 +10,7 @@ public class LogsMenu
     public static void GetLogsMenu()
     {
         UpdateMenuTitle("logs");
-        Console.Clear();
-        Interface.ShowLogsArt();
+        ResetConsole();
 
         Console.Write(DateTime.Now.ToString("[hh:mm:ss]"), Colors.PrimaryColor);
         Console.Write("» Start Logs System\n", Colors.PrimaryColor);
@@ -29,8 +27,7 @@ public class LogsMenu
         Console.ReadKey();
 
         Global.LogsMenuEnable = false;
-        Console.Clear();
-        Interface.ShowArt();
+        ResetConsole();
         StartMenu();
     }
 }

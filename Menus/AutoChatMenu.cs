@@ -23,8 +23,7 @@ public class AutoChatMenu
             MenuBuilder autoChatMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
             while (choice == 7) choice = autoChatMenu.RunMenu();
 
-            Console.Clear();
-            Interface.ShowArt();
+            ResetConsole();
 
             if (choice == choices.Length) break;
 
@@ -105,9 +104,7 @@ public class AutoChatMenu
                     Console.WriteLine("Press any key to continue...", Colors.WarningColor);
 
                     Console.ReadKey();
-                    Console.Clear();
-                    Interface.ShowArt();
-
+                    ResetConsole();
                     msg = "bypass";
                 }
                 else
@@ -122,8 +119,7 @@ public class AutoChatMenu
                     Console.WriteLine("Press any key to continue...", Colors.SuccessColor);
 
                     Console.ReadKey();
-                    Console.Clear();
-                    Interface.ShowArt();
+                    ResetConsole();
                 }
             }
             catch
@@ -151,8 +147,7 @@ public class AutoChatMenu
             choice = 10;
             while (choice == 10) choice = delMessageMenu.RunMenu();
 
-            Console.Clear();
-            Interface.ShowArt();
+            ResetConsole();
 
             if (choice == choices2.Length) break;
 
@@ -178,8 +173,7 @@ public class AutoChatMenu
             choice = 10;
             while (choice == 10) choice = seeMessageMenu.RunMenu();
 
-            Console.Clear();
-            Interface.ShowArt();
+            ResetConsole();
 
             if (choice == choices.Length) break;
         }
@@ -206,13 +200,11 @@ public class AutoChatMenu
             Console.WriteLine("Press any key to continue...", Colors.SuccessColor);
 
             Console.ReadKey();
-            Console.Clear();
-            Interface.ShowArt();
+            ResetConsole();
         }
         else
         {
-            Console.Clear();
-            Interface.ShowArt();
+            ResetConsole();
         }
     }
 

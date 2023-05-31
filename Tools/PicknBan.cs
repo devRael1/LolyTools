@@ -92,7 +92,7 @@ public class PicknBan
     {
         foreach (string[] member in CacheMembersTeam)
         {
-            Player currentPlayer = Global.FindPlayer(member[0]);
+            Player currentPlayer = Global.FindPlayer(Convert.ToInt32(member[0]));
             if (currentPlayer == null) return;
             currentPlayer.Role = member[1];
         }

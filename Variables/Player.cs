@@ -68,23 +68,3 @@ public class PlayerRegion
 
     public string Region { get; }
 }
-
-public class PlayerIn
-{
-    public PlayerIn(string name)
-    {
-        Name = name;
-    }
-
-    public string Name { get; }
-}
-
-public class Players
-{
-    public Players(List<PlayerIn> participants)
-    {
-        Participants = participants;
-    }
-
-    public List<PlayerIn> Participants { get; }
-}

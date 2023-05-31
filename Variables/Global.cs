@@ -34,8 +34,8 @@ public class Global
         }
     }
 
-    public static Player FindPlayer(string value)
+    public static Player FindPlayer(int value)
     {
-        return PlayerList.Find(x => string.Equals(x.Username.ToLower(), value.ToLower(), StringComparison.Ordinal) || x.Id == Convert.ToInt32(value));
+        return PlayerList.Find(x => x.Id == value);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Loly.LeagueClient;
 using Loly.Variables;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using static Loly.Logs;
 
 namespace Loly.Tools;
@@ -40,13 +41,13 @@ public class LobbyRevealer
     private static void GetPlayers(string req)
     {
         Log(LogType.LobbyRevealer, "Getting Players for revealing lobby...");
-        Players deserialized = JsonConvert.DeserializeObject<Players>(req);
-        List<PlayerIn> participants = deserialized.Participants;
+        dynamic deserialized = JsonConvert.DeserializeObject(req);
+        JArray teamPlayers = deserialized.participants;
 
-        foreach (Player p in participants.Select(player => new Player(player.Name, "https://www.op.gg/summoners/" + Global.Region + "/" + player.Name))) Global.PlayerList.Add(p);
+        List<string> cacheNames = (from dynamic player in teamPlayers select player.name.ToString()).Cast<string>().ToList();
 
-        string names = string.Join(",", Global.PlayerList.Select(x => x.Username));
-        string stats = Requests.WebRequest($"https://www.op.gg/_next/data/{_opggtoken}/multisearch/{Global.Region}.json?summoners={names}&region={Global.Region}");
+        string stats = Requests.WebRequest(
+            $"https://www.op.gg/_next/data/{_opggtoken}/multisearch/{Global.Region}.json?summoners={string.Join(",", cacheNames.Select(x => x))}&region={Global.Region}");
         if (stats == null) return;
 
         dynamic json = JsonConvert.DeserializeObject(stats);
@@ -54,16 +55,21 @@ public class LobbyRevealer
 
         foreach (dynamic sum in summoners)
         {
-            Player player = Global.FindPlayer(sum.name.ToString());
-            player.Id = sum.id;
+            Player newPlayer = new(sum.name.ToString(), $"https://www.op.gg/summoners/{Global.Region}/{sum.name}")
+            {
+                Id = sum.id,
+                Level = sum.level
+            };
 
-            player.Level = sum.level;
             dynamic soloTierInfo = sum.solo_tier_info;
-            if (soloTierInfo == null) continue;
+            if (soloTierInfo != null)
+            {
+                newPlayer.SoloDuoQ.Division = soloTierInfo.division >= 1 ? soloTierInfo.division : 0;
+                newPlayer.SoloDuoQ.Tier = soloTierInfo.tier != null ? soloTierInfo.tier : "Unranked";
+                newPlayer.SoloDuoQ.Lp = soloTierInfo.lp >= 0 ? soloTierInfo.lp : 0;
+            }
 
-            player.SoloDuoQ.Division = soloTierInfo.division >= 1 ? soloTierInfo.division : 0;
-            player.SoloDuoQ.Tier = soloTierInfo.tier != null ? soloTierInfo.tier : "Unranked";
-            player.SoloDuoQ.Lp = soloTierInfo.lp >= 0 ? soloTierInfo.lp : 0;
+            Global.PlayerList.Add(newPlayer);
         }
     }
 
@@ -87,7 +93,7 @@ public class LobbyRevealer
             dynamic summoner = json.pageProps.data.league_stats;
             int sumId = json.pageProps.data.id;
 
-            Player player = Global.FindPlayer(sumId.ToString());
+            Player player = Global.FindPlayer(sumId);
 
             player.SoloDuoQ.Wins = summoner[0].win >= 1 ? summoner[0].win : 0;
             player.SoloDuoQ.Losses = summoner[0].lose >= 1 ? summoner[0].lose : 0;

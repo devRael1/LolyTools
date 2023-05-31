@@ -71,12 +71,15 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 
 ## `🧾 Todo List`
 
-- [ ] Patch error with `Pick and Ban` tool (No ban champ when no pick champ is configured)
-- [ ] Make dodge (champ select) detection for logs system
+### BIG UPDATE COMING SOON...
+
 - [ ] Convert all system to Task and Async methods
 - [ ] Change all scruture of the code and redo all functions / methods in async environment
 
-### BIG UPDATE COMING SOON...
+---
+
+- [ ] Patch error with `Pick and Ban` tool (No ban champ when no pick champ is configured)
+- [ ] Make dodge (champ select) detection for logs system
 
 ## `📝 License`
 

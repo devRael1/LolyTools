@@ -57,8 +57,8 @@ public class LobbyRevealer
         {
             Player newPlayer = new(sum.name.ToString(), $"https://www.op.gg/summoners/{Global.Region}/{sum.name}")
             {
-                Id = sum.id,
-                Level = sum.level
+                Id = Convert.ToInt32(sum.id),
+                Level = Convert.ToInt32(sum.level)
             };
 
             dynamic soloTierInfo = sum.solo_tier_info;

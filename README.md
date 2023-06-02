@@ -75,6 +75,7 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 
 - [ ] Make dodge (champ select) detection for logs system
 - [ ] Make *Refresh* system for Stats with OP.GG (POST request)
+- [ ] Found a way to create persistent logs system (save log file or use List in memory)
 
 ## `📝 License`
 

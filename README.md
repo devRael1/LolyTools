@@ -74,6 +74,7 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 ### BIG UPDATE COMING SOON...
 
 - [ ] Make dodge (champ select) detection for logs system
+- [ ] Make *Refresh* system for Stats with OP.GG (POST request)
 
 ## `📝 License`
 

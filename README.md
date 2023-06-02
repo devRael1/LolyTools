@@ -27,7 +27,7 @@ No need to install this if you have a more recent version installed<br>
 
 - [x] Interactive Menu in Console
 - [x] Multi-region support
-- [x] Lobby Revealer (ranked games / reveal team roles)
+- [x] Lobby Revealer (Ranked games)
 - [x] Auto Accept match (Auto accept queue)
 - [x] Auto Pick and Ban champion (By roles => Top, Jungle, Mid, ADC, Support)
 - [x] Auto Chat (Auto send messages when you are in lobby)
@@ -73,12 +73,6 @@ My Discord: `devRael#0123` *`(ID: 728231238707445801)`*
 
 ### BIG UPDATE COMING SOON...
 
-- [ ] Convert all system to Task and Async methods
-- [ ] Change all scruture of the code and redo all functions / methods in async environment
-
----
-
-- [ ] Patch error with `Pick and Ban` tool (No ban champ when no pick champ is configured)
 - [ ] Make dodge (champ select) detection for logs system
 
 ## `📝 License`

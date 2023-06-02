@@ -34,7 +34,7 @@ public class Global
         }
     }
 
-    public static Player FindPlayer(int value)
+    public static Player FindPlayer(string value)
     {
         return PlayerList.Find(x => x.Id == value);
     }

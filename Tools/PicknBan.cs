@@ -15,7 +15,6 @@ public class PicknBan
     private static bool _cansentChatMessages;
     private static long _champSelectStart;
     private static InitRole _currentRole;
-    private static readonly List<string[]> CacheMembersTeam = new();
 
     public static void HandleChampSelect()
     {
@@ -32,7 +31,6 @@ public class PicknBan
             _lockedBan = false;
             _cansentChatMessages = false;
             _champSelectStart = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            CacheMembersTeam.Clear();
 
             Log(LogType.PicknBan, "New game start, champ select started now...");
         }
@@ -47,7 +45,8 @@ public class PicknBan
             JArray myTeam = currentChampSelectJson.myTeam;
             foreach (dynamic member in myTeam)
             {
-                string assignedRole = member.assignedPosition switch
+                string position = member.assignedPosition;
+                string assignedRole = position switch
                 {
                     "utility" => "Support",
                     "middle" => "Mid",
@@ -56,7 +55,9 @@ public class PicknBan
                     "top" => "Top",
                     _ => "Default"
                 };
-                CacheMembersTeam.Add(new string[] { member.summonerId.ToString(), assignedRole });
+
+                Console.WriteLine($"[DEBUG] {member.summonerId} - {assignedRole}");
+                Console.WriteLine($"[DEBUG] Global Summoner ID: {Global.CurrentSummonerId}");
 
                 if (member.summonerId.ToString() != Global.CurrentSummonerId) continue;
                 _currentRole = (InitRole)Settings.LoLRoles.GetType().GetProperty(assignedRole).GetValue(Settings.LoLRoles);
@@ -82,26 +83,14 @@ public class PicknBan
 
             Global.LastChatRoom = currentChatRoom;
 
-            if (_cansentChatMessages) AutoChat.HandleChampSelectAutoChat();
+            if (Settings.AutoChat && _cansentChatMessages) AutoChat.HandleChampSelectAutoChat();
             if (!_hoverPick || !_lockedPick || !_hoverBan || !_lockedBan) HandleChampSelectActions(currentChampSelectJson, localPlayerCellId);
             _cansentChatMessages = false;
         }
     }
 
-    public static void LinkRolesToPlayers()
-    {
-        foreach (string[] member in CacheMembersTeam)
-        {
-            Player currentPlayer = Global.FindPlayer(Convert.ToInt32(member[0]));
-            if (currentPlayer == null) return;
-            currentPlayer.Role = member[1];
-        }
-    }
-
     private static void HandleChampSelectActions(dynamic currentChampSelectJson, int localPlayerCellId)
     {
-        if (!Settings.PicknBan) return;
-
         JArray champSelectActions = currentChampSelectJson.actions;
         foreach (dynamic arrActions in champSelectActions)
         foreach (dynamic action in arrActions)

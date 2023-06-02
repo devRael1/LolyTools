@@ -16,24 +16,24 @@ public class LobbyRevealer
         {
             if (!Settings.LobbyRevealer || Global.Session != "Champ Select" || Global.FetchedPlayers)
             {
-                Thread.Sleep(3000);
+                Thread.Sleep(5000);
                 continue;
             }
 
             Global.PlayerList.Clear();
-
             if (_opggtoken == null) GetTokenOpGg();
+
+            Thread.Sleep(2000);
             GetPlayers(Requests.ClientRequest("GET", "/chat/v5/participants/champ-select", false)[1]);
             GetAdvancedPlayersStats();
 
             Global.FetchedPlayers = true;
-            PicknBan.LinkRolesToPlayers();
         }
     }
 
     private static void GetTokenOpGg()
     {
-        Log(LogType.LobbyRevealer, "Getting OP.GG Token...");
+        Log(LogType.LobbyRevealer, "Fetching OP.GG token...");
         string response = Requests.WebRequest("https://www.op.gg/multisearch");
         _opggtoken = Utils.LrParse(response, "\"buildId\":\"", "\",\"assetPrefix") ?? "null";
     }
@@ -51,15 +51,16 @@ public class LobbyRevealer
         if (stats == null) return;
 
         dynamic json = JsonConvert.DeserializeObject(stats);
-        dynamic summoners = json.pageProps.summoners;
+        JArray summoners = json.pageProps.summoners;
 
         foreach (dynamic sum in summoners)
         {
             Player newPlayer = new(sum.name.ToString(), $"https://www.op.gg/summoners/{Global.Region}/{sum.name}")
             {
-                Id = Convert.ToInt32(sum.id),
                 Level = Convert.ToInt32(sum.level)
             };
+
+            Console.WriteLine($"[DEBUG] {newPlayer.Username} - {newPlayer.Level}");
 
             dynamic soloTierInfo = sum.solo_tier_info;
             if (soloTierInfo != null)
@@ -93,7 +94,7 @@ public class LobbyRevealer
             dynamic summoner = json.pageProps.data.league_stats;
             int sumId = json.pageProps.data.id;
 
-            Player player = Global.FindPlayer(sumId);
+            Player player = Global.FindPlayer(sumId.ToString());
 
             player.SoloDuoQ.Wins = summoner[0].win >= 1 ? summoner[0].win : 0;
             player.SoloDuoQ.Losses = summoner[0].lose >= 1 ? summoner[0].lose : 0;

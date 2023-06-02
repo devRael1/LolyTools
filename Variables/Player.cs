@@ -7,17 +7,15 @@ public class Player
         Username = username;
         Link = link;
 
-        Id = 0;
+        Id = "";
         Level = 0;
-        Role = "Unknown";
         SoloDuoQ = new SoloDuoQ();
         FlexQ = new FlexQ();
     }
 
     public string Username { get; }
     public string Link { get; }
-    public string Role { get; set; }
-    public int Id { get; set; }
+    public string Id { get; set; }
     public int Level { get; set; }
     public SoloDuoQ SoloDuoQ { get; }
     public FlexQ FlexQ { get; }

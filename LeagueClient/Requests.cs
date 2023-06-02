@@ -132,8 +132,8 @@ public class Requests
                         break;
                     case "ChampSelect":
                         Global.AcceptedCurrentMatch = false;
-                        if (Settings.AutoChat || Settings.PicknBan)
-                            HandleChampSelect();
+                        if (Settings.AutoChat || Settings.PicknBan) HandleChampSelect();
+
                         break;
                     case "InProgress":
                         Thread.Sleep(10000);

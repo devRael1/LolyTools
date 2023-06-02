@@ -167,12 +167,11 @@ public class LobbyRevealerMenu
         {
             Stroke = LineThickness.None,
             Align = Align.Center,
-            Columns = { GridLength.Char(8), GridLength.Char(7), GridLength.Char(35), GridLength.Char(26) },
+            Columns = { GridLength.Char(7), GridLength.Char(40), GridLength.Char(28) },
             Color = Colors.MenuPrimaryColor,
             MaxWidth = 110,
             Children =
             {
-                new Cell("Role") { Stroke = LineThickness.Single },
                 new Cell("Level") { Stroke = LineThickness.Single },
                 new Cell("Name") { Stroke = LineThickness.Single },
                 new Cell("Rank") { Stroke = LineThickness.Single }
@@ -181,7 +180,6 @@ public class LobbyRevealerMenu
 
         foreach (Player player in Global.PlayerList)
         {
-            Cell playerCell = new(player.Role) { Color = Colors.MenuTextColor };
             Cell levelCell = new(player.Level) { Color = Colors.MenuTextColor };
             Cell nameCell = new(player.Username) { Color = Colors.MenuTextColor };
             string rank = $"{player.SoloDuoQ.Tier} {player.SoloDuoQ.Division} ({player.SoloDuoQ.Lp} LP)";
@@ -191,7 +189,6 @@ public class LobbyRevealerMenu
 
             Cell rankCell = new(rank) { Color = Colors.MenuTextColor };
 
-            grid.Children.Add(playerCell);
             grid.Children.Add(levelCell);
             grid.Children.Add(nameCell);
             grid.Children.Add(rankCell);

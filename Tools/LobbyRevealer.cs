@@ -23,7 +23,7 @@ public class LobbyRevealer
             Global.PlayerList.Clear();
             if (_opggtoken == null) GetTokenOpGg();
 
-            Thread.Sleep(2000);
+            Thread.Sleep(3000);
             GetPlayers(Requests.ClientRequest("GET", "/chat/v5/participants/champ-select", false)[1]);
             GetAdvancedPlayersStats();
 
@@ -57,10 +57,9 @@ public class LobbyRevealer
         {
             Player newPlayer = new(sum.name.ToString(), $"https://www.op.gg/summoners/{Global.Region}/{sum.name}")
             {
+                Id = sum.id.ToString(),
                 Level = Convert.ToInt32(sum.level)
             };
-
-            Console.WriteLine($"[DEBUG] {newPlayer.Username} - {newPlayer.Level}");
 
             dynamic soloTierInfo = sum.solo_tier_info;
             if (soloTierInfo != null)

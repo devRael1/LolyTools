@@ -36,6 +36,6 @@ public class Global
 
     public static Player FindPlayer(string value)
     {
-        return PlayerList.Find(x => x.Id == value);
+        return PlayerList.Find(x => long.Parse(x.Id) == long.Parse(value));
     }
 }

@@ -56,9 +56,6 @@ public class PicknBan
                     _ => "Default"
                 };
 
-                Console.WriteLine($"[DEBUG] {member.summonerId} - {assignedRole}");
-                Console.WriteLine($"[DEBUG] Global Summoner ID: {Global.CurrentSummonerId}");
-
                 if (member.summonerId.ToString() != Global.CurrentSummonerId) continue;
                 _currentRole = (InitRole)Settings.LoLRoles.GetType().GetProperty(assignedRole).GetValue(Settings.LoLRoles);
                 break;

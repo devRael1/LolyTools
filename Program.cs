@@ -49,6 +49,9 @@ internal class Program
             Task.WaitAll(tasks);
         }).Start();
 
+        // Wait for the League Client to be ready
+        Thread.Sleep(3000);
+
         Logger.PrintHeader();
         Interface.ShowArt();
         MainMenu.StartMenu();

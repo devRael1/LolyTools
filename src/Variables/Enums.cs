@@ -23,3 +23,10 @@ public enum DevelopmentStage
     Development,
     Release
 }
+
+public enum LogType
+{
+    Console,
+    File,
+    Both
+}

@@ -32,7 +32,7 @@ public class Global
         set
         {
             _session = value;
-            Logger.Info(LogModule.Loly, $"Getting session - Phase Detected: {_session}", true);
+            Logger.Info(LogModule.Loly, $"Getting session - Phase Detected: {_session}", LogsMenuEnable ? LogType.Both : LogType.File);
         }
     }
 

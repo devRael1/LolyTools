@@ -13,6 +13,7 @@ public static class Logger
 
     private static readonly object Lock = new();
     private static readonly object Lock2 = new();
+    private static readonly object Lock3 = new();
     private static bool _headerPrinted;
 
     static Logger()
@@ -20,15 +21,19 @@ public static class Logger
         _ = Directory.CreateDirectory(LogFolder);
     }
 
-    private static void Log(LogSeverity s, LogModule from, string message, Exception e = null, bool onlyConsole = false)
+    private static void Log(LogSeverity s, LogModule from, string message, Exception e = null, LogType logType = LogType.Both)
     {
-        if (!onlyConsole)
+        if (logType == LogType.Both)
         {
             Lock.Lock(() => Execute(s, from, message, e));
         }
-        else
+        else if (logType == LogType.File)
         {
             Lock2.Lock(() => ExecuteWithoutConsole(s, from, message));
+        }
+        else
+        {
+            Lock3.Lock(() => ExecuteOnlyInConsole(s, from, message));
         }
     }
 
@@ -39,8 +44,8 @@ public static class Logger
             return;
         }
 
-        Interface.ArtName.Split("\n", StringSplitOptions.TrimEntries).ForEach(ln => Info(LogModule.Loly, ln, true));
-        Info(LogModule.Loly, $"Currently running Loly Tools V{Version.FullVersion}.", true);
+        Interface.ArtName.Split("\n", StringSplitOptions.TrimEntries).ForEach(ln => Info(LogModule.Loly, ln, LogType.File));
+        Info(LogModule.Loly, $"Currently running Loly Tools V{Version.FullVersion}.", LogType.File);
         _headerPrinted = true;
     }
 
@@ -49,9 +54,9 @@ public static class Logger
         Log(LogSeverity.Debug, src, message);
     }
 
-    public static void Info(LogModule src, string message, bool onlyConsole = false)
+    public static void Info(LogModule src, string message, LogType logType = LogType.Both)
     {
-        Log(LogSeverity.Info, src, message, null, onlyConsole);
+        Log(LogSeverity.Info, src, message, null, logType);
     }
 
     public static void Error(LogModule src, string message, Exception e = null)
@@ -121,6 +126,26 @@ public static class Logger
 
         _ = contentFile.AppendLine();
         File.AppendAllText(NormalizeLogFilePath(LogTempFile, DateTime.Now, LogFolder), contentFile.ToString());
+    }
+
+    private static void ExecuteOnlyInConsole(LogSeverity s, LogModule src, string message)
+    {
+        (Color color, string value) = VerifySeverity(s);
+        Append($"{value}".PadRight(22), color);
+
+        DateTime dt = DateTime.Now.ToLocalTime();
+        Append($"[{dt.FormatDate()}] {value}» ", color);
+
+        (color, value) = VerifySource(src);
+        Append($"{value}".PadRight(18), color);
+        Append($"{value}» ", color);
+
+        if (!string.IsNullOrWhiteSpace(message))
+        {
+            Append(message, Color.White);
+        }
+
+        Console.Write(Environment.NewLine);
     }
 
     private static string NormalizeLogFilePath(string logFile, DateTime date, string pathToCheck)

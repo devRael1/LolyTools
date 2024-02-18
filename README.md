@@ -5,7 +5,7 @@
 League Of Legends Tools.<br>
 A set of several small tools for league of legends.
 
-### Works with the latest `13.11` update of League of Legends.
+### Works with the latest `14.3` update of League of Legends.
 
 ![Loly - Tools](https://i.imgur.com/8o9dfBC.png)
 
@@ -83,6 +83,6 @@ My Discord: `1043813027205619804`
 
 ## `📝 License`
 
-Copyright © 2023 devRael<br>
+Copyright © 2024 devRael<br>
 This project is MIT licensed.<br>
 This is not an official Riot Games product. It's not affiliated with or endorsed by Riot Games Inc.

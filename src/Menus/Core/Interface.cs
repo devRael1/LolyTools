@@ -103,11 +103,11 @@ public class Interface
 
     private static void ShowLoggedUser()
     {
-        string text = $"Currently logged in as '{Global.Summoner.GameName}' [Summoner ID : {Global.Summoner.SummonerId}]";
+        string text = $"Currently logged in as {Global.Summoner.GameName} [Summoner ID : {Global.Summoner.SummonerId}]";
         Console.SetCursorPosition((Console.WindowWidth - text.Length) / 2, Console.CursorTop);
-        Console.Write("Currently logged in as '", Colors.InfoColor);
+        Console.Write("Currently logged in as ", Colors.InfoColor);
         Console.Write(Global.Summoner.GameName, Colors.PrimaryColor);
-        Console.Write("' [Summoner ID : ", Colors.InfoColor);
+        Console.Write(" [Summoner ID : ", Colors.InfoColor);
         Console.Write(Global.Summoner.SummonerId, Colors.PrimaryColor);
         Console.Write("]", Colors.InfoColor);
     }

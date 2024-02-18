@@ -47,7 +47,7 @@ public class Updater
             Console.WriteLine(" [2/5] Checking versions... ", Colors.InfoColor);
             Console.Write(Environment.NewLine);
 
-            if (Version.FullVersion == version)
+            if (Version.FullVersionNoStage == version)
             {
                 Console.WriteLine(" Up to date", Colors.SuccessColor);
                 Console.WriteLine(" [x] You are using the latest version of the software.", Colors.SuccessColor);
@@ -59,7 +59,7 @@ public class Updater
             else
             {
                 Console.WriteLine(" Update available:", Colors.WarningColor);
-                Console.WriteLine($" [x] Your version: {Version.FullVersion}", Colors.WarningColor);
+                Console.WriteLine($" [x] Your version: {Version.FullVersionNoStage}", Colors.WarningColor);
                 Console.WriteLine($" [x] Latest version: {version}", Colors.WarningColor);
                 Console.WriteLine(" Press any key to download latest version...", Colors.WarningColor);
                 _ = Console.ReadKey();

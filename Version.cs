@@ -7,6 +7,7 @@ namespace Loly
         public static bool IsDevelopment => ReleaseType is DevelopmentStage.Development;
         public static DevelopmentStage ReleaseType => Global.IsProdEnvironment ? DevelopmentStage.Release : DevelopmentStage.Development;
         public static string FullVersion => $"{Major}.{Minor}.{Hotfix}-{ReleaseType}";
+        public static string FullVersionNoStage => $"{Major}.{Minor}.{Hotfix}";
 
         private static int Major => 2;
         private static int Minor => 0;

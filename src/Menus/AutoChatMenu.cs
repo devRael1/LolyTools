@@ -1,10 +1,11 @@
 ﻿using Alba.CsConsoleFormat;
-using static Loly.src.Tools.Utils;
-using static Loly.src.Menus.ToolsMenu;
-using static Loly.src.Tools.AutoChat;
-using Console = Colorful.Console;
 using Loly.src.Menus.Core;
 using Loly.src.Variables;
+using Loly.src.Variables.Class;
+using static Loly.src.Menus.ToolsMenu;
+using static Loly.src.Tools.AutoChat;
+using static Loly.src.Tools.Utils;
+using Console = Colorful.Console;
 
 namespace Loly.src.Menus;
 
@@ -21,11 +22,17 @@ public class AutoChatMenu
             string[] choices = { "Add Message", "Delete Message", "See Messages", "Clear Messages", "Back" };
 
             MenuBuilder autoChatMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
-            while (choice == 7) choice = autoChatMenu.RunMenu();
+            while (choice == 7)
+            {
+                choice = autoChatMenu.RunMenu();
+            }
 
             ResetConsole();
 
-            if (choice == choices.Length) break;
+            if (choice == choices.Length)
+            {
+                break;
+            }
 
             switch (choice)
             {
@@ -83,7 +90,7 @@ public class AutoChatMenu
         {
             Console.Write(DateTime.Now.ToString("[hh:mm:ss]"), Colors.PrimaryColor);
             Console.Write("» Enter message to send automatically when you enterring in lobby (max 200 characters):", Colors.InfoColor);
-            Console.WriteLine("");
+            Console.Write(Environment.NewLine);
             Console.Write("» ");
 
             try
@@ -103,7 +110,7 @@ public class AutoChatMenu
                     Console.WriteLine("[WARNING]» You can't add more than 5 messages ! Please remove 1 message before adding a new one... ", Colors.WarningColor);
                     Console.WriteLine("[WARNING]» Press any key to continue...", Colors.WarningColor);
 
-                    Console.ReadKey();
+                    _ = Console.ReadKey();
                     ResetConsole();
                     msg = "bypass";
                 }
@@ -114,11 +121,11 @@ public class AutoChatMenu
 
                     Settings.SaveSettings();
 
-                    Console.WriteLine("");
+                    Console.Write(Environment.NewLine);
                     Console.WriteLine("[SUCCESS]» Your message has been added successfully...", Colors.SuccessColor);
                     Console.WriteLine("[SUCCESS]» Press any key to continue...", Colors.SuccessColor);
 
-                    Console.ReadKey();
+                    _ = Console.ReadKey();
                     ResetConsole();
                 }
             }
@@ -145,11 +152,17 @@ public class AutoChatMenu
 
             MenuBuilder delMessageMenu = MenuBuilder.BuildMenu(choices2, Console.CursorTop);
             choice = 10;
-            while (choice == 10) choice = delMessageMenu.RunMenu();
+            while (choice == 10)
+            {
+                choice = delMessageMenu.RunMenu();
+            }
 
             ResetConsole();
 
-            if (choice == choices2.Length) break;
+            if (choice == choices2.Length)
+            {
+                break;
+            }
 
             Settings.ChatMessages.RemoveAt(choice - 1);
             Settings.SaveSettings();
@@ -171,11 +184,17 @@ public class AutoChatMenu
 
             MenuBuilder seeMessageMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
             choice = 10;
-            while (choice == 10) choice = seeMessageMenu.RunMenu();
+            while (choice == 10)
+            {
+                choice = seeMessageMenu.RunMenu();
+            }
 
             ResetConsole();
 
-            if (choice == choices.Length) break;
+            if (choice == choices.Length)
+            {
+                break;
+            }
         }
     }
 
@@ -186,7 +205,7 @@ public class AutoChatMenu
         UpdateMenuTitle("ac_clear");
         Console.Write(DateTime.Now.ToString("[hh:mm:ss]"), Colors.PrimaryColor);
         Console.Write("» Are you sure you want to clear all messages ? (y/n): ", Colors.InfoColor);
-        Console.WriteLine("");
+        Console.Write(Environment.NewLine);
         Console.Write("» ");
 
         string choice = Console.ReadLine().ToLower();
@@ -195,11 +214,11 @@ public class AutoChatMenu
             Settings.ChatMessages.Clear();
             Settings.SaveSettings();
 
-            Console.WriteLine("");
+            Console.Write(Environment.NewLine);
             Console.WriteLine("[SUCCESS]» All messages have been cleared successfully...", Colors.SuccessColor);
             Console.WriteLine("[SUCCESS]» Press any key to continue...", Colors.SuccessColor);
 
-            Console.ReadKey();
+            _ = Console.ReadKey();
             ResetConsole();
         }
         else

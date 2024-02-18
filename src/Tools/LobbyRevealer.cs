@@ -1,8 +1,9 @@
 ﻿using Loly.src.LeagueClient;
+using Loly.src.Logs;
 using Loly.src.Variables;
+using Loly.src.Variables.Class;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using static Loly.src.Logs.Logger;
 
 namespace Loly.src.Tools;
 
@@ -36,14 +37,14 @@ public class LobbyRevealer
 
     private static void GetTokenOpGg()
     {
-        Log(LogType.LobbyRevealer, "Fetching OP.GG token...");
+        Logger.Info(LogModule.LobbyRevealer, "Fetching OP.GG token...");
         string response = Requests.WebRequest("https://www.op.gg/multisearch");
         _opggtoken = Utils.LrParse(response, "\"buildId\":\"", "\",\"assetPrefix") ?? "null";
     }
 
     private static void GetPlayers(string req)
     {
-        Log(LogType.LobbyRevealer, "Getting Players for revealing lobby...");
+        Logger.Info(LogModule.LobbyRevealer, "Getting Players for revealing lobby...");
         dynamic deserialized = JsonConvert.DeserializeObject(req);
         JArray teamPlayers = deserialized.participants;
 
@@ -88,7 +89,7 @@ public class LobbyRevealer
 
     private static async void GetAdvancedPlayersStats()
     {
-        Log(LogType.LobbyRevealer, $"Getting advanced stats of {Global.PlayerList.Count} players in background...");
+        Logger.Info(LogModule.LobbyRevealer, $"Getting advanced stats of {Global.PlayerList.Count} players in background...");
         List<Task<string>> tasks = Global.PlayerList.Select(GetPlayerStats).ToList();
 
         _ = await Task.WhenAll(tasks);
@@ -111,6 +112,6 @@ public class LobbyRevealer
             player.FlexQ.Lp = summoner[1].lp >= 0 ? summoner[1].lp : 0;
         }
 
-        Log(LogType.LobbyRevealer, "Advanced stats of all players fetched !");
+        Logger.Info(LogModule.LobbyRevealer, "Advanced stats of all players fetched !");
     }
 }

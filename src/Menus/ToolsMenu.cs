@@ -1,14 +1,15 @@
 ﻿using Alba.CsConsoleFormat;
-using static Loly.src.Tools.Utils;
-using static Loly.src.Menus.LobbyRevealerMenu;
-using static Loly.src.Menus.AutoAcceptMenu;
-using static Loly.src.Menus.PicknBanMenu;
-using static Loly.src.Menus.AutoChatMenu;
-using static Loly.src.Menus.LanguageChangerMenu;
-using static Loly.src.Menus.MainMenu;
-using Console = Colorful.Console;
 using Loly.src.Menus.Core;
 using Loly.src.Variables;
+using Loly.src.Variables.Class;
+using static Loly.src.Menus.AutoAcceptMenu;
+using static Loly.src.Menus.AutoChatMenu;
+using static Loly.src.Menus.LanguageChangerMenu;
+using static Loly.src.Menus.LobbyRevealerMenu;
+using static Loly.src.Menus.MainMenu;
+using static Loly.src.Menus.PicknBanMenu;
+using static Loly.src.Tools.Utils;
+using Console = Colorful.Console;
 
 namespace Loly.src.Menus;
 
@@ -25,10 +26,17 @@ public class ToolsMenu
             string[] choices = { "Lobby Revealer", "Auto Accept", "Auto Chat", "Pick and Ban", "Language Changer", "Back" };
 
             MenuBuilder toolsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
-            while (choice == 7) choice = toolsMenu.RunMenu();
+            while (choice == 7)
+            {
+                choice = toolsMenu.RunMenu();
+            }
+
             ResetConsole();
 
-            if (choice == choices.Length) break;
+            if (choice == choices.Length)
+            {
+                break;
+            }
 
             switch (choice)
             {
@@ -38,7 +46,7 @@ public class ToolsMenu
                         Console.WriteLine(" < Lobby Revealer > is not enabled in the settings.", Colors.WarningColor);
                         Console.WriteLine(" Please go to 'Settings' menu and enable it.", Colors.WarningColor);
                         Console.WriteLine(" Press Enter to continue...", Colors.WarningColor);
-                        Console.ReadKey();
+                        _ = Console.ReadKey();
                     }
                     else
                     {
@@ -52,7 +60,7 @@ public class ToolsMenu
                         Console.WriteLine(" < Auto Accept > is not enabled in the settings.", Colors.WarningColor);
                         Console.WriteLine(" Please go to 'Settings' menu and enable it.", Colors.WarningColor);
                         Console.WriteLine(" Press Enter to continue...", Colors.WarningColor);
-                        Console.ReadKey();
+                        _ = Console.ReadKey();
                     }
                     else
                     {
@@ -66,7 +74,7 @@ public class ToolsMenu
                         Console.WriteLine(" < Auto Chat > is not enabled in the settings.", Colors.WarningColor);
                         Console.WriteLine(" Please go to 'Settings' menu and enable it.", Colors.WarningColor);
                         Console.WriteLine(" Press Enter to continue...", Colors.WarningColor);
-                        Console.ReadKey();
+                        _ = Console.ReadKey();
                     }
                     else
                     {
@@ -80,7 +88,7 @@ public class ToolsMenu
                         Console.WriteLine(" < Pick and Ban > is not enabled in the settings.", Colors.WarningColor);
                         Console.WriteLine(" Please go to 'Settings' menu and enable it.", Colors.WarningColor);
                         Console.WriteLine(" Press Enter to continue...", Colors.WarningColor);
-                        Console.ReadKey();
+                        _ = Console.ReadKey();
                     }
                     else
                     {

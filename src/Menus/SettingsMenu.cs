@@ -1,10 +1,11 @@
 ﻿using Alba.CsConsoleFormat;
-using Newtonsoft.Json.Linq;
-using static Loly.src.Tools.Utils;
-using static Loly.src.Menus.MainMenu;
-using Console = Colorful.Console;
 using Loly.src.Menus.Core;
 using Loly.src.Variables;
+using Loly.src.Variables.Class;
+using Newtonsoft.Json.Linq;
+using static Loly.src.Menus.MainMenu;
+using static Loly.src.Tools.Utils;
+using Console = Colorful.Console;
 
 namespace Loly.src.Menus;
 
@@ -30,17 +31,28 @@ public class SettingsMenu
             string[] variables = { "EnableAutoUpdate", "LobbyRevealer", "AutoAccept", "AutoChat", "PicknBan" };
 
             MenuBuilder settingsMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop);
-            while (choice == 7) choice = settingsMenu.RunMenu();
+            while (choice == 7)
+            {
+                choice = settingsMenu.RunMenu();
+            }
+
             ResetConsole();
 
-            if (choice == choices.Count) break;
+            if (choice == choices.Count)
+            {
+                break;
+            }
 
             JObject settings = Settings.GetSettings();
 
             if (variables[choice - 1] == "EnableAutoUpdate")
+            {
                 settings[variables[choice - 1]] = !bool.Parse(settings[variables[choice - 1]]?.ToString() ?? string.Empty);
+            }
             else
+            {
                 settings["Tools"][variables[choice - 1]] = !bool.Parse(settings["Tools"][variables[choice - 1]]?.ToString() ?? string.Empty);
+            }
 
             Settings.SaveFileSettings(settings);
             Settings.CreateOrUpdateSettings();

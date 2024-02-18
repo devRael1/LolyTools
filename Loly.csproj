@@ -26,6 +26,7 @@
     <ItemGroup>
         <PackageReference Include="Alba.CsConsoleFormat" Version="1.0.0" />
         <PackageReference Include="Colorful.Console" Version="1.2.15" />
+        <PackageReference Include="Gommon" Version="2.4.3" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="System.Management" Version="8.0.0-preview.3.23174.8" />
         <PackageReference Include="System.Net.Http" Version="4.3.4" />

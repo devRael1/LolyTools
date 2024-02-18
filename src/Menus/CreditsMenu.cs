@@ -1,6 +1,7 @@
 ﻿using Alba.CsConsoleFormat;
 using Loly.src.Menus.Core;
 using Loly.src.Variables;
+using Loly.src.Variables.Class;
 using static Loly.src.Tools.Utils;
 
 namespace Loly.src.Menus;
@@ -18,11 +19,17 @@ public class CreditsMenu
             string[] choices = { "Discord Creator", "Back" };
 
             MenuBuilder creditsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
-            while (choice == 7) choice = creditsMenu.RunMenu();
+            while (choice == 7)
+            {
+                choice = creditsMenu.RunMenu();
+            }
 
             ResetConsole();
 
-            if (choice == choices.Length) break;
+            if (choice == choices.Length)
+            {
+                break;
+            }
 
             ShowCreditsMenu();
             OpenUrl(Global.DiscordInvite);
@@ -58,9 +65,7 @@ public class CreditsMenu
                 CreateSpan("Tool ", 1, Colors.MenuTextColor),
                 CreateSpan("Optimized", 0, Colors.MenuPrimaryColor),
                 CreateSpan(" by ", 0, Colors.MenuTextColor),
-                CreateSpan($"{Global.SoftAuthor}\n\n", 0, Colors.MenuPrimaryColor),
-                CreateSpan("Discord     - ", 1, Colors.MenuTextColor),
-                CreateSpan($"{Global.SoftAuthorDiscord}", 0, Colors.MenuPrimaryColor)
+                CreateSpan($"{Global.SoftAuthor}", 0, Colors.MenuPrimaryColor)
             }
         };
 

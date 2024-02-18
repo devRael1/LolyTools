@@ -1,7 +1,7 @@
 ﻿using Loly.src.LeagueClient;
+using Loly.src.Logs;
 using Loly.src.Variables;
 using Newtonsoft.Json;
-using static Loly.src.Logs.Logger;
 
 namespace Loly.src.Tools;
 
@@ -13,7 +13,7 @@ public class AutoChat
     {
         GetChatId();
 
-        Log(LogType.AutoChat, $"Sending {Settings.ChatMessages.Count} message(s) in chat...");
+        Logger.Info(LogModule.AutoChat, $"Sending {Settings.ChatMessages.Count} message(s) in chat...");
 
         int count = 0;
         string timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
@@ -25,7 +25,7 @@ public class AutoChat
             string httpRes = "";
             while (httpRes != "200" && attempts < 5)
             {
-                string body = "{\"type\":\"chat\",\"fromId\":\"" + _currentChatId + "\",\"fromSummonerId\":" + Global.CurrentSummonerId +
+                string body = "{\"type\":\"chat\",\"fromId\":\"" + _currentChatId + "\",\"fromSummonerId\":" + Global.Summoner.SummonerId +
                               ",\"isHistorical\":false,\"timestamp\":\"" + timestamp + "\",\"body\":\"" + msg + "\"}";
                 string[] response = Requests.ClientRequest("POST", "lol-chat/v1/conversations/" + Global.LastChatRoom + "/messages", true, body);
                 attempts++;
@@ -39,7 +39,7 @@ public class AutoChat
             }
         }
 
-        Log(LogType.AutoChat, $"{count} message(s) sended successfully !");
+        Logger.Info(LogModule.AutoChat, $"{count} message(s) sended successfully !");
     }
 
     public static string FormatMessage(string message)
@@ -49,10 +49,10 @@ public class AutoChat
 
     private static void GetChatId()
     {
-        Log(LogType.AutoChat, "Getting chat & summoner id...");
+        Logger.Info(LogModule.AutoChat, "Getting chat & summoner id...");
         string[] myChatProfile = Requests.ClientRequest("GET", "lol-chat/v1/me", true);
         dynamic chatProfileJson = JsonConvert.DeserializeObject(myChatProfile[1]);
         _currentChatId = chatProfileJson.id;
-        Global.CurrentSummonerId = chatProfileJson.summonerId;
+        Global.Summoner.SummonerId = chatProfileJson.summonerId;
     }
 }

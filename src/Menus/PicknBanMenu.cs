@@ -1,11 +1,12 @@
 ﻿using Alba.CsConsoleFormat;
-using Newtonsoft.Json;
-using static Loly.src.Tools.Utils;
-using static Loly.src.Menus.ToolsMenu;
-using Console = Colorful.Console;
+using Loly.src.LeagueClient;
 using Loly.src.Menus.Core;
 using Loly.src.Variables;
-using Loly.src.LeagueClient;
+using Loly.src.Variables.Class;
+using Newtonsoft.Json;
+using static Loly.src.Menus.ToolsMenu;
+using static Loly.src.Tools.Utils;
+using Console = Colorful.Console;
 
 namespace Loly.src.Menus;
 
@@ -25,10 +26,17 @@ public class PicknBanMenu
             string[] choices = { "Default (Blind mode)", "Top", "Jungle", "Mid", "Adc", "Support", "Back" };
 
             MenuBuilder pickNBanMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
-            while (choice == 10) choice = pickNBanMenu.RunMenu();
+            while (choice == 10)
+            {
+                choice = pickNBanMenu.RunMenu();
+            }
+
             ResetConsole();
 
-            if (choice == choices.Length) break;
+            if (choice == choices.Length)
+            {
+                break;
+            }
 
             _role = choice == 1 ? "Default" : choices[choice - 1];
             _cachedRole = (InitRole)Settings.LoLRoles.GetType().GetProperty(_role).GetValue(Settings.LoLRoles);
@@ -49,10 +57,17 @@ public class PicknBanMenu
             string[] choices = { "Pick Options", "Ban Options", "Back" };
 
             MenuBuilder pickOrBanMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
-            while (choice == 7) choice = pickOrBanMenu.RunMenu();
+            while (choice == 7)
+            {
+                choice = pickOrBanMenu.RunMenu();
+            }
+
             ResetConsole();
 
-            if (choice == choices.Length) break;
+            if (choice == choices.Length)
+            {
+                break;
+            }
 
             GetOptionPicknBanMenu(choice == 1);
         }
@@ -71,10 +86,17 @@ public class PicknBanMenu
             string[] choices = pick ? new[] { "Pick Champion", "Remove Champion", "Pick Delay", "Back" } : new[] { "Ban Champion", "Remove Champion", "Ban Delay", "Back" };
 
             MenuBuilder pickNBanMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
-            while (choice == 7) choice = pickNBanMenu.RunMenu();
+            while (choice == 7)
+            {
+                choice = pickNBanMenu.RunMenu();
+            }
+
             ResetConsole();
 
-            if (choice == choices.Length) break;
+            if (choice == choices.Length)
+            {
+                break;
+            }
 
             switch (choice)
             {
@@ -93,7 +115,7 @@ public class PicknBanMenu
                         Console.WriteLine("[WARNING]» Please start your 'League of Legends' game and try again...", Colors.WarningColor);
                         Console.WriteLine("[WARNING]» Press any key to continue...", Colors.WarningColor);
 
-                        Console.ReadKey();
+                        _ = Console.ReadKey();
                     }
 
                     break;
@@ -106,7 +128,7 @@ public class PicknBanMenu
                         Console.WriteLine("[WARNING]» You can't remove the champion because it is not configured.", Colors.WarningColor);
                         Console.WriteLine("[WARNING]» Press any key to continue...", Colors.WarningColor);
 
-                        Console.ReadKey();
+                        _ = Console.ReadKey();
                         ResetConsole();
                     }
                     else
@@ -285,7 +307,7 @@ public class PicknBanMenu
         {
             Console.Write(DateTime.Now.ToString("[hh:mm:ss]"), Colors.PrimaryColor);
             Console.Write($"» Enter name of champion you want to auto {action}:", Colors.InfoColor);
-            Console.WriteLine("");
+            Console.Write(Environment.NewLine);
             Console.Write("» ");
 
             try
@@ -331,11 +353,11 @@ public class PicknBanMenu
                     Settings.SaveSettings();
                     _cachedRole = role;
 
-                    Console.WriteLine("");
+                    Console.Write(Environment.NewLine);
                     Console.WriteLine($"[SUCCESS]» Champion '{FormatStr(champName)}' selected successfully for {action} !", Colors.SuccessColor);
                     Console.WriteLine("[SUCCESS]» Press any key to continue...", Colors.SuccessColor);
 
-                    Console.ReadKey();
+                    _ = Console.ReadKey();
                     ResetConsole();
                 }
             }
@@ -364,7 +386,7 @@ public class PicknBanMenu
             Console.Write($"» Enter delay to auto {action} champion (recommanded {minDelay}-{maxDelay}ms):\n", Colors.InfoColor);
             Console.Write(DateTime.Now.ToString("[hh:mm:ss]"), Colors.PrimaryColor);
             Console.Write("» Enter the delay in miliseconds (ex: 1500 = 1,5sec, 4000 = 4sec...)", Colors.InfoColor);
-            Console.WriteLine("");
+            Console.Write(Environment.NewLine);
             Console.Write("» ");
 
             try
@@ -379,18 +401,22 @@ public class PicknBanMenu
                 else
                 {
                     if (action == "pick")
+                    {
                         _cachedRole.PickChamp.Delay = delay;
+                    }
                     else
+                    {
                         _cachedRole.BanChamp.Delay = delay;
+                    }
 
                     Settings.LoLRoles.GetType().GetProperty(_role).SetValue(Settings.LoLRoles, _cachedRole);
                     Settings.SaveSettings();
 
-                    Console.WriteLine("");
+                    Console.Write(Environment.NewLine);
                     Console.WriteLine($"[SUCCESS]» The {delay}ms delay has been configured correctly for auto {action} !", Colors.SuccessColor);
                     Console.WriteLine("[SUCCESS]» Press any key to continue...", Colors.SuccessColor);
 
-                    Console.ReadKey();
+                    _ = Console.ReadKey();
                     ResetConsole();
                 }
             }
@@ -414,7 +440,10 @@ public class PicknBanMenu
         string[] choices = { "Yes", "No" };
 
         MenuBuilder removeChampMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
-        while (choice == 5) choice = removeChampMenu.RunMenu();
+        while (choice == 5)
+        {
+            choice = removeChampMenu.RunMenu();
+        }
 
         if (choice == 1)
         {
@@ -443,7 +472,7 @@ public class PicknBanMenu
             Console.WriteLine($"[SUCCESS]» Champion '{FormatStr(cacheName)}' removed successfully for {action} !", Colors.SuccessColor);
             Console.WriteLine("[SUCCESS]» Press any key to continue...", Colors.SuccessColor);
 
-            Console.ReadKey();
+            _ = Console.ReadKey();
         }
 
         ResetConsole();
@@ -454,13 +483,19 @@ public class PicknBanMenu
     {
         List<ChampItem> champs = new();
 
-        string[] ownedChamps = Requests.WaitSuccessClientRequest("GET", "lol-champions/v1/inventories/" + Global.CurrentSummonerId + "/champions-minimal", true);
+        string[] ownedChamps = Requests.WaitSuccessClientRequest("GET", "lol-champions/v1/inventories/" + Global.Summoner.SummonerId + "/champions-minimal", true);
         dynamic champsSplit = JsonConvert.DeserializeObject(ownedChamps[1]);
-        if (champsSplit == null) return;
+        if (champsSplit == null)
+        {
+            return;
+        }
 
         foreach (dynamic champ in champsSplit)
         {
-            if (champ.id == -1) continue;
+            if (champ.id == -1)
+            {
+                continue;
+            }
 
             string champName = champ.name;
             string champId = champ.id;
@@ -468,17 +503,18 @@ public class PicknBanMenu
             bool champFreeXboxPass = champ.ownership.xboxGPReward;
             bool champFree = champ.freeToPlay;
 
-            if (champName == "Nunu & Willump") champName = "Nunu";
+            if (champName == "Nunu & Willump")
+            {
+                champName = "Nunu";
+            }
 
-            bool isAvailable;
-            if (champOwned || champFree || champFreeXboxPass)
-                isAvailable = true;
-            else
-                isAvailable = false;
-
+            bool isAvailable = champOwned || champFree || champFreeXboxPass;
             champs.Add(new ChampItem { Name = champName, Id = champId, Free = isAvailable });
         }
 
-        foreach (ChampItem champ in champs) Global.ChampionsList.Add(champ);
+        foreach (ChampItem champ in champs)
+        {
+            Global.ChampionsList.Add(champ);
+        }
     }
 }

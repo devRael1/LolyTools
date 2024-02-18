@@ -1,6 +1,7 @@
 ﻿using Alba.CsConsoleFormat;
 using Loly.src.Menus.Core;
 using Loly.src.Variables;
+using Loly.src.Variables.Class;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using Console = Colorful.Console;

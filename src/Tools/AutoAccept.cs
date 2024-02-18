@@ -1,6 +1,6 @@
-﻿using Loly.src.Variables;
+﻿using Loly.src.Logs;
+using Loly.src.Variables;
 using static Loly.src.LeagueClient.Requests;
-using static Loly.src.Logs.Logger;
 
 namespace Loly.src.Tools;
 
@@ -11,7 +11,7 @@ public class AutoAccept
         _ = ClientRequest("POST", "lol-matchmaking/v1/ready-check/accept", true);
         if (!Global.AcceptedCurrentMatch)
         {
-            Log(LogType.AutoAccept, "Auto accept the current match...");
+            Logger.Info(LogModule.AutoAccept, "Auto accept the current match...");
         }
 
         Global.AcceptedCurrentMatch = true;

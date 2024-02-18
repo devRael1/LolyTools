@@ -1,4 +1,5 @@
 ﻿using Loly.src.Variables;
+using Loly.src.Variables.Class;
 using static Loly.src.Tools.Utils;
 using Console = Colorful.Console;
 
@@ -6,7 +7,7 @@ namespace Loly.src.Menus.Core;
 
 public class Interface
 {
-    private const string ArtName = @"
+    public const string ArtName = @"
 ██╗      ██████╗ ██╗  ██╗   ██╗
 ██║     ██╔═══██╗██║  ╚██╗ ██╔╝
 ██║     ██║   ██║██║   ╚████╔╝ 
@@ -14,7 +15,7 @@ public class Interface
 ███████╗╚██████╔╝███████╗██║   
 ╚══════╝ ╚═════╝ ╚══════╝╚═╝   ";
 
-    private const string ArtNameLogs = @"
+    public const string ArtNameLogs = @"
 ██╗      ██████╗ ██╗  ██╗   ██╗    ██╗      ██████╗  ██████╗ ███████╗
 ██║     ██╔═══██╗██║  ╚██╗ ██╔╝    ██║     ██╔═══██╗██╔════╝ ██╔════╝
 ██║     ██║   ██║██║   ╚████╔╝     ██║     ██║   ██║██║  ███╗███████╗
@@ -26,6 +27,7 @@ public class Interface
     {
         string[] array = ArtName.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
         uint num2 = 0;
+        int nb = 3;
         while (num2 < array.Length)
         {
             string text2 = array[num2];
@@ -42,7 +44,7 @@ public class Interface
         Console.Write("f ", Colors.InfoColor);
         Console.Write("L", Colors.PrimaryColor);
         Console.Write("egends", Colors.InfoColor);
-        Console.WriteLine("");
+        Console.Write(Environment.NewLine);
         string text4 = $"Loly Tools by {Global.SoftAuthor}";
         Console.SetCursorPosition((Console.WindowWidth - text4.Length) / 2, Console.CursorTop);
         Console.Write("L", Colors.PrimaryColor);
@@ -50,17 +52,25 @@ public class Interface
         Console.Write("T", Colors.PrimaryColor);
         Console.Write("ools by ", Colors.InfoColor);
         Console.Write($"{Global.SoftAuthor}", Colors.PrimaryColor);
+        Console.Write(Environment.NewLine);
 
-        TopLength = array.Length + 3;
+        if (Global.Summoner.SummonerId != null)
+        {
+            ShowLoggedUser();
+            nb++;
+        }
 
-        Console.WriteLine("");
-        Console.WriteLine("");
+        Console.Write(Environment.NewLine);
+        Console.Write(Environment.NewLine);
+
+        TopLength = array.Length + nb;
     }
 
     public static void ShowLogsArt()
     {
         string[] array = ArtNameLogs.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
         uint num2 = 0;
+        int nb = 3;
         while (num2 < array.Length)
         {
             string text2 = array[num2];
@@ -77,9 +87,28 @@ public class Interface
         Console.Write("ools ", Colors.InfoColor);
         Console.Write("L", Colors.PrimaryColor);
         Console.Write("ogs", Colors.InfoColor);
-        Console.WriteLine("");
-        Console.WriteLine("");
+        Console.Write(Environment.NewLine);
 
-        TopLength = array.Length + 1;
+        if (Global.Summoner.SummonerId != null)
+        {
+            ShowLoggedUser();
+            nb++;
+        }
+
+        Console.Write(Environment.NewLine);
+        Console.Write(Environment.NewLine);
+
+        TopLength = array.Length + nb;
+    }
+
+    private static void ShowLoggedUser()
+    {
+        string text = $"Currently logged in as '{Global.Summoner.GameName}' [Summoner ID : {Global.Summoner.SummonerId}]";
+        Console.SetCursorPosition((Console.WindowWidth - text.Length) / 2, Console.CursorTop);
+        Console.Write("Currently logged in as '", Colors.InfoColor);
+        Console.Write(Global.Summoner.GameName, Colors.PrimaryColor);
+        Console.Write("' [Summoner ID : ", Colors.InfoColor);
+        Console.Write(Global.Summoner.SummonerId, Colors.PrimaryColor);
+        Console.Write("]", Colors.InfoColor);
     }
 }

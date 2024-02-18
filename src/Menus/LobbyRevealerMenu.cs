@@ -1,9 +1,10 @@
 ﻿using Alba.CsConsoleFormat;
-using static Loly.src.Tools.Utils;
-using static Loly.src.Menus.ToolsMenu;
-using Console = Colorful.Console;
 using Loly.src.Menus.Core;
 using Loly.src.Variables;
+using Loly.src.Variables.Class;
+using static Loly.src.Menus.ToolsMenu;
+using static Loly.src.Tools.Utils;
+using Console = Colorful.Console;
 
 namespace Loly.src.Menus;
 
@@ -18,11 +19,17 @@ public class LobbyRevealerMenu
             string[] choices = { "Get OP.GG", "Get Stats", "Back" };
 
             MenuBuilder lobbyRevealerMenu = MenuBuilder.BuildMenu(choices, TopLength);
-            while (choice == 7) choice = lobbyRevealerMenu.RunMenu();
+            while (choice == 7)
+            {
+                choice = lobbyRevealerMenu.RunMenu();
+            }
 
             ResetConsole();
 
-            if (choice == choices.Length) break;
+            if (choice == choices.Length)
+            {
+                break;
+            }
 
             switch (choice)
             {
@@ -36,7 +43,7 @@ public class LobbyRevealerMenu
                         Console.WriteLine(" Application did not detect a champ select in progress.", Colors.WarningColor);
                         Console.WriteLine(" Press Enter to continue...", Colors.WarningColor);
 
-                        Console.ReadKey();
+                        _ = Console.ReadKey();
                         ResetConsole();
                         continue;
                     }
@@ -56,7 +63,10 @@ public class LobbyRevealerMenu
         List<string> choices = Global.PlayerList.Select(t => $"[OP.GG] - {t.Username}").ToList();
 
         if (Global.PlayerList.Count > 1)
+        {
             choices.Add("Get All OP.GG");
+        }
+
         choices.Add("Back");
 
         string[] choices2 = choices.ToArray();
@@ -67,10 +77,18 @@ public class LobbyRevealerMenu
 
             MenuBuilder opGgMenu = MenuBuilder.BuildMenu(choices2, Console.CursorTop);
             choice = 10;
-            while (choice == 10) choice = opGgMenu.RunMenu();
+            while (choice == 10)
+            {
+                choice = opGgMenu.RunMenu();
+            }
+
             ResetConsole();
 
-            if (choice == choices2.Length) break;
+            if (choice == choices2.Length)
+            {
+                break;
+            }
+
             if (choice == choices2.Length - 1)
             {
                 string url = $"https://www.op.gg/multisearch/{Global.Region}?summoners=";
@@ -78,7 +96,9 @@ public class LobbyRevealerMenu
                 {
                     url += $"{Global.PlayerList[i].Username}";
                     if (i != Global.PlayerList.Count - 1)
+                    {
                         url += ",";
+                    }
                 }
 
                 OpenUrl(url);
@@ -99,7 +119,10 @@ public class LobbyRevealerMenu
         List<string> choices = Global.PlayerList.Select(t => $"{t.Username}'s Stats").ToList();
 
         if (Global.PlayerList.Count > 0)
+        {
             choices.Add("[GLOBAL] Stats");
+        }
+
         choices.Add("Back");
 
         string[] choices2 = choices.ToArray();
@@ -110,12 +133,26 @@ public class LobbyRevealerMenu
         {
             MenuBuilder statsMenu = MenuBuilder.BuildMenu(choices2, Console.CursorTop);
             choice = 10;
-            while (choice == 10) choice = statsMenu.RunMenu();
+            while (choice == 10)
+            {
+                choice = statsMenu.RunMenu();
+            }
+
             ResetConsole();
 
-            if (choice == choices2.Length) break;
-            if (choice == choices2.Length - 1) ShowGlobalStatsMenu();
-            else ShowPlayerStats(Global.PlayerList[choice - 1]);
+            if (choice == choices2.Length)
+            {
+                break;
+            }
+
+            if (choice == choices2.Length - 1)
+            {
+                ShowGlobalStatsMenu();
+            }
+            else
+            {
+                ShowPlayerStats(Global.PlayerList[choice - 1]);
+            }
         }
 
         GetLobbyRevealerMenu();
@@ -146,7 +183,11 @@ public class LobbyRevealerMenu
             border1.Children.Add(CreateSpan("Player " + (i + 1) + "      -  ", 1, Colors.MenuTextColor));
             string username = Global.PlayerList.ElementAtOrDefault(i)?.Username ?? "null\n";
             border1.Children.Add(CreateSpan($"{username}", 0, Colors.MenuPrimaryColor));
-            if (username == "null\n") continue;
+            if (username == "null\n")
+            {
+                continue;
+            }
+
             border1.Children.Add(CreateSpan($" ({Global.PlayerList.ElementAtOrDefault(i)?.SoloDuoQ.Tier}", 0, Colors.MenuPrimaryColor));
             string f = Global.PlayerList.ElementAtOrDefault(i)?.SoloDuoQ.Division == 0 ? ")\n" : $" {Global.PlayerList.ElementAtOrDefault(i)?.SoloDuoQ.Division})\n";
             border1.Children.Add(CreateSpan(f, 0, Colors.MenuPrimaryColor));
@@ -185,7 +226,10 @@ public class LobbyRevealerMenu
             string rank = $"{player.SoloDuoQ.Tier} {player.SoloDuoQ.Division} ({player.SoloDuoQ.Lp} LP)";
 
             int winrate = (int)Math.Round((double)player.SoloDuoQ.Wins / (player.SoloDuoQ.Wins + player.SoloDuoQ.Losses) * 100);
-            if (winrate >= 0) rank += $" | {winrate}%";
+            if (winrate >= 0)
+            {
+                rank += $" | {winrate}%";
+            }
 
             Cell rankCell = new(rank) { Color = Colors.MenuTextColor };
 
@@ -205,8 +249,15 @@ public class LobbyRevealerMenu
         int winratesoloq = (int)Math.Round((double)player.SoloDuoQ.Wins / (player.SoloDuoQ.Wins + player.SoloDuoQ.Losses) * 100);
         int winrateflex = (int)Math.Round((double)player.FlexQ.Wins / (player.FlexQ.Wins + player.FlexQ.Losses) * 100);
 
-        if (winratesoloq <= 0) winratesoloq = 0;
-        if (winrateflex <= 0) winrateflex = 0;
+        if (winratesoloq <= 0)
+        {
+            winratesoloq = 0;
+        }
+
+        if (winrateflex <= 0)
+        {
+            winrateflex = 0;
+        }
 
         Document rectangle = new();
         Border border1 = new()

@@ -1,8 +1,9 @@
-﻿using static Loly.src.Tools.Utils;
-using static Loly.src.Menus.MainMenu;
-using Console = Colorful.Console;
-using Loly.src.Menus.Core;
+﻿using Loly.src.Menus.Core;
 using Loly.src.Variables;
+using Loly.src.Variables.Class;
+using static Loly.src.Menus.MainMenu;
+using static Loly.src.Tools.Utils;
+using Console = Colorful.Console;
 
 namespace Loly.src.Menus;
 
@@ -23,10 +24,10 @@ public class LogsMenu
 
         Global.LogsMenuEnable = true;
 
-        Console.WriteLine("");
-        Console.WriteLine("");
+        Console.Write(Environment.NewLine);
+        Console.Write(Environment.NewLine);
 
-        Console.ReadKey();
+        _ = Console.ReadKey();
 
         Global.LogsMenuEnable = false;
         ResetConsole();

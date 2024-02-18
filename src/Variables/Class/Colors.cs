@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Loly.src.Variables;
+namespace Loly.src.Variables.Class;
 
 public class Colors
 {

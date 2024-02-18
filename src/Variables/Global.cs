@@ -1,4 +1,5 @@
 ﻿using Loly.src.Logs;
+using Loly.src.Variables.Class;
 
 namespace Loly.src.Variables;
 
@@ -7,13 +8,13 @@ public class Global
     public const string DiscordInvite = "https://discord.gg/NAQNuBnSC3";
     private static string _session;
 
-    public static readonly List<Player> PlayerList = new();
-    public static readonly List<ChampItem> ChampionsList = new();
+    public static List<Player> PlayerList = new();
+    public static List<ChampItem> ChampionsList = new();
 
-    public static readonly Dictionary<string, string> AuthRiot = new();
-    public static readonly Dictionary<string, string> AuthClient = new();
+    public static Dictionary<string, string> AuthRiot = new();
+    public static Dictionary<string, string> AuthClient = new();
 
-    public static string CurrentSummonerId { get; set; }
+    public static CurrentSummoner Summoner { get; set; } = new();
     public static string LastChatRoom { get; set; }
     public static int LastActionId { get; set; }
     public static bool AcceptedCurrentMatch { get; set; }
@@ -23,8 +24,7 @@ public class Global
     public static string Region { get; set; }
     public static string SoftName { get; set; }
     public static string SoftAuthor { get; set; }
-    public static string SoftAuthorDiscord { get; set; }
-    public static string SoftVersion { get; set; }
+    public static bool IsProdEnvironment { get; set; }
 
     public static string Session
     {
@@ -32,7 +32,7 @@ public class Global
         set
         {
             _session = value;
-            Logger.Log(LogType.Global, $"Getting session - Phase Detected: {_session}");
+            Logger.Info(LogModule.Loly, $"Getting session - Phase Detected: {_session}", true);
         }
     }
 

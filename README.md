@@ -75,9 +75,11 @@ My Discord: `1043813027205619804`
 
 - [ ] Make dodge (champ select) detection for logs system
 - [ ] Make *Refresh* system for Stats with OP.GG (POST request)
-- [ ] Found a way to create persistent logs system (save log file or use List in memory)
-- [ ] Improve the Log system (Add more informations)
+- [ ] Found a way to create persistent logs system (save log file)
+- [ ] Improve the Log system (Add more informations + best managment of errors...)
 - [ ] Add new setting to auto-send message with OP.GG stats of player in a lobby
+- [ ] Replace all `Console.WriteLine()` by the new log system
+- [ ] Add new info to the bottom of main logo in console (level, game name, summoner ID...)
 
 ## `📝 License`
 

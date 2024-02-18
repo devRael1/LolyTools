@@ -1,4 +1,6 @@
-﻿using Loly.src.Variables;
+﻿using Loly.src.Logs;
+using Loly.src.Variables;
+using Loly.src.Variables.Class;
 using Newtonsoft.Json;
 using System.Net;
 using Console = Colorful.Console;
@@ -29,7 +31,6 @@ public class Updater
     public static void CheckUpdate()
     {
         Console.Title = $"{Global.SoftName} - Checking for updates...";
-
         Console.WriteLine(" [1/5] Fetching version info from remote... ", Colors.InfoColor);
 
         try
@@ -43,10 +44,10 @@ public class Updater
             dynamic json = JsonConvert.DeserializeObject(response);
             string version = json.tag_name;
 
-            Console.WriteLine(" [2/5] Comparing versions... ", Colors.InfoColor);
-            Console.WriteLine("");
+            Console.WriteLine(" [2/5] Checking versions... ", Colors.InfoColor);
+            Console.Write(Environment.NewLine);
 
-            if (Global.SoftVersion == version)
+            if (Version.FullVersion == version)
             {
                 Console.WriteLine(" Up to date", Colors.SuccessColor);
                 Console.WriteLine(" [x] You are using the latest version of the software.", Colors.SuccessColor);
@@ -58,7 +59,7 @@ public class Updater
             else
             {
                 Console.WriteLine(" Update available:", Colors.WarningColor);
-                Console.WriteLine($" [x] Your version: {Global.SoftVersion}", Colors.WarningColor);
+                Console.WriteLine($" [x] Your version: {Version.FullVersion}", Colors.WarningColor);
                 Console.WriteLine($" [x] Latest version: {version}", Colors.WarningColor);
                 Console.WriteLine(" Press any key to download latest version...", Colors.WarningColor);
                 _ = Console.ReadKey();
@@ -68,12 +69,12 @@ public class Updater
                 int downloadCount = update["download_count"];
                 string releaseDate = update["created_at"];
 
-                Console.WriteLine("");
+                Console.Write(Environment.NewLine);
 
                 Console.WriteLine($" [3/5] Downloading the updated software (v{version})... ", Colors.InfoColor);
                 Console.WriteLine(" [4/5] Fetching download stats... ", Colors.InfoColor);
 
-                Console.WriteLine("");
+                Console.Write(Environment.NewLine);
 
                 Console.WriteLine(" Download Stats:", Colors.InfoColor);
                 Console.WriteLine($"  [x] Size: {megaBytes} KB", Colors.InfoColor);
@@ -92,7 +93,7 @@ public class Updater
                     stream.CopyTo(fileStream);
                 }
 
-                Console.WriteLine("");
+                Console.Write(Environment.NewLine);
                 Console.WriteLine(" [5/5] Done !", Colors.InfoColor);
                 Console.WriteLine($" [!] Note: You can delete this executable and use the latest (Loly Tools - v{version}.exe).", Colors.InfoColor);
                 Console.WriteLine(" Press any key to exit...", Colors.InfoColor);
@@ -103,6 +104,8 @@ public class Updater
         }
         catch (Exception ex)
         {
+            Logger.Error(LogModule.Updater, $"An error has occurred in the verification/recovery of the Loly Tools version.", ex);
+
             Console.WriteLine(" Failed", Colors.ErrorColor);
             Console.WriteLine($" [x] {ex.Message}", Colors.ErrorColor);
             Console.WriteLine(" Press any key to exit...", Colors.ErrorColor);

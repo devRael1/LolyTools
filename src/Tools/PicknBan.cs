@@ -1,8 +1,9 @@
 ﻿using Loly.src.LeagueClient;
+using Loly.src.Logs;
 using Loly.src.Variables;
+using Loly.src.Variables.Class;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using static Loly.src.Logs.Logger;
 
 namespace Loly.src.Tools;
 
@@ -35,12 +36,12 @@ public class PicknBan
             _cansentChatMessages = false;
             _champSelectStart = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
-            Log(LogType.PicknBan, "New game start, champ select started now...");
+            Logger.Info(LogModule.PickAndBan, "New game start, champ select started now...");
         }
 
         if (_lockedPick && _lockedBan)
         {
-            Log(LogType.PicknBan, "Waiting for game to start...");
+            Logger.Info(LogModule.PickAndBan, "Waiting for game to start...");
             Thread.Sleep(10000);
         }
         else
@@ -59,7 +60,7 @@ public class PicknBan
                     _ => "Default"
                 };
 
-                if (member.summonerId.ToString() != Global.CurrentSummonerId)
+                if (member.summonerId.ToString() != Global.Summoner.SummonerId)
                 {
                     continue;
                 }
@@ -207,7 +208,7 @@ public class PicknBan
     private static void HoverChampion(int actionId, string actType)
     {
         ChampItem champion = actType == "pick" ? _currentRole.PickChamp : _currentRole.BanChamp;
-        Log(LogType.PicknBan, $"Hover {champion.Name} champion for {actType}...");
+        Logger.Info(LogModule.PickAndBan, $"Hover {champion.Name} champion for {actType}...");
 
         string[] champSelectAction =
             Requests.ClientRequest("PATCH", "lol-champ-select/v1/session/actions/" + actionId, true, "{\"championId\":" + champion.Id + "}");
@@ -230,7 +231,7 @@ public class PicknBan
     private static void LockChampion(int actionId, string actType)
     {
         ChampItem champion = actType == "pick" ? _currentRole.PickChamp : _currentRole.BanChamp;
-        Log(LogType.PicknBan, $"Locking {champion.Name} champion for {actType}...");
+        Logger.Info(LogModule.PickAndBan, $"Locking {champion.Name} champion for {actType}...");
 
         string[] champSelectAction =
             Requests.ClientRequest("PATCH", "lol-champ-select/v1/session/actions/" + actionId, true, "{\"completed\":true,\"championId\":" + champion.Id + "}");

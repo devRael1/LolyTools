@@ -1,11 +1,12 @@
-﻿using System.Diagnostics;
+﻿using Loly.src.Logs;
+using Loly.src.Variables;
+using Loly.src.Variables.Class;
+using Newtonsoft.Json;
+using System.Diagnostics;
 using System.Management;
 using System.Text;
-using Newtonsoft.Json;
 using static Loly.src.Tools.Utils;
-using static Loly.src.Logs.Logger;
 using Console = Colorful.Console;
-using Loly.src.Variables;
 
 namespace Loly.src.LeagueClient;
 
@@ -26,11 +27,22 @@ public class Ux
             Process client = Process.GetProcessesByName("LeagueClientUx").FirstOrDefault();
             if (client != null)
             {
-                if (Global.AuthClient.Count == 0 && Global.AuthRiot.Count == 0) GetLeagueAuth();
-                if (Global.CurrentSummonerId == null) LoadSummonerId();
+                if (Global.AuthClient.Count == 0 && Global.AuthRiot.Count == 0)
+                {
+                    GetLeagueAuth();
+                }
+
+                if (Global.Summoner.SummonerId == null)
+                {
+                    LoadSummonerId();
+                }
+
                 Global.Region ??= GetRegion(Requests.WaitSuccessClientRequest("GET", "/riotclient/get_region_locale", true)[1]).ToLower();
                 Global.IsLeagueOpen = true;
-                if (!_lcuPid.Equals(client.Id)) _lcuPid = client.Id;
+                if (!_lcuPid.Equals(client.Id))
+                {
+                    _lcuPid = client.Id;
+                }
             }
             else
             {
@@ -70,7 +82,7 @@ public class Ux
         {
             ResetConsole();
             Console.WriteLine(" Unable to find League Client running on your computer.\n Press Enter to close application...", Colors.ErrorColor);
-            Console.ReadKey();
+            _ = Console.ReadKey();
             Environment.Exit(0);
         }
     }
@@ -82,7 +94,10 @@ public class Ux
         foreach (ManagementBaseObject managementBaseObject in mngmtClass.GetInstances())
         {
             ManagementObject o = (ManagementObject)managementBaseObject;
-            if (o["Name"].Equals(gamename)) commandline = "[" + o["CommandLine"] + "]";
+            if (o["Name"].Equals(gamename))
+            {
+                commandline = "[" + o["CommandLine"] + "]";
+            }
         }
 
         return commandline;
@@ -93,15 +108,27 @@ public class Ux
         int pFrom = text.IndexOf(from, StringComparison.Ordinal) + from.Length;
         int pTo = text.LastIndexOf(to, StringComparison.Ordinal);
 
-        return text.Substring(pFrom, pTo - pFrom);
+        return text[pFrom..pTo];
     }
 
     private static void LoadSummonerId()
     {
-        if (Global.CurrentSummonerId != null) return;
-        Log(LogType.Global, "Getting your summoner id...");
+        if (Global.Summoner?.SummonerId != null)
+        {
+            return;
+        }
+
+        Logger.Info(LogModule.Loly, "Getting your summoner ID...", true);
         string[] currentSummoner = Requests.WaitSuccessClientRequest("GET", "lol-summoner/v1/current-summoner", true);
         dynamic currentSummonerSplit = JsonConvert.DeserializeObject(currentSummoner[1]);
-        Global.CurrentSummonerId = currentSummonerSplit.summonerId;
+
+        Global.Summoner.SummonerId = currentSummonerSplit["summonerId"];
+        Global.Summoner.DisplayName = currentSummonerSplit["displayName"];
+        Global.Summoner.GameName = currentSummonerSplit["gameName"];
+        Global.Summoner.SummonerLevel = currentSummonerSplit["summonerLevel"];
+        Global.Summoner.AccountId = currentSummonerSplit["accountId"];
+        Global.Summoner.Puuid = currentSummonerSplit["puuid"];
+
+        Logger.Info(LogModule.Loly, $"Summoner ID loaded : {Global.Summoner.SummonerId}", true);
     }
 }

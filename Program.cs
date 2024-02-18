@@ -1,5 +1,6 @@
 ﻿using Loly.src;
 using Loly.src.LeagueClient;
+using Loly.src.Logs;
 using Loly.src.Menus;
 using Loly.src.Menus.Core;
 using Loly.src.Tools;
@@ -13,8 +14,8 @@ internal class Program
     {
         Global.SoftName = "League of Legends - Loly Tools";
         Global.SoftAuthor = "devRael";
-        Global.SoftAuthorDiscord = "devRael#0123";
-        Global.SoftVersion = "1.4";
+        Global.IsProdEnvironment = false;
+
         Global.AcceptedCurrentMatch = false;
         Global.LogsMenuEnable = false;
         Global.FetchedPlayers = false;
@@ -48,6 +49,7 @@ internal class Program
             Task.WaitAll(tasks);
         }).Start();
 
+        Logger.PrintHeader();
         Interface.ShowArt();
         MainMenu.StartMenu();
     }

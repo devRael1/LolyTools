@@ -1,4 +1,5 @@
 ﻿using Loly.src.Tools;
+using Loly.src.Variables.Class;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

@@ -1,10 +1,11 @@
 ﻿using Alba.CsConsoleFormat;
-using Newtonsoft.Json.Linq;
-using static Loly.src.Tools.Utils;
-using static Loly.src.Menus.ToolsMenu;
-using Console = Colorful.Console;
 using Loly.src.Menus.Core;
 using Loly.src.Variables;
+using Loly.src.Variables.Class;
+using Newtonsoft.Json.Linq;
+using static Loly.src.Menus.ToolsMenu;
+using static Loly.src.Tools.Utils;
+using Console = Colorful.Console;
 
 namespace Loly.src.Menus;
 
@@ -22,11 +23,17 @@ public class AutoAcceptMenu
             string[] variables = { "AutoAcceptOnce" };
 
             MenuBuilder autoAcceptMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
-            while (choice == 7) choice = autoAcceptMenu.RunMenu();
+            while (choice == 7)
+            {
+                choice = autoAcceptMenu.RunMenu();
+            }
 
             ResetConsole();
 
-            if (choice == choices.Length) break;
+            if (choice == choices.Length)
+            {
+                break;
+            }
 
             JObject settings = Settings.GetSettings();
             settings[variables[choice - 1]] = !bool.Parse(settings[variables[choice - 1]]?.ToString() ?? string.Empty);

@@ -1,10 +1,10 @@
 ﻿using Alba.CsConsoleFormat;
-using static Loly.src.Tools.LanguageChanger;
+using Loly.src.Menus.Core;
+using Loly.src.Variables.Class;
 using static Loly.src.Menus.ToolsMenu;
+using static Loly.src.Tools.LanguageChanger;
 using static Loly.src.Tools.Utils;
 using Console = Colorful.Console;
-using Loly.src.Menus.Core;
-using Loly.src.Variables;
 
 namespace Loly.src.Menus;
 
@@ -34,11 +34,17 @@ public class LanguageChangerMenu
             string[] choices = { "Create new Shortcut", "Back" };
 
             MenuBuilder languageChangerMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
-            while (choice == 7) choice = languageChangerMenu.RunMenu();
+            while (choice == 7)
+            {
+                choice = languageChangerMenu.RunMenu();
+            }
 
             ResetConsole();
 
-            if (choice == choices.Length) break;
+            if (choice == choices.Length)
+            {
+                break;
+            }
 
             GetLanguageMenu();
         }
@@ -65,18 +71,30 @@ public class LanguageChangerMenu
             };
 
             MenuBuilder languagesMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
-            while (choice == 40) choice = languagesMenu.RunMenu();
+            while (choice == 40)
+            {
+                choice = languagesMenu.RunMenu();
+            }
 
             ResetConsole();
 
-            if (choice == choices.Length) break;
+            if (choice == choices.Length)
+            {
+                break;
+            }
 
             _languageChoosed = choices[choice - 1];
             _codeLanguageChoosed = Languages[choice - 1];
 
             string exe = AutoDetectExePath();
-            if (exe == null) GetExeMenu();
-            else _exePath = exe;
+            if (exe == null)
+            {
+                GetExeMenu();
+            }
+            else
+            {
+                _exePath = exe;
+            }
 
             ChangeLanguage();
         }
@@ -95,7 +113,7 @@ public class LanguageChangerMenu
         {
             Console.Write(DateTime.Now.ToString("[hh:mm:ss]"), Colors.PrimaryColor);
             Console.Write("» Drag and drop your 'LeagueClient.exe' file:", Colors.InfoColor);
-            Console.WriteLine("");
+            Console.Write(Environment.NewLine);
             Console.Write("» ");
 
             try
@@ -108,8 +126,14 @@ public class LanguageChangerMenu
                 }
                 else
                 {
-                    if (!File.Exists(path)) Console.WriteLine("[WARNING]» The file does not exist...", Colors.WarningColor);
-                    else _exePath = path;
+                    if (!File.Exists(path))
+                    {
+                        Console.WriteLine("[WARNING]» The file does not exist...", Colors.WarningColor);
+                    }
+                    else
+                    {
+                        _exePath = path;
+                    }
                 }
             }
             catch
@@ -131,7 +155,10 @@ public class LanguageChangerMenu
         string[] choices = { "Yes", "No" };
 
         MenuBuilder languageMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
-        while (choice == 5) choice = languageMenu.RunMenu();
+        while (choice == 5)
+        {
+            choice = languageMenu.RunMenu();
+        }
 
         if (choice == 1)
         {
@@ -151,7 +178,7 @@ public class LanguageChangerMenu
                 Console.WriteLine("Press 'Enter' to continue....", Colors.ErrorColor);
             }
 
-            Console.ReadKey();
+            _ = Console.ReadKey();
         }
 
         ResetConsole();

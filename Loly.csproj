@@ -6,7 +6,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
-        <ApplicationIcon>logo.ico</ApplicationIcon>
+        <ApplicationIcon>Ressources\logo.ico</ApplicationIcon>
+        <StartupObject>Loly.Program</StartupObject>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -19,7 +20,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Content Include="logo.ico" />
+      <Content Include="Ressources\logo.ico" />
     </ItemGroup>
 
     <ItemGroup>

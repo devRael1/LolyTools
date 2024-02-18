@@ -1,8 +1,9 @@
-﻿using Loly.LeagueClient;
-using Loly.Menus;
-using Loly.Menus.Core;
-using Loly.Tools;
-using Loly.Variables;
+﻿using Loly.src;
+using Loly.src.LeagueClient;
+using Loly.src.Menus;
+using Loly.src.Menus.Core;
+using Loly.src.Tools;
+using Loly.src.Variables;
 
 namespace Loly;
 
@@ -27,7 +28,10 @@ internal class Program
 
         Settings.CreateOrUpdateSettings();
 
-        if (Settings.EnableAutoUpdate) Updater.CheckUpdate();
+        if (Settings.EnableAutoUpdate)
+        {
+            Updater.CheckUpdate();
+        }
 
         new Thread(() =>
         {

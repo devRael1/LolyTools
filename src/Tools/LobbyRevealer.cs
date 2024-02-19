@@ -15,7 +15,7 @@ public class LobbyRevealer
     {
         while (true)
         {
-            if (!Settings.LobbyRevealer || Global.Session != "Champ Select" || Global.FetchedPlayers)
+            if (!Settings.LobbyRevealer || Global.Session != "ChampSelect" || Global.FetchedPlayers)
             {
                 Thread.Sleep(5000);
                 continue;
@@ -28,8 +28,8 @@ public class LobbyRevealer
             }
 
             Thread.Sleep(3000);
-            GetPlayers(Requests.ClientRequest("GET", "/chat/v5/participants/champ-select", false)[1]);
-            GetAdvancedPlayersStats();
+            GetPlayers(Requests.ClientRequest("GET", "/chat/v5/participants/lol-champ-select", false)[1]);
+            _ = Task.Run(GetAdvancedPlayersStats);
 
             Global.FetchedPlayers = true;
         }
@@ -48,10 +48,10 @@ public class LobbyRevealer
         dynamic deserialized = JsonConvert.DeserializeObject(req);
         JArray teamPlayers = deserialized.participants;
 
-        List<string> cacheNames = (from dynamic player in teamPlayers select player.name.ToString()).Cast<string>().ToList();
+        List<string> cacheNames = (from dynamic player in teamPlayers select $"{player.game_name}#{player.game_tag}").Cast<string>().ToList();
 
         string stats = Requests.WebRequest(
-            $"https://www.op.gg/_next/data/{_opggtoken}/multisearch/{Global.Region}.json?summoners={string.Join(",", cacheNames.Select(x => x))}&region={Global.Region}");
+            $"https://www.op.gg/_next/data/{_opggtoken}/en_US/multisearch/{Global.Region}.json?summoners={string.Join(",", cacheNames.Select(x => x))}&region={Global.Region}");
         if (stats == null)
         {
             return;
@@ -83,33 +83,32 @@ public class LobbyRevealer
     private static async Task<string> GetPlayerStats(Player player)
     {
         string stats = await Requests.WebRequestAsync(
-            $"https://www.op.gg/_next/data/{_opggtoken}/summoners/{Global.Region}/{player.Username}.json?region={Global.Region}&summoner={player.Username}");
+            $"https://www.op.gg/_next/data/{_opggtoken}/en_US/summoners/{Global.Region}/{player.Username}.json?region={Global.Region}&summoner={player.Username}");
         return stats;
     }
 
-    private static async void GetAdvancedPlayersStats()
+    private static void GetAdvancedPlayersStats()
     {
         Logger.Info(LogModule.LobbyRevealer, $"Getting advanced stats of {Global.PlayerList.Count} players in background...");
-        List<Task<string>> tasks = Global.PlayerList.Select(GetPlayerStats).ToList();
 
-        _ = await Task.WhenAll(tasks);
-
-        foreach (Task<string> stats in tasks)
+        foreach (Player player in Global.PlayerList)
         {
-            dynamic json = JsonConvert.DeserializeObject(stats.Result);
+            string stats = GetPlayerStats(player).Result;
+
+            dynamic json = JsonConvert.DeserializeObject(stats);
             dynamic summoner = json.pageProps.data.league_stats;
             int sumId = json.pageProps.data.id;
 
-            Player player = Global.FindPlayer(sumId.ToString());
+            Player currentPlayer = Global.FindPlayer(sumId.ToString());
 
-            player.SoloDuoQ.Wins = summoner[0].win >= 1 ? summoner[0].win : 0;
-            player.SoloDuoQ.Losses = summoner[0].lose >= 1 ? summoner[0].lose : 0;
+            currentPlayer.SoloDuoQ.Wins = summoner[0].win >= 1 ? summoner[0].win : 0;
+            currentPlayer.SoloDuoQ.Losses = summoner[0].lose >= 1 ? summoner[0].lose : 0;
 
-            player.FlexQ.Wins = summoner[1].win >= 1 ? summoner[1].win : 0;
-            player.FlexQ.Losses = summoner[1].lose >= 1 ? summoner[1].lose : 0;
-            player.FlexQ.Division = summoner[1].division >= 1 ? summoner[1].division : 0;
-            player.FlexQ.Tier = summoner[1].tier ?? "Unranked";
-            player.FlexQ.Lp = summoner[1].lp >= 0 ? summoner[1].lp : 0;
+            currentPlayer.FlexQ.Wins = summoner[1].win >= 1 ? summoner[1].win : 0;
+            currentPlayer.FlexQ.Losses = summoner[1].lose >= 1 ? summoner[1].lose : 0;
+            currentPlayer.FlexQ.Division = summoner[1].division >= 1 ? summoner[1].division : 0;
+            currentPlayer.FlexQ.Tier = summoner[1].tier ?? "Unranked";
+            currentPlayer.FlexQ.Lp = summoner[1].lp >= 0 ? summoner[1].lp : 0;
         }
 
         Logger.Info(LogModule.LobbyRevealer, "Advanced stats of all players fetched !");

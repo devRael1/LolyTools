@@ -1,8 +1,6 @@
 ﻿using Loly.src.Variables;
-using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Text.RegularExpressions;
 using static Loly.src.LeagueClient.Ux;
 using static Loly.src.Tools.AutoAccept;
 using static Loly.src.Tools.PicknBan;
@@ -120,16 +118,13 @@ public class Requests
                 goto START;
             }
 
-            string[] gameSession = ClientRequest("GET", "lol-gameflow/v1/session", true);
+            string[] gameSession = ClientRequest("GET", "lol-gameflow/v1/gameflow-phase", true);
             if (gameSession[0] == "200")
             {
-                dynamic session = JsonConvert.DeserializeObject(gameSession[1]);
-                string phase = session.phase;
-
-                string phaseName = Regex.Replace(phase, "(\\B[A-Z])", " $1");
-                if (Global.Session != phaseName)
+                string phase = gameSession[1].Replace("\\", "").Replace("\"", "");
+                if (Global.Session != phase)
                 {
-                    Global.Session = phaseName;
+                    Global.Session = phase;
                 }
 
                 switch (phase)
@@ -153,12 +148,13 @@ public class Requests
 
                         break;
                     case "ChampSelect":
-                        Global.AcceptedCurrentMatch = false;
-                        if (Settings.AutoChat || Settings.PicknBan)
                         {
-                            HandleChampSelect();
+                            Global.AcceptedCurrentMatch = false;
+                            if (Settings.AutoChat || Settings.PicknBan)
+                            {
+                                HandleChampSelect();
+                            }
                         }
-
                         break;
                     case "InProgress":
                         Thread.Sleep(10000);
@@ -172,12 +168,15 @@ public class Requests
                     case "EndOfGame":
                         Thread.Sleep(15000);
                         break;
+                    case "None":
+                        Thread.Sleep(5000);
+                        break;
                     default:
                         Thread.Sleep(5000);
                         break;
                 }
 
-                if (phaseName != "Champ Select")
+                if (phase != "ChampSelect")
                 {
                     Global.LastChatRoom = "";
                 }

@@ -37,7 +37,7 @@ public class Ux
                     LoadSummonerId();
                 }
 
-                Global.Region ??= GetRegion(Requests.WaitSuccessClientRequest("GET", "/riotclient/get_region_locale", true)[1]).ToLower();
+                Global.Region ??= GetRegion(Requests.WaitSuccessClientRequest("GET", "/riotclient/region-locale", true)[1]).ToLower();
                 Global.IsLeagueOpen = true;
                 if (!_lcuPid.Equals(client.Id))
                 {
@@ -118,17 +118,18 @@ public class Ux
             return;
         }
 
-        Logger.Info(LogModule.Loly, "Getting your summoner ID...", true);
+        Logger.Info(LogModule.Loly, "Getting your summoner ID...", Global.LogsMenuEnable ? LogType.Both : LogType.File);
         string[] currentSummoner = Requests.WaitSuccessClientRequest("GET", "lol-summoner/v1/current-summoner", true);
         dynamic currentSummonerSplit = JsonConvert.DeserializeObject(currentSummoner[1]);
 
         Global.Summoner.SummonerId = currentSummonerSplit["summonerId"];
         Global.Summoner.DisplayName = currentSummonerSplit["displayName"];
         Global.Summoner.GameName = currentSummonerSplit["gameName"];
+        Global.Summoner.TagLine = currentSummonerSplit["tagLine"];
         Global.Summoner.SummonerLevel = currentSummonerSplit["summonerLevel"];
         Global.Summoner.AccountId = currentSummonerSplit["accountId"];
         Global.Summoner.Puuid = currentSummonerSplit["puuid"];
 
-        Logger.Info(LogModule.Loly, $"Summoner ID loaded : {Global.Summoner.SummonerId}", true);
+        Logger.Info(LogModule.Loly, $"Summoner ID loaded : {Global.Summoner.SummonerId}", Global.LogsMenuEnable ? LogType.Both : LogType.File);
     }
 }

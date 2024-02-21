@@ -1,5 +1,6 @@
 ﻿using Gommon;
 using Loly.src.Menus.Core;
+using Loly.src.Variables.Enums;
 using System.Drawing;
 using System.Text;
 using Console = Colorful.Console;
@@ -84,7 +85,7 @@ public static class Logger
         _ = contentFile.Append($"[{dt.FormatDate()}] {value}» ");
 
         (color, value) = VerifySource(src);
-        Append($"{value}".PadRight(18), color);
+        Append($"{value}".PadRight(15), color);
         _ = contentFile.Append($"{value}» ");
 
         if (!string.IsNullOrWhiteSpace(message))
@@ -137,7 +138,7 @@ public static class Logger
         Append($"[{dt.FormatDate()}] {value}» ", color);
 
         (color, value) = VerifySource(src);
-        Append($"{value}".PadRight(18), color);
+        Append($"{value}".PadRight(15), color);
         Append($"{value}» ", color);
 
         if (!string.IsNullOrWhiteSpace(message))

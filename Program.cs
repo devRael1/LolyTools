@@ -12,21 +12,7 @@ internal class Program
 {
     private static void Main()
     {
-        Global.SoftName = "League of Legends - Loly Tools";
-        Global.SoftAuthor = "devRael";
-        Global.IsProdEnvironment = false;
-
-        Global.AcceptedCurrentMatch = false;
-        Global.LogsMenuEnable = false;
-        Global.FetchedPlayers = false;
-
-        Settings.EnableAutoUpdate = true;
-        Settings.LobbyRevealer = false;
-        Settings.AutoAccept = false;
-        Settings.AutoAcceptOnce = false;
-        Settings.AutoChat = false;
-        Settings.PicknBan = false;
-
+        Settings.SetDefaultSettings();
         Settings.CreateOrUpdateSettings();
 
         if (Settings.EnableAutoUpdate)

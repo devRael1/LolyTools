@@ -118,4 +118,9 @@ public class Utils
         System.Console.Clear();
         Interface.ShowArt();
     }
+
+    public static Player FindPlayer(string value)
+    {
+        return Global.PlayerList.Find(x => long.Parse(x.Id) == long.Parse(value));
+    }
 }

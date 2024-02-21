@@ -103,6 +103,16 @@ public class Settings
         }
     }
 
+    public static void SetDefaultSettings()
+    {
+        EnableAutoUpdate = true;
+        LobbyRevealer = false;
+        AutoAccept = false;
+        AutoAcceptOnce = false;
+        AutoChat = false;
+        PicknBan = false;
+    }
+
     public static JObject GetSettings()
     {
         JObject obj = GetJObj();

@@ -2,6 +2,7 @@
 using Loly.src.Logs;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
+using Loly.src.Variables.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -9,7 +10,7 @@ namespace Loly.src.Tools;
 
 public class LobbyRevealer
 {
-    private static string _opggtoken;
+    private static string _opggtoken = "";
 
     public static void GetLobbyRevealing()
     {
@@ -99,7 +100,7 @@ public class LobbyRevealer
             dynamic summoner = json.pageProps.data.league_stats;
             int sumId = json.pageProps.data.id;
 
-            Player currentPlayer = Global.FindPlayer(sumId.ToString());
+            Player currentPlayer = Utils.FindPlayer(sumId.ToString());
 
             currentPlayer.SoloDuoQ.Wins = summoner[0].win >= 1 ? summoner[0].win : 0;
             currentPlayer.SoloDuoQ.Losses = summoner[0].lose >= 1 ? summoner[0].lose : 0;

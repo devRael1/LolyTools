@@ -1,5 +1,6 @@
 ﻿using Loly.src.Logs;
 using Loly.src.Variables;
+using Loly.src.Variables.Enums;
 using static Loly.src.LeagueClient.Requests;
 
 namespace Loly.src.Tools;

@@ -1,4 +1,5 @@
 ﻿using Loly.src.Variables;
+using Loly.src.Variables.Enums;
 
 namespace Loly
 {

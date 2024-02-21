@@ -1,4 +1,6 @@
-﻿namespace Loly.src.Logs
+﻿using Loly.src.Variables.Enums;
+
+namespace Loly.src.Logs
 {
     public struct LogMessage
     {

@@ -1,6 +1,7 @@
 ﻿using Loly.src.Logs;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
+using Loly.src.Variables.Enums;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Management;
@@ -34,7 +35,7 @@ public class Ux
 
                 if (Global.Summoner.SummonerId == null)
                 {
-                    LoadSummonerId();
+                    LoadSummonerId(true);
                 }
 
                 Global.Region ??= GetRegion(Requests.WaitSuccessClientRequest("GET", "/riotclient/region-locale", true)[1]).ToLower();
@@ -49,7 +50,7 @@ public class Ux
                 Global.IsLeagueOpen = false;
             }
 
-            Thread.Sleep(15000);
+            Thread.Sleep(30000);
         }
     }
 
@@ -111,9 +112,9 @@ public class Ux
         return text[pFrom..pTo];
     }
 
-    private static void LoadSummonerId()
+    private static void LoadSummonerId(bool force = false)
     {
-        if (Global.Summoner?.SummonerId != null)
+        if (Global.Summoner?.SummonerId != null && !force)
         {
             return;
         }

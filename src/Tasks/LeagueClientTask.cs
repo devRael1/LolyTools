@@ -1,6 +1,7 @@
 ﻿using Loly.src.Logs;
 using Loly.src.Tools;
 using Loly.src.Variables;
+using Loly.src.Variables.Class;
 using Loly.src.Variables.Enums;
 using Newtonsoft.Json;
 using System.Diagnostics;

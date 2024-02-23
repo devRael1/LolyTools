@@ -19,7 +19,7 @@ public class PicknBan
 
     public static void HandleChampSelect()
     {
-        string[] currentChampSelect = Requests.ClientRequest("GET", "lol-champ-select/v1/session", true).Result;
+        string[] currentChampSelect = Requests.ClientRequest("GET", "lol-champ-select/v1/session", true);
         if (currentChampSelect[0] != "200")
         {
             return;
@@ -210,7 +210,7 @@ public class PicknBan
         ChampItem champion = actType == "pick" ? _currentRole.PickChamp : _currentRole.BanChamp;
         Logger.Info(LogModule.PickAndBan, $"Hover {champion.Name} champion for {actType}...");
 
-        string[] champSelectAction = Requests.ClientRequest("PATCH", "lol-champ-select/v1/session/actions/" + actionId, true, "{\"championId\":" + champion.Id + "}").Result;
+        string[] champSelectAction = Requests.ClientRequest("PATCH", "lol-champ-select/v1/session/actions/" + actionId, true, "{\"championId\":" + champion.Id + "}");
         if (champSelectAction[0] != "204")
         {
             return;
@@ -232,7 +232,7 @@ public class PicknBan
         ChampItem champion = actType == "pick" ? _currentRole.PickChamp : _currentRole.BanChamp;
         Logger.Info(LogModule.PickAndBan, $"Locking {champion.Name} champion for {actType}...");
 
-        string[] champSelectAction = Requests.ClientRequest("PATCH", "lol-champ-select/v1/session/actions/" + actionId, true, "{\"completed\":true,\"championId\":" + champion.Id + "}").Result;
+        string[] champSelectAction = Requests.ClientRequest("PATCH", "lol-champ-select/v1/session/actions/" + actionId, true, "{\"completed\":true,\"championId\":" + champion.Id + "}");
         if (champSelectAction[0] != "204")
         {
             return;

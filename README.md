@@ -74,6 +74,7 @@ My Discord: `1043813027205619804`
 - [ ] Improve the Log system (Add more informations + best managment of errors...)
 - [ ] Replace all `Console.WriteLine()` by the new log system
 - [ ] Replace all screenshots in README when the new UI will be done
+- [ ] Remove Discord Access
 
 ## `📝 License`
 

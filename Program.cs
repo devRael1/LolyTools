@@ -1,9 +1,8 @@
 ﻿using Loly.src;
-using Loly.src.LeagueClient;
 using Loly.src.Logs;
 using Loly.src.Menus;
 using Loly.src.Menus.Core;
-using Loly.src.Tools;
+using Loly.src.Tasks;
 using Loly.src.Variables;
 
 namespace Loly;
@@ -20,26 +19,22 @@ internal class Program
             Updater.CheckUpdate();
         }
 
-        new Thread(() =>
-        {
-            Task taskLeagueClient = new(Ux.LeagueClientTask);
-            taskLeagueClient.Start();
+        ExecuteMultipleTasks();
 
-            Task taskAutoAccept = new(Requests.AnalyzeSession);
-            taskAutoAccept.Start();
-
-            Task taskLobbyRevealer = new(LobbyRevealer.GetLobbyRevealing);
-            taskLobbyRevealer.Start();
-
-            Task[] tasks = { taskLeagueClient, taskAutoAccept, taskLobbyRevealer };
-            Task.WaitAll(tasks);
-        }).Start();
-
-        // Wait for the League Client to be ready
+        // Wait for the League Client (and app) to be ready
         Thread.Sleep(3000);
 
         Logger.PrintHeader();
         Interface.ShowArt();
         MainMenu.StartMenu();
+    }
+
+    public static void ExecuteMultipleTasks()
+    {
+        Task task1 = Task.Run(() => LeagueClientTask.LolClientTask());
+        Task task2 = Task.Run(() => AnalyzeSessionTask.AnalyzeSession());
+        Task task3 = Task.Run(() => AnalyzeSessionTask.AnalyzeSession());
+
+        Task.WhenAll(task1, task2, task3);
     }
 }

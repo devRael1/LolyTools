@@ -13,15 +13,11 @@ A set of several small tools for league of legends.
 
 You must install .NET Desktop Runtime 6 / .NET Runtime 6 - Windows to use this tool.
 
-.NET Desktop Runtime
-6 -> [x86 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.16-windows-x86-installer) /
-[x64 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.16-windows-x64-installer)
+.NET Desktop Runtime 6 -> [x86 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.16-windows-x86-installer) / [x64 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.16-windows-x64-installer)
 
-.NET Runtime
-6 -> [x86 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-6.0.16-windows-x86-installer) /
-[x64 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-6.0.16-windows-x64-installer)
+.NET Runtime 6 -> [x86 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-6.0.16-windows-x86-installer) / [x64 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-6.0.16-windows-x64-installer)
 
-No need to install this if you have a more recent version installed<br>
+No need to install this if you have a more recent version installed.
 
 ## `⚙️ Features`
 
@@ -32,7 +28,7 @@ No need to install this if you have a more recent version installed<br>
 - [x] Auto Pick and Ban champion (By roles => Top, Jungle, Mid, ADC, Support)
 - [x] Auto Chat (Auto send messages when you are in lobby)
 - [x] Get OP.GG stats of your team (SoloQ & DuoQ / FlexQ)
-- [x] Logs Menu (Real Time)
+- [x] Advanced Logs system (Real Time & Persistent)
 - [x] Language Changer (Shortcuts on Desktop)
 - [x] Use JSON file to save your settings
 - [x] Auto update (Github API)
@@ -73,14 +69,11 @@ My Discord: `1043813027205619804`
 
 ### BIG UPDATE COMING SOON...
 
-- [	] Make BackgroundWorker for 3 tasks (AnalyzeSession, LeagueClient, LobbyRevealing)
 - [ ] Make dodge (champ select) detection for logs system
 - [ ] Make *Refresh* system for Stats with OP.GG (POST request)
-- [ ] Found a way to create persistent logs system (save log file)
 - [ ] Improve the Log system (Add more informations + best managment of errors...)
-- [ ] Add new setting to auto-send message with OP.GG stats of player in a lobby
 - [ ] Replace all `Console.WriteLine()` by the new log system
-- [ ] Add new info to the bottom of main logo in console (level, game name, summoner ID...)
+- [ ] Replace all screenshots in README when the new UI will be done
 
 ## `📝 License`
 

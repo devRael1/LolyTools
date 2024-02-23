@@ -1,5 +1,4 @@
-﻿using Loly.src.LeagueClient;
-using Loly.src.Logs;
+﻿using Loly.src.Logs;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
 using Loly.src.Variables.Enums;
@@ -10,40 +9,16 @@ namespace Loly.src.Tools;
 
 public class LobbyRevealer
 {
-    private static string _opggtoken = "";
+    public static string OpGGToken = "";
 
-    public static void GetLobbyRevealing()
-    {
-        while (true)
-        {
-            if (!Settings.LobbyRevealer || Global.Session != "ChampSelect" || Global.FetchedPlayers)
-            {
-                Thread.Sleep(5000);
-                continue;
-            }
-
-            Global.PlayerList.Clear();
-            if (_opggtoken == null)
-            {
-                GetTokenOpGg();
-            }
-
-            Thread.Sleep(3000);
-            GetPlayers(Requests.ClientRequest("GET", "/chat/v5/participants/lol-champ-select", false)[1]);
-            _ = Task.Run(GetAdvancedPlayersStats);
-
-            Global.FetchedPlayers = true;
-        }
-    }
-
-    private static void GetTokenOpGg()
+    public static void GetTokenOpGg()
     {
         Logger.Info(LogModule.LobbyRevealer, "Fetching OP.GG token...");
         string response = Requests.WebRequest("https://www.op.gg/multisearch");
-        _opggtoken = Utils.LrParse(response, "\"buildId\":\"", "\",\"assetPrefix") ?? "null";
+        OpGGToken = Utils.LrParse(response, "\"buildId\":\"", "\",\"assetPrefix") ?? "null";
     }
 
-    private static void GetPlayers(string req)
+    public static void GetPlayers(string req)
     {
         Logger.Info(LogModule.LobbyRevealer, "Getting Players for revealing lobby...");
         dynamic deserialized = JsonConvert.DeserializeObject(req);
@@ -52,7 +27,7 @@ public class LobbyRevealer
         List<string> cacheNames = (from dynamic player in teamPlayers select $"{player.game_name}#{player.game_tag}").Cast<string>().ToList();
 
         string stats = Requests.WebRequest(
-            $"https://www.op.gg/_next/data/{_opggtoken}/en_US/multisearch/{Global.Region}.json?summoners={string.Join(",", cacheNames.Select(x => x))}&region={Global.Region}");
+            $"https://www.op.gg/_next/data/{OpGGToken}/en_US/multisearch/{Global.Region}.json?summoners={string.Join(",", cacheNames.Select(x => x))}&region={Global.Region}");
         if (stats == null)
         {
             return;
@@ -81,20 +56,20 @@ public class LobbyRevealer
         }
     }
 
-    private static async Task<string> GetPlayerStats(Player player)
+    public static string GetPlayerStats(Player player)
     {
-        string stats = await Requests.WebRequestAsync(
-            $"https://www.op.gg/_next/data/{_opggtoken}/en_US/summoners/{Global.Region}/{player.Username}.json?region={Global.Region}&summoner={player.Username}");
+        string stats = Requests.WebRequest(
+            $"https://www.op.gg/_next/data/{OpGGToken}/en_US/summoners/{Global.Region}/{player.Username}.json?region={Global.Region}&summoner={player.Username}");
         return stats;
     }
 
-    private static void GetAdvancedPlayersStats()
+    public static void GetAdvancedPlayersStats()
     {
         Logger.Info(LogModule.LobbyRevealer, $"Getting advanced stats of {Global.PlayerList.Count} players in background...");
 
         foreach (Player player in Global.PlayerList)
         {
-            string stats = GetPlayerStats(player).Result;
+            string stats = GetPlayerStats(player);
 
             dynamic json = JsonConvert.DeserializeObject(stats);
             dynamic summoner = json.pageProps.data.league_stats;

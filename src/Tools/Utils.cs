@@ -123,4 +123,12 @@ public class Utils
     {
         return Global.PlayerList.Find(x => long.Parse(x.Id) == long.Parse(value));
     }
+
+    public static string FindString(string text, string from, string to)
+    {
+        int pFrom = text.IndexOf(from, StringComparison.Ordinal) + from.Length;
+        int pTo = text.LastIndexOf(to, StringComparison.Ordinal);
+
+        return text[pFrom..pTo];
+    }
 }

@@ -1,6 +1,6 @@
 ﻿using Alba.CsConsoleFormat;
-using Loly.src.LeagueClient;
 using Loly.src.Menus.Core;
+using Loly.src.Tools;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
 using Newtonsoft.Json;

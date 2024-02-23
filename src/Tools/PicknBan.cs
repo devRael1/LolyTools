@@ -1,5 +1,4 @@
-﻿using Loly.src.LeagueClient;
-using Loly.src.Logs;
+﻿using Loly.src.Logs;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
 using Loly.src.Variables.Enums;
@@ -20,7 +19,7 @@ public class PicknBan
 
     public static void HandleChampSelect()
     {
-        string[] currentChampSelect = Requests.ClientRequest("GET", "lol-champ-select/v1/session", true);
+        string[] currentChampSelect = Requests.ClientRequest("GET", "lol-champ-select/v1/session", true).Result;
         if (currentChampSelect[0] != "200")
         {
             return;
@@ -211,8 +210,7 @@ public class PicknBan
         ChampItem champion = actType == "pick" ? _currentRole.PickChamp : _currentRole.BanChamp;
         Logger.Info(LogModule.PickAndBan, $"Hover {champion.Name} champion for {actType}...");
 
-        string[] champSelectAction =
-            Requests.ClientRequest("PATCH", "lol-champ-select/v1/session/actions/" + actionId, true, "{\"championId\":" + champion.Id + "}");
+        string[] champSelectAction = Requests.ClientRequest("PATCH", "lol-champ-select/v1/session/actions/" + actionId, true, "{\"championId\":" + champion.Id + "}").Result;
         if (champSelectAction[0] != "204")
         {
             return;
@@ -234,8 +232,7 @@ public class PicknBan
         ChampItem champion = actType == "pick" ? _currentRole.PickChamp : _currentRole.BanChamp;
         Logger.Info(LogModule.PickAndBan, $"Locking {champion.Name} champion for {actType}...");
 
-        string[] champSelectAction =
-            Requests.ClientRequest("PATCH", "lol-champ-select/v1/session/actions/" + actionId, true, "{\"completed\":true,\"championId\":" + champion.Id + "}");
+        string[] champSelectAction = Requests.ClientRequest("PATCH", "lol-champ-select/v1/session/actions/" + actionId, true, "{\"completed\":true,\"championId\":" + champion.Id + "}").Result;
         if (champSelectAction[0] != "204")
         {
             return;

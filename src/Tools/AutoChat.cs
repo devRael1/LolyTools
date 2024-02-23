@@ -1,5 +1,4 @@
-﻿using Loly.src.LeagueClient;
-using Loly.src.Logs;
+﻿using Loly.src.Logs;
 using Loly.src.Variables;
 using Loly.src.Variables.Enums;
 using Newtonsoft.Json;

@@ -20,6 +20,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="C:\Users\Admin\.nuget\packages\gommon\2.4.3\contentFiles\any\netstandard2.1\LICENSE" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Content Include="Ressources\logo.ico" />
 	</ItemGroup>
 

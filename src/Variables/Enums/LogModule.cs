@@ -8,6 +8,7 @@
         LobbyRevealer,
         LanguageChanger,
         Loly,
-        Updater
+        Updater,
+        Tasks
     }
 }

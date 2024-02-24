@@ -6,9 +6,10 @@ namespace Loly.src.Variables;
 
 public class Global
 {
-    public const string DiscordInvite = "https://discord.gg/NAQNuBnSC3";
+    public const string GithubPage = "https://github.com/devRael1/LolyTools";
     public const string SoftName = "League of Legends - Loly Tools";
     public const string SoftAuthor = "devRael";
+    private static string _session = "";
 
     public static List<Player> PlayerList = new();
     public static List<ChampItem> ChampionsList = new();
@@ -28,10 +29,10 @@ public class Global
 
     public static string Session
     {
-        get => Session;
+        get => _session;
         set
         {
-            Session = value;
+            _session = value;
             Logger.Info(LogModule.Loly, $"Analyze session - Phase Detected: {Session}", LogsMenuEnable ? LogType.Both : LogType.File);
         }
     }

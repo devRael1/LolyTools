@@ -16,7 +16,7 @@ public class CreditsMenu
 
             int choice = 7;
             UpdateMenuTitle("credits");
-            string[] choices = { "Discord Creator", "Back" };
+            string[] choices = { "Github Repository", "Back" };
 
             MenuBuilder creditsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
             while (choice == 7)
@@ -32,7 +32,7 @@ public class CreditsMenu
             }
 
             ShowCreditsMenu();
-            OpenUrl(Global.DiscordInvite);
+            OpenUrl(Global.GithubPage);
         }
 
         MainMenu.StartMenu();

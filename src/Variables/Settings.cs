@@ -1,4 +1,5 @@
-﻿using Loly.src.Tools;
+﻿using Loly.src.Logs;
+using Loly.src.Tools;
 using Loly.src.Variables.Class;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -13,6 +14,7 @@ public class Settings
     public static readonly List<string> ChatMessages = new();
 
     public static bool EnableAutoUpdate { get; set; }
+    public static int ClearLogsFilesDays { get; set; }
     public static bool LobbyRevealer { get; set; }
     public static bool AutoAccept { get; set; }
     public static bool AutoAcceptOnce { get; set; }
@@ -49,6 +51,7 @@ public class Settings
         return new JObject
         {
             { nameof(EnableAutoUpdate), EnableAutoUpdate },
+            { nameof(ClearLogsFilesDays), ClearLogsFilesDays },
             { nameof(Tools), tools },
             { nameof(AutoAccept), autoaccept },
             { nameof(AutoChat), autochat },
@@ -85,6 +88,7 @@ public class Settings
         {
             JObject obj = JObject.Parse(LoadJson().ToString() ?? throw new InvalidOperationException());
             EnableAutoUpdate = (bool)obj[nameof(EnableAutoUpdate)];
+            ClearLogsFilesDays = (int)obj[nameof(ClearLogsFilesDays)];
             LobbyRevealer = (bool)obj[nameof(Tools)][nameof(LobbyRevealer)];
             AutoAccept = (bool)obj[nameof(Tools)][nameof(AutoAccept)];
             AutoAcceptOnce = (bool)obj[nameof(AutoAccept)][nameof(AutoAcceptOnce)];
@@ -106,6 +110,7 @@ public class Settings
     public static void SetDefaultSettings()
     {
         EnableAutoUpdate = true;
+        ClearLogsFilesDays = 7;
         LobbyRevealer = false;
         AutoAccept = false;
         AutoAcceptOnce = false;
@@ -128,6 +133,7 @@ public class Settings
         }
         catch (Exception ex)
         {
+            Logger.Error(Enums.LogModule.AutoChat, "Error while saving settings...", ex);
             Utils.ShowError(ex);
         }
     }
@@ -141,6 +147,7 @@ public class Settings
             }
             catch (Exception ex)
             {
+                Logger.Error(Enums.LogModule.AutoChat, "Error while saving settings...", ex);
                 Utils.ShowError(ex);
             }
         }

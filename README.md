@@ -5,7 +5,7 @@
 League Of Legends Tools.<br>
 A set of several small tools for league of legends.
 
-### Works with the latest `14.3` update of League of Legends.
+### Works with the latest `14.4` update of League of Legends.
 
 ![Loly - Tools](https://i.imgur.com/8o9dfBC.png)
 
@@ -14,7 +14,6 @@ A set of several small tools for league of legends.
 You must install .NET Desktop Runtime 6 / .NET Runtime 6 - Windows to use this tool.
 
 .NET Desktop Runtime 6 -> [x86 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.16-windows-x86-installer) / [x64 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.16-windows-x64-installer)
-
 .NET Runtime 6 -> [x86 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-6.0.16-windows-x86-installer) / [x64 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-6.0.16-windows-x64-installer)
 
 No need to install this if you have a more recent version installed.
@@ -22,7 +21,7 @@ No need to install this if you have a more recent version installed.
 ## `⚙️ Features`
 
 - [x] Interactive Menu in Console
-- [x] Multi-region support
+- [x] Multi-region support (DE, FR, ES, JP, CN...)
 - [x] Lobby Revealer (Ranked games)
 - [x] Auto Accept match (Auto accept queue)
 - [x] Auto Pick and Ban champion (By roles => Top, Jungle, Mid, ADC, Support)
@@ -67,14 +66,13 @@ My Discord: `1043813027205619804`
 
 ## `🧾 Todo List`
 
-### BIG UPDATE COMING SOON...
+### v2.0.0 UPDATE COMING SOON...
 
 - [ ] Make dodge (champ select) detection for logs system
 - [ ] Make *Refresh* system for Stats with OP.GG (POST request)
 - [ ] Improve the Log system (Add more informations + best managment of errors...)
 - [ ] Replace all `Console.WriteLine()` by the new log system
 - [ ] Replace all screenshots in README when the new UI will be done
-- [ ] Remove Discord Access
 
 ## `📝 License`
 

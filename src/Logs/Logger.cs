@@ -183,6 +183,7 @@ public static class Logger
             LogModule.LobbyRevealer => (Color.LimeGreen, "[LOBBY REVEALER]"),
             LogModule.LanguageChanger => (Color.Red, "[LANGUAGE CHANGER]"),
             LogModule.Loly => (Color.DarkGreen, "[LOLY TOOLS]"),
+            LogModule.Tasks => (Color.Aqua, "[TASKS]"),
             _ => throw new InvalidOperationException($"The specified LogSource {source} is invalid.")
         };
     }

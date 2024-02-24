@@ -1,4 +1,4 @@
-﻿using Loly.src.Tasks;
+﻿using Loly.src.Tasks.Scheduled;
 using Loly.src.Variables;
 using System.Net.Http.Headers;
 using System.Text;

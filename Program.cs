@@ -19,7 +19,8 @@ internal class Program
             Updater.CheckUpdate();
         }
 
-        ExecuteMultipleTasks();
+        TaskCore tasks = new();
+        tasks.StartAllTasks();
 
         // Wait for the League Client (and app) to be ready
         Thread.Sleep(3000);
@@ -27,14 +28,5 @@ internal class Program
         Logger.PrintHeader();
         Interface.ShowArt();
         MainMenu.StartMenu();
-    }
-
-    public static void ExecuteMultipleTasks()
-    {
-        Task task1 = Task.Run(() => LeagueClientTask.LolClientTask());
-        Task task2 = Task.Run(() => AnalyzeSessionTask.AnalyzeSession());
-        Task task3 = Task.Run(() => AnalyzeSessionTask.AnalyzeSession());
-
-        Task.WhenAll(task1, task2, task3);
     }
 }

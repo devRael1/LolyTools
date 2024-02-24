@@ -10,7 +10,7 @@ using System.Text;
 using static Loly.src.Tools.Utils;
 using Console = Colorful.Console;
 
-namespace Loly.src.Tasks
+namespace Loly.src.Tasks.Scheduled
 {
     public class LeagueClientTask
     {
@@ -20,38 +20,28 @@ namespace Loly.src.Tasks
         {
             if (LeagueClientIsOpen())
             {
-                GetLeagueAuth();
-                LoadSummonerId();
-            }
-
-            while (true)
-            {
                 Process client = Process.GetProcessesByName("LeagueClientUx").FirstOrDefault();
-                if (client != null)
+                if (Global.AuthClient.Count == 0 && Global.AuthRiot.Count == 0)
                 {
-                    if (Global.AuthClient.Count == 0 && Global.AuthRiot.Count == 0)
-                    {
-                        GetLeagueAuth();
-                    }
-
-                    if (Global.Summoner.SummonerId == null)
-                    {
-                        LoadSummonerId(true);
-                    }
-
-                    Global.Region ??= GetRegion(Requests.WaitSuccessClientRequest("GET", "/riotclient/region-locale", true)[1]).ToLower();
-                    Global.IsLeagueOpen = true;
-                    if (!_lcuPid.Equals(client.Id))
-                    {
-                        _lcuPid = client.Id;
-                    }
-                }
-                else
-                {
-                    Global.IsLeagueOpen = false;
+                    GetLeagueAuth();
                 }
 
-                Thread.Sleep(TimeSpan.FromSeconds(15));
+                LoadSummonerId(false);
+
+                Global.Region ??= GetRegion(Requests.WaitSuccessClientRequest("GET", "/riotclient/region-locale", true)[1]).ToLower();
+                Global.IsLeagueOpen = true;
+                if (!_lcuPid.Equals(client.Id))
+                {
+                    _lcuPid = client.Id;
+                }
+            }
+            else
+            {
+                Global.IsLeagueOpen = false;
+                Global.AuthRiot.Clear();
+                Global.AuthClient.Clear();
+                Global.Summoner = new CurrentSummoner();
+                _lcuPid = 0;
             }
         }
 
@@ -62,11 +52,13 @@ namespace Loly.src.Tasks
 
         }
 
-        private static void GetLeagueAuth()
+        private static void GetLeagueAuth(bool clearAuth = false)
         {
-            Global.IsLeagueOpen = false;
-            Global.AuthRiot.Clear();
-            Global.AuthClient.Clear();
+            if (clearAuth)
+            {
+                Global.AuthRiot.Clear();
+                Global.AuthClient.Clear();
+            }
 
             try
             {

@@ -131,4 +131,19 @@ public class Utils
 
         return text[pFrom..pTo];
     }
+
+    public static string FormatBytes(long bytes, bool seconds, int decimals = 2)
+    {
+        if (bytes == 0)
+        {
+            return "0 octets";
+        }
+
+        const int k = 1024;
+        int dm = decimals < 0 ? 0 : decimals;
+        string[] sizes = { "Octets", "Ko", "Mo", "Go", "To", "Po", "Eo", "Zo", "Yo" };
+
+        int i = (int)Math.Floor(Math.Log(bytes) / Math.Log(k));
+        return $"{(bytes / Math.Pow(k, i)).ToString($"F{dm}")} {sizes[i]}{(seconds ? "/s" : "")}";
+    }
 }

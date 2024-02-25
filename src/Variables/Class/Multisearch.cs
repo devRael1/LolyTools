@@ -23,6 +23,7 @@ public class SoloTierInfo
 public class Summoner
 {
     public int Id { get; set; }
+    [JsonProperty("game_name")] public string GameName { get; set; }
     public string Tagline { get; set; }
     public string Name { get; set; }
     public int? Level { get; set; }

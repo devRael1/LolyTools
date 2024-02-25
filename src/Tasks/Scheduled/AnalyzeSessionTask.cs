@@ -46,6 +46,10 @@ namespace Loly.src.Tasks.Scheduled
                             case "ChampSelect":
                                 {
                                     Global.AcceptedCurrentMatch = false;
+                                    if (Settings.LobbyRevealer)
+                                    {
+                                        LobbyRevealer.GetLobbyRevealing();
+                                    }
                                     if (Settings.AutoChat || Settings.PicknBan)
                                     {
                                         PicknBan.HandleChampSelect();

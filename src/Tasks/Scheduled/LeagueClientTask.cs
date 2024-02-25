@@ -20,6 +20,8 @@ namespace Loly.src.Tasks.Scheduled
         {
             if (LeagueClientIsOpen())
             {
+                Global.IsLeagueOpen = true;
+
                 Process client = Process.GetProcessesByName("LeagueClientUx").FirstOrDefault();
                 if (Global.AuthClient.Count == 0 && Global.AuthRiot.Count == 0)
                 {
@@ -30,10 +32,9 @@ namespace Loly.src.Tasks.Scheduled
 
                 if (Global.Region == "")
                 {
-                    (Global.Region = GetRegion(Requests.WaitSuccessClientRequest("GET", "/riotclient/region-locale", true)[1])).ToLower();
+                    Global.Region = GetRegion(Requests.WaitSuccessClientRequest("GET", "/riotclient/region-locale", true)[1]).ToLower();
                 }
 
-                Global.IsLeagueOpen = true;
                 if (!_lcuPid.Equals(client.Id))
                 {
                     _lcuPid = client.Id;
@@ -53,7 +54,6 @@ namespace Loly.src.Tasks.Scheduled
         {
             Process client = Process.GetProcessesByName("LeagueClientUx").FirstOrDefault();
             return client != null;
-
         }
 
         private static void GetLeagueAuth(bool clearAuth = false)

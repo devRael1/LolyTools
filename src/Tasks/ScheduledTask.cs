@@ -1,4 +1,7 @@
-﻿using System.Timers;
+﻿using Loly.src.Logs;
+using Loly.src.Variables;
+using Loly.src.Variables.Enums;
+using System.Timers;
 using Timer = System.Timers.Timer;
 
 namespace Loly.src.Tasks.Scheduled
@@ -31,7 +34,13 @@ namespace Loly.src.Tasks.Scheduled
         {
             if (runNow)
             {
-                Task.Run(taskAction);
+                Task.Run(taskAction).ContinueWith(task =>
+                {
+                    if (task.IsFaulted)
+                    {
+                        Logger.Error(LogModule.Tasks, $"An error occured while executing the task", task.Exception, Global.LogsMenuEnable ? LogType.Both : LogType.File);
+                    }
+                });
             }
 
             if (!infinite)
@@ -48,7 +57,13 @@ namespace Loly.src.Tasks.Scheduled
 
         private void TimerElapsed(object sender, ElapsedEventArgs e)
         {
-            Task.Run(taskAction);
+            Task.Run(taskAction).ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    Logger.Error(LogModule.Tasks, $"An error occured while executing the task", task.Exception, Global.LogsMenuEnable ? LogType.Both : LogType.File);
+                }
+            });
         }
     }
 }

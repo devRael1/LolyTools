@@ -40,7 +40,7 @@ public class LobbyRevealerMenu
                     if (Global.PlayerList.Count == 0)
                     {
                         Console.WriteLine(" No Players in the list.", Colors.WarningColor);
-                        Console.WriteLine(" Application did not detect a champ select in progress.", Colors.WarningColor);
+                        Console.WriteLine(" Loly Tools did not detect a champ select in progress.", Colors.WarningColor);
                         Console.WriteLine(" Press Enter to continue...", Colors.WarningColor);
 
                         _ = Console.ReadKey();
@@ -60,9 +60,9 @@ public class LobbyRevealerMenu
     {
         int choice = 10;
         UpdateMenuTitle("lv_get_opgg");
-        List<string> choices = Global.PlayerList.Select(t => $"[OP.GG] - {t.Username}").ToList();
+        List<string> choices = Global.PlayerList.Select(t => $"[OP.GG] - {t.UserTag}").ToList();
 
-        if (Global.PlayerList.Count > 1)
+        if (Global.PlayerList.Count >= 1)
         {
             choices.Add("Get All OP.GG");
         }
@@ -180,10 +180,10 @@ public class LobbyRevealerMenu
 
         for (int i = 0; i < 5; i++)
         {
-            border1.Children.Add(CreateSpan("Player " + (i + 1) + "      -  ", 1, Colors.MenuTextColor));
-            string username = Global.PlayerList.ElementAtOrDefault(i)?.Username ?? "null\n";
-            border1.Children.Add(CreateSpan($"{username}", 0, Colors.MenuPrimaryColor));
-            if (username == "null\n")
+            border1.Children.Add(CreateSpan("Player " + (i + 1) + "     -  ", 1, Colors.MenuTextColor));
+            string usertag = Global.PlayerList.ElementAtOrDefault(i)?.UserTag ?? "null\n";
+            border1.Children.Add(CreateSpan($"{usertag}", 0, Colors.MenuPrimaryColor));
+            if (usertag == "null\n")
             {
                 continue;
             }
@@ -246,8 +246,10 @@ public class LobbyRevealerMenu
     {
         Console.SetCursorPosition(0, TopLength);
 
-        int winratesoloq = (int)Math.Round((float)(player.SoloDuoQ.Wins / (player.SoloDuoQ.Wins + player.SoloDuoQ.Losses) * 100));
-        int winrateflex = (int)Math.Round((float)(player.FlexQ.Wins / (player.FlexQ.Wins + player.FlexQ.Losses) * 100));
+        int winratesoloq = player.SoloDuoQ.Wins + player.SoloDuoQ.Losses > 0 ?
+            (int)Math.Round((float)(player.SoloDuoQ.Wins / (player.SoloDuoQ.Wins + player.SoloDuoQ.Losses) * 100)) : 0;
+        int winrateflex = player.FlexQ.Wins + player.FlexQ.Losses > 0 ?
+            (int)Math.Round((float)(player.FlexQ.Wins / (player.FlexQ.Wins + player.FlexQ.Losses) * 100)) : 0;
 
         if (winratesoloq <= 0)
         {

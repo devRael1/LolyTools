@@ -1,4 +1,6 @@
-﻿namespace Loly.src.Variables.Class;
+﻿using Newtonsoft.Json;
+
+namespace Loly.src.Variables.Class;
 
 public class Player
 {
@@ -11,6 +13,7 @@ public class Player
         Id = 0;
         Level = 0;
         UserTag = $"{username}#{tag}";
+        UserTagUrlReady = $"{username}-{tag}";
         SoloDuoQ = new QueueStats();
         FlexQ = new QueueStats();
     }
@@ -18,6 +21,7 @@ public class Player
     public string Username { get; }
     public string Tag { get; set; }
     public string UserTag { get; set; }
+    public string UserTagUrlReady { get; set; }
     public string Link { get; }
     public int? Id { get; set; }
     public int? Level { get; set; }
@@ -60,26 +64,15 @@ public class PlayerStatsResponse
 
 public class Data
 {
-    public List<LeagueStat> LeagueStats { get; set; }
+    [JsonProperty("league_stats")] public List<LeagueStat> LeagueStats { get; set; }
     public int Id { get; set; }
 }
 
 public class LeagueStat
 {
-    public QueueInfo QueueInfo { get; set; }
-    public TierInfo TierInfo { get; set; }
+    [JsonProperty("tier_info")] public TierInfo TierInfo { get; set; }
     public int? Win { get; set; }
     public int? Lose { get; set; }
-    public bool IsHotStreak { get; set; }
-    public bool IsInactive { get; set; }
-    public string UpdatedAt { get; set; }
-}
-
-public class QueueInfo
-{
-    public int? Id { get; set; }
-    public string QueueTranslate { get; set; }
-    public string GameType { get; set; }
 }
 
 public class TierInfo

@@ -76,6 +76,7 @@ My Discord: `1043813027205619804`
 ==========================================
 - [ ] Improve the Log system (Add more informations + best managment of errors...)
 - [ ] Add a new logs system to log all requests (Client, OP.GG...)
+- [	] Improve error logs
 
 ## `📝 License`
 

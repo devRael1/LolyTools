@@ -19,8 +19,36 @@ public class LobbyRevealer
         Logger.Info(LogModule.LobbyRevealer, $"Fetching OP.GG token successfully (Token: {OpGGToken})", Global.LogsMenuEnable ? LogType.Both : LogType.File);
     }
 
+    public static void GetLobbyRevealing()
+    {
+        if (Global.FetchedPlayers)
+        {
+            return;
+        }
+
+        if (OpGGToken == null)
+        {
+            GetTokenOpGg();
+        }
+
+        GetPlayers(Requests.ClientRequest("GET", "/chat/v5/participants/lol-champ-select", false)[1])
+        // TODO: Create a function for creating a task and logging the exception in Utils.cs
+        Task.Run(GetAdvancedPlayersStatsAsync)
+            .ContinueWith(t =>
+            {
+                if (t.IsFaulted)
+                {
+                    Logger.Error(LogModule.LobbyRevealer, "Error while fetching players stats...", t.Exception);
+                }
+            });
+
+        Global.FetchedPlayers = true;
+    }
+
     public static void GetPlayers(string req)
     {
+        Global.PlayerList.Clear();
+
         Logger.Info(LogModule.LobbyRevealer, "Fetching Players for revealing lobby...", Global.LogsMenuEnable ? LogType.Both : LogType.File);
         ParticipantsResponse teamPlayers = JsonConvert.DeserializeObject<ParticipantsResponse>(req);
 
@@ -39,7 +67,7 @@ public class LobbyRevealer
         MultisearchResponse response = JsonConvert.DeserializeObject<MultisearchResponse>(stats);
         foreach (Summoner sum in response.PageProps.Summoners)
         {
-            Player newPlayer = new(sum.Name, sum.Tagline, $"https://www.op.gg/summoners/{Global.Region}/{sum.Name}#{sum.Tagline}")
+            Player newPlayer = new(sum.GameName, sum.Tagline, $"https://www.op.gg/summoners/{Global.Region}/{sum.GameName}-{sum.Tagline}")
             {
                 Id = sum.Id,
                 Level = (int)sum.Level
@@ -64,23 +92,6 @@ public class LobbyRevealer
         var tasks = Global.PlayerList.Select(player => Task.Run(() =>
         {
             string stats = GetPlayerStats(player);
-
-            // TODO : Check the response of stats variable, there is an error :
-            // One or more errors occurred. (Value cannot be null. (Parameter 'value'))
-            // 
-            // System.AggregateException: One or more errors occurred. (Value cannot be null. (Parameter 'value'))
-            //  ---> System.ArgumentNullException: Value cannot be null. (Parameter 'value')
-            //    at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
-            //    at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
-            //    at Loly.src.Tools.LobbyRevealer.<>c__DisplayClass6_0.<GetAdvancedPlayersStatsAsync>b__1() in D:\Loly tools\src\Tools\LobbyRevealer.cs:line 68
-            //    at System.Threading.Tasks.Task.InnerInvoke()
-            //    at System.Threading.Tasks.Task.<>c.<.cctor>b__272_0(Object obj)
-            //    at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
-            // --- End of stack trace from previous location ---
-            //    at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
-            //    at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
-            // --- End of stack trace from previous location ---
-            //    at Loly.src.Tools.LobbyRevealer.GetAdvancedPlayersStatsAsync() in D:\Loly tools\src\Tools\LobbyRevealer.cs:line 84
             PlayerStatsResponse response = JsonConvert.DeserializeObject<PlayerStatsResponse>(stats);
             List<LeagueStat> summoner = response.PageProps.Data.LeagueStats;
             int sumId = response.PageProps.Data.Id;
@@ -104,7 +115,7 @@ public class LobbyRevealer
 
     public static string GetPlayerStats(Player player)
     {
-        string url = $"https://www.op.gg/_next/data/{OpGGToken}/en_US/summoners/{Global.Region}/{player.UserTag}.json?region={Global.Region}&summoner={player.UserTag}";
+        string url = $"https://www.op.gg/_next/data/{OpGGToken}/en_US/summoners/{Global.Region}/{player.UserTagUrlReady}.json?region={Global.Region}&summoner={player.UserTagUrlReady}";
         string stats = Requests.WebRequest(url);
         return stats;
     }

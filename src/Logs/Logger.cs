@@ -19,7 +19,7 @@ public static class Logger
 
     static Logger()
     {
-        _ = Directory.CreateDirectory(LogFolder);
+        Directory.CreateDirectory(LogFolder);
     }
 
     private static void Log(LogSeverity s, LogModule from, string message, Exception e = null, LogType logType = LogType.Both)
@@ -40,14 +40,12 @@ public static class Logger
 
     internal static void PrintHeader()
     {
-        if (_headerPrinted)
+        if (!_headerPrinted)
         {
-            return;
+            Interface.ArtName.Split("\n", StringSplitOptions.TrimEntries).ForEach(ln => Info(LogModule.Loly, ln, LogType.File));
+            Info(LogModule.Loly, $"Currently running Loly Tools V{Version.FullVersion}.", LogType.File);
+            _headerPrinted = true;
         }
-
-        Interface.ArtName.Split("\n", StringSplitOptions.TrimEntries).ForEach(ln => Info(LogModule.Loly, ln, LogType.File));
-        Info(LogModule.Loly, $"Currently running Loly Tools V{Version.FullVersion}.", LogType.File);
-        _headerPrinted = true;
     }
 
     public static void Debug(LogModule src, string message)
@@ -60,33 +58,28 @@ public static class Logger
         Log(LogSeverity.Info, src, message, null, logType);
     }
 
-    public static void Error(LogModule src, string message, Exception e = null)
+    public static void Error(LogModule src, string message, Exception e = null, LogType logType = LogType.Both)
     {
-        Log(LogSeverity.Error, src, message, e);
+        Log(LogSeverity.Error, src, message, e, logType);
     }
 
-    public static void Critical(LogModule src, string message, Exception e = null)
+    public static void Warn(LogModule src, string message, Exception e = null, LogType logType = LogType.Both)
     {
-        Log(LogSeverity.Critical, src, message, e);
-    }
-
-    public static void Warn(LogModule src, string message, Exception e = null)
-    {
-        Log(LogSeverity.Warning, src, message, e);
+        Log(LogSeverity.Warning, src, message, e, logType);
     }
 
     private static void Execute(LogSeverity s, LogModule src, string message, Exception e)
     {
         StringBuilder contentFile = new();
         (Color color, string value) = VerifySeverity(s);
-        Append($"{value}".PadRight(22), color);
+        Append($"{value}", color);
 
         DateTime dt = DateTime.Now.ToLocalTime();
-        _ = contentFile.Append($"[{dt.FormatDate()}] {value}» ");
+        contentFile.Append($"[{dt.FormatDate()}] {value}» ");
 
         (color, value) = VerifySource(src);
-        Append($"{value}".PadRight(15), color);
-        _ = contentFile.Append($"{value}» ");
+        Append($"{value}» ", color);
+        contentFile.Append($"{value}» ");
 
         if (!string.IsNullOrWhiteSpace(message))
         {
@@ -101,7 +94,7 @@ public static class Logger
 
         Console.Write(Environment.NewLine);
 
-        _ = contentFile.AppendLine();
+        contentFile.AppendLine();
         File.AppendAllText(NormalizeLogFilePath(LogTempFile, DateTime.Now, LogFolder), contentFile.ToString());
         if (e != null)
         {
@@ -115,30 +108,29 @@ public static class Logger
 
         (_, string value) = VerifySeverity(s);
         DateTime dt = DateTime.Now.ToLocalTime();
-        _ = contentFile.Append($"[{dt.FormatDate()}] {value}» ");
+        contentFile.Append($"[{dt.FormatDate()}] {value}» ");
 
         (_, value) = VerifySource(src);
-        _ = contentFile.Append($"{value}» ");
+        contentFile.Append($"{value}» ");
 
         if (!string.IsNullOrWhiteSpace(message))
         {
-            _ = contentFile.Append(message);
+            contentFile.Append(message);
         }
 
-        _ = contentFile.AppendLine();
+        contentFile.AppendLine();
         File.AppendAllText(NormalizeLogFilePath(LogTempFile, DateTime.Now, LogFolder), contentFile.ToString());
     }
 
     private static void ExecuteOnlyInConsole(LogSeverity s, LogModule src, string message)
     {
         (Color color, string value) = VerifySeverity(s);
-        Append($"{value}".PadRight(22), color);
+        Append($"{value}", color);
 
         DateTime dt = DateTime.Now.ToLocalTime();
         Append($"[{dt.FormatDate()}] {value}» ", color);
 
         (color, value) = VerifySource(src);
-        Append($"{value}".PadRight(15), color);
         Append($"{value}» ", color);
 
         if (!string.IsNullOrWhiteSpace(message))
@@ -155,7 +147,7 @@ public static class Logger
         bool directoryExist = Directory.Exists($"{pathToCheck}/{today}");
         if (!directoryExist)
         {
-            _ = Directory.CreateDirectory($"{pathToCheck}/{today}");
+            Directory.CreateDirectory($"{pathToCheck}/{today}");
         }
         return logFile.Replace("temp_", $"{today}/");
     }
@@ -170,7 +162,7 @@ public static class Logger
     {
         Console.ForegroundColor = c;
         Console.Write(m);
-        _ = sb.Append(m);
+        sb.Append(m);
     }
 
     private static (Color Color, string Source) VerifySource(LogModule source)
@@ -193,10 +185,9 @@ public static class Logger
         DateTime date = DateTime.Now.ToLocalTime();
         return severity switch
         {
-            LogSeverity.Critical => (Color.Maroon, $"[{date:HH:mm:ss}][CRITICAL]"),
             LogSeverity.Error => (Color.DarkRed, $"[{date:HH:mm:ss}][ERROR]"),
             LogSeverity.Warning => (Color.Yellow, $"[{date:HH:mm:ss}][WARNING]"),
-            LogSeverity.Info => (Color.SpringGreen, $"[{date:HH:mm:ss}][INFO]"),
+            LogSeverity.Info => (Color.SpringGreen, $"[{date:HH:mm:ss}][INFORMATION]"),
             LogSeverity.Debug => (Color.SandyBrown, $"[{date:HH:mm:ss}][DEBUG]"),
             _ => throw new InvalidOperationException($"The specified LogSeverity ({severity}) is invalid.")
         };

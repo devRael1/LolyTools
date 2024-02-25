@@ -3,90 +3,109 @@ using Loly.src.Variables;
 using Loly.src.Variables.Class;
 using Loly.src.Variables.Enums;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Loly.src.Tools;
 
 public class LobbyRevealer
 {
-    public static string OpGGToken = "";
+    private static string opGGToken;
+    public static string OpGGToken { get => opGGToken; set => opGGToken = value; }
 
     public static void GetTokenOpGg()
     {
-        Logger.Info(LogModule.LobbyRevealer, "Fetching OP.GG token...");
+        Logger.Info(LogModule.LobbyRevealer, "Fetching OP.GG token", Global.LogsMenuEnable ? LogType.Both : LogType.File);
         string response = Requests.WebRequest("https://www.op.gg/multisearch");
         OpGGToken = Utils.LrParse(response, "\"buildId\":\"", "\",\"assetPrefix") ?? "null";
+        Logger.Info(LogModule.LobbyRevealer, $"Fetching OP.GG token successfully (Token: {OpGGToken})", Global.LogsMenuEnable ? LogType.Both : LogType.File);
     }
 
     public static void GetPlayers(string req)
     {
-        Logger.Info(LogModule.LobbyRevealer, "Getting Players for revealing lobby...");
-        dynamic deserialized = JsonConvert.DeserializeObject(req);
-        JArray teamPlayers = deserialized.participants;
+        Logger.Info(LogModule.LobbyRevealer, "Fetching Players for revealing lobby...", Global.LogsMenuEnable ? LogType.Both : LogType.File);
+        ParticipantsResponse teamPlayers = JsonConvert.DeserializeObject<ParticipantsResponse>(req);
 
-        List<string> cacheNames = (from dynamic player in teamPlayers select $"{player.game_name}#{player.game_tag}").Cast<string>().ToList();
-
-        string stats = Requests.WebRequest(
-            $"https://www.op.gg/_next/data/{OpGGToken}/en_US/multisearch/{Global.Region}.json?summoners={string.Join(",", cacheNames.Select(x => x))}&region={Global.Region}");
-        if (stats == null)
+        List<string> cacheNames = (from Participant player in teamPlayers.Participants select $"{player.GameName}#{player.GameTag}").Cast<string>().ToList();
+        if (cacheNames.Count == 0)
         {
+            Logger.Warn(LogModule.LobbyRevealer, "No players found in the lobby");
+            Logger.Warn(LogModule.LobbyRevealer, "Please contact the developer to fix/analyze this issue");
+            Logger.Warn(LogModule.LobbyRevealer, "Please save your logs and send them to the developer");
             return;
         }
 
-        dynamic json = JsonConvert.DeserializeObject(stats);
-        JArray summoners = json.pageProps.summoners;
+        string url = $"https://www.op.gg/_next/data/{OpGGToken}/en_US/multisearch/{Global.Region}.json?summoners={string.Join(",", cacheNames.Select(x => x))}&region={Global.Region}";
+        string stats = Requests.WebRequest(url);
 
-        foreach (dynamic sum in summoners)
+        MultisearchResponse response = JsonConvert.DeserializeObject<MultisearchResponse>(stats);
+        foreach (Summoner sum in response.PageProps.Summoners)
         {
-            Player newPlayer = new(sum.name.ToString(), $"https://www.op.gg/summoners/{Global.Region}/{sum.name}")
+            Player newPlayer = new(sum.Name, sum.Tagline, $"https://www.op.gg/summoners/{Global.Region}/{sum.Name}#{sum.Tagline}")
             {
-                Id = sum.id.ToString(),
-                Level = Convert.ToInt32(sum.level)
+                Id = sum.Id,
+                Level = (int)sum.Level
             };
 
-            dynamic soloTierInfo = sum.solo_tier_info;
+            SoloTierInfo soloTierInfo = sum.SoloTierInfo;
             if (soloTierInfo != null)
             {
-                newPlayer.SoloDuoQ.Division = soloTierInfo.division >= 1 ? soloTierInfo.division : 0;
-                newPlayer.SoloDuoQ.Tier = soloTierInfo.tier ?? "Unranked";
-                newPlayer.SoloDuoQ.Lp = soloTierInfo.lp >= 0 ? soloTierInfo.lp : 0;
+                newPlayer.SoloDuoQ.Division = (int)(soloTierInfo.Division >= 1 ? soloTierInfo.Division : 0);
+                newPlayer.SoloDuoQ.Tier = soloTierInfo.Tier ?? "Unranked";
+                newPlayer.SoloDuoQ.Lp = (int)(soloTierInfo.Lp >= 0 ? soloTierInfo.Lp : 0);
             }
 
             Global.PlayerList.Add(newPlayer);
         }
     }
 
-    public static string GetPlayerStats(Player player)
+    public static async Task GetAdvancedPlayersStatsAsync()
     {
-        string stats = Requests.WebRequest(
-            $"https://www.op.gg/_next/data/{OpGGToken}/en_US/summoners/{Global.Region}/{player.Username}.json?region={Global.Region}&summoner={player.Username}");
-        return stats;
-    }
+        Logger.Info(LogModule.LobbyRevealer, $"Getting advanced stats of {Global.PlayerList.Count} players in background...", Global.LogsMenuEnable ? LogType.Both : LogType.File);
 
-    public static void GetAdvancedPlayersStats()
-    {
-        Logger.Info(LogModule.LobbyRevealer, $"Getting advanced stats of {Global.PlayerList.Count} players in background...");
-
-        foreach (Player player in Global.PlayerList)
+        var tasks = Global.PlayerList.Select(player => Task.Run(() =>
         {
             string stats = GetPlayerStats(player);
 
-            dynamic json = JsonConvert.DeserializeObject(stats);
-            dynamic summoner = json.pageProps.data.league_stats;
-            int sumId = json.pageProps.data.id;
+            // TODO : Check the response of stats variable, there is an error :
+            // One or more errors occurred. (Value cannot be null. (Parameter 'value'))
+            // 
+            // System.AggregateException: One or more errors occurred. (Value cannot be null. (Parameter 'value'))
+            //  ---> System.ArgumentNullException: Value cannot be null. (Parameter 'value')
+            //    at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+            //    at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+            //    at Loly.src.Tools.LobbyRevealer.<>c__DisplayClass6_0.<GetAdvancedPlayersStatsAsync>b__1() in D:\Loly tools\src\Tools\LobbyRevealer.cs:line 68
+            //    at System.Threading.Tasks.Task.InnerInvoke()
+            //    at System.Threading.Tasks.Task.<>c.<.cctor>b__272_0(Object obj)
+            //    at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+            // --- End of stack trace from previous location ---
+            //    at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+            //    at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+            // --- End of stack trace from previous location ---
+            //    at Loly.src.Tools.LobbyRevealer.GetAdvancedPlayersStatsAsync() in D:\Loly tools\src\Tools\LobbyRevealer.cs:line 84
+            PlayerStatsResponse response = JsonConvert.DeserializeObject<PlayerStatsResponse>(stats);
+            List<LeagueStat> summoner = response.PageProps.Data.LeagueStats;
+            int sumId = response.PageProps.Data.Id;
 
-            Player currentPlayer = Utils.FindPlayer(sumId.ToString());
+            Player currentPlayer = Global.PlayerList.Find(x => x.Id == sumId);
 
-            currentPlayer.SoloDuoQ.Wins = summoner[0].win >= 1 ? summoner[0].win : 0;
-            currentPlayer.SoloDuoQ.Losses = summoner[0].lose >= 1 ? summoner[0].lose : 0;
+            currentPlayer.SoloDuoQ.Wins = (int)(summoner[0].Win >= 1 ? summoner[0].Win : 0);
+            currentPlayer.SoloDuoQ.Losses = (int)(summoner[0].Lose >= 1 ? summoner[0].Lose : 0);
 
-            currentPlayer.FlexQ.Wins = summoner[1].win >= 1 ? summoner[1].win : 0;
-            currentPlayer.FlexQ.Losses = summoner[1].lose >= 1 ? summoner[1].lose : 0;
-            currentPlayer.FlexQ.Division = summoner[1].division >= 1 ? summoner[1].division : 0;
-            currentPlayer.FlexQ.Tier = summoner[1].tier ?? "Unranked";
-            currentPlayer.FlexQ.Lp = summoner[1].lp >= 0 ? summoner[1].lp : 0;
-        }
+            currentPlayer.FlexQ.Wins = (int)(summoner[1].Win >= 1 ? summoner[1].Win : 0);
+            currentPlayer.FlexQ.Losses = (int)(summoner[1].Lose >= 1 ? summoner[1].Lose : 0);
+            currentPlayer.FlexQ.Division = (int)(summoner[1].TierInfo.Division >= 1 ? summoner[1].TierInfo.Division : 0);
+            currentPlayer.FlexQ.Tier = summoner[1].TierInfo.Tier ?? "Unranked";
+            currentPlayer.FlexQ.Lp = (int)(summoner[1].TierInfo.Lp >= 0 ? summoner[1].TierInfo.Lp : 0);
+        }));
 
-        Logger.Info(LogModule.LobbyRevealer, "Advanced stats of all players fetched !");
+        await Task.WhenAll(tasks);
+
+        Logger.Info(LogModule.LobbyRevealer, "Advanced stats of all players fetched !", Global.LogsMenuEnable ? LogType.Both : LogType.File);
+    }
+
+    public static string GetPlayerStats(Player player)
+    {
+        string url = $"https://www.op.gg/_next/data/{OpGGToken}/en_US/summoners/{Global.Region}/{player.UserTag}.json?region={Global.Region}&summoner={player.UserTag}";
+        string stats = Requests.WebRequest(url);
+        return stats;
     }
 }

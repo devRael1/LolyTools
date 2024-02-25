@@ -225,7 +225,7 @@ public class LobbyRevealerMenu
             Cell nameCell = new(player.Username) { Color = Colors.MenuTextColor };
             string rank = $"{player.SoloDuoQ.Tier} {player.SoloDuoQ.Division} ({player.SoloDuoQ.Lp} LP)";
 
-            int winrate = (int)Math.Round((double)player.SoloDuoQ.Wins / (player.SoloDuoQ.Wins + player.SoloDuoQ.Losses) * 100);
+            int winrate = (int)Math.Round((float)(player.SoloDuoQ.Wins / (player.SoloDuoQ.Wins + player.SoloDuoQ.Losses) * 100));
             if (winrate >= 0)
             {
                 rank += $" | {winrate}%";
@@ -246,8 +246,8 @@ public class LobbyRevealerMenu
     {
         Console.SetCursorPosition(0, TopLength);
 
-        int winratesoloq = (int)Math.Round((double)player.SoloDuoQ.Wins / (player.SoloDuoQ.Wins + player.SoloDuoQ.Losses) * 100);
-        int winrateflex = (int)Math.Round((double)player.FlexQ.Wins / (player.FlexQ.Wins + player.FlexQ.Losses) * 100);
+        int winratesoloq = (int)Math.Round((float)(player.SoloDuoQ.Wins / (player.SoloDuoQ.Wins + player.SoloDuoQ.Losses) * 100));
+        int winrateflex = (int)Math.Round((float)(player.FlexQ.Wins / (player.FlexQ.Wins + player.FlexQ.Losses) * 100));
 
         if (winratesoloq <= 0)
         {

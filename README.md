@@ -68,11 +68,14 @@ My Discord: `1043813027205619804`
 
 ### v2.0.0 UPDATE COMING SOON...
 
+- [ ] **IMPORTANT : Patch all tools**
 - [ ] Make dodge (champ select) detection for logs system
 - [ ] Make *Refresh* system for Stats with OP.GG (POST request)
-- [ ] Improve the Log system (Add more informations + best managment of errors...)
 - [ ] Replace all `Console.WriteLine()` by the new log system
 - [ ] Replace all screenshots in README when the new UI will be done
+==========================================
+- [ ] Improve the Log system (Add more informations + best managment of errors...)
+- [ ] Add a new logs system to log all requests (Client, OP.GG...)
 
 ## `📝 License`
 

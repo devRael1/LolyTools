@@ -11,7 +11,7 @@ namespace Loly.src.Tasks.Scheduled
             {
                 if (!Global.IsLeagueOpen)
                 {
-                    Thread.Sleep(TimeSpan.FromSeconds(15));
+                    Thread.Sleep(TimeSpan.FromSeconds(10));
                 }
                 else
                 {
@@ -29,7 +29,7 @@ namespace Loly.src.Tasks.Scheduled
                             case "Lobby":
                                 Global.FetchedPlayers = false;
                                 Global.AcceptedCurrentMatch = false;
-                                Thread.Sleep(TimeSpan.FromSeconds(10));
+                                Thread.Sleep(TimeSpan.FromSeconds(5));
                                 break;
                             case "Matchmaking":
                                 Global.FetchedPlayers = false;

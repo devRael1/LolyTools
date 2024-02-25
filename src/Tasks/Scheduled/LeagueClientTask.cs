@@ -28,7 +28,11 @@ namespace Loly.src.Tasks.Scheduled
 
                 LoadSummonerId(false);
 
-                Global.Region ??= GetRegion(Requests.WaitSuccessClientRequest("GET", "/riotclient/region-locale", true)[1]).ToLower();
+                if (Global.Region == "")
+                {
+                    (Global.Region = GetRegion(Requests.WaitSuccessClientRequest("GET", "/riotclient/region-locale", true)[1])).ToLower();
+                }
+
                 Global.IsLeagueOpen = true;
                 if (!_lcuPid.Equals(client.Id))
                 {

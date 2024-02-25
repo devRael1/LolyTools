@@ -119,11 +119,6 @@ public class Utils
         Interface.ShowArt();
     }
 
-    public static Player FindPlayer(string value)
-    {
-        return Global.PlayerList.Find(x => long.Parse(x.Id) == long.Parse(value));
-    }
-
     public static string FindString(string text, string from, string to)
     {
         int pFrom = text.IndexOf(from, StringComparison.Ordinal) + from.Length;

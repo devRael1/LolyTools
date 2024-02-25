@@ -9,9 +9,9 @@ namespace Loly.src.Tasks
         public TaskCore()
         {
             _scheduledTasks.Add(new ScheduledTask(LeagueClientTask.LolClientTask, TimeSpan.FromSeconds(5), true, false));
-            _scheduledTasks.Add(new ScheduledTask(AnalyzeSessionTask.AnalyzeSession, TimeSpan.FromSeconds(30), true, true));
+            _scheduledTasks.Add(new ScheduledTask(AnalyzeSessionTask.AnalyzeSession, TimeSpan.FromMinutes(1), true, true));
             _scheduledTasks.Add(new ScheduledTask(LobbyRevealingTask.GetLobbyRevealing, TimeSpan.FromSeconds(10), true, false));
-            _scheduledTasks.Add(new ScheduledTask(ClearLogsFilesTask.RunClearLogsFiles, TimeSpan.FromHours(6), true, false));
+            _scheduledTasks.Add(new ScheduledTask(ClearLogsFilesTask.RunClearLogsFiles, TimeSpan.FromHours(2), true, false));
         }
 
         public void StartAllTasks()

@@ -1,5 +1,7 @@
-﻿using Loly.src.Tools;
+﻿using Loly.src.Logs;
+using Loly.src.Tools;
 using Loly.src.Variables;
+using Loly.src.Variables.Enums;
 using static Loly.src.Tools.LobbyRevealer;
 
 namespace Loly.src.Tasks.Scheduled
@@ -20,7 +22,14 @@ namespace Loly.src.Tasks.Scheduled
             }
 
             GetPlayers(Requests.ClientRequest("GET", "/chat/v5/participants/lol-champ-select", false)[1]);
-            Task.Run(GetAdvancedPlayersStats);
+            Task.Run(GetAdvancedPlayersStatsAsync)
+                .ContinueWith(t =>
+                {
+                    if (t.IsFaulted)
+                    {
+                        Logger.Error(LogModule.LobbyRevealer, "Error while fetching players stats...", t.Exception);
+                    }
+                });
 
             Global.FetchedPlayers = true;
         }

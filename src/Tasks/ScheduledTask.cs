@@ -1,5 +1,4 @@
-﻿using Loly.src.Logs;
-using Loly.src.Variables;
+﻿using Loly.src.Tools;
 using Loly.src.Variables.Enums;
 using System.Timers;
 using Timer = System.Timers.Timer;
@@ -10,12 +9,14 @@ namespace Loly.src.Tasks.Scheduled
     {
         private readonly Action taskAction;
         private readonly Timer timer;
+        private readonly string taskName;
         private readonly bool runNow;
         private readonly bool infinite;
 
-        public ScheduledTask(Action taskAction, TimeSpan interval, bool runNow, bool infinite)
+        public ScheduledTask(Action taskAction, string taskName, TimeSpan interval, bool runNow, bool infinite)
         {
             this.taskAction = taskAction;
+            this.taskName = taskName;
             this.runNow = runNow;
             this.infinite = infinite;
             timer = new Timer
@@ -34,13 +35,7 @@ namespace Loly.src.Tasks.Scheduled
         {
             if (runNow)
             {
-                Task.Run(taskAction).ContinueWith(task =>
-                {
-                    if (task.IsFaulted)
-                    {
-                        Logger.Error(LogModule.Tasks, $"An error occured while executing the task", task.Exception, Global.LogsMenuEnable ? LogType.Both : LogType.File);
-                    }
-                });
+                Utils.CreateTask(taskAction, $"An error occured while executing the task {taskName}", LogModule.Tasks);
             }
 
             if (!infinite)
@@ -57,13 +52,7 @@ namespace Loly.src.Tasks.Scheduled
 
         private void TimerElapsed(object sender, ElapsedEventArgs e)
         {
-            Task.Run(taskAction).ContinueWith(task =>
-            {
-                if (task.IsFaulted)
-                {
-                    Logger.Error(LogModule.Tasks, $"An error occured while executing the task", task.Exception, Global.LogsMenuEnable ? LogType.Both : LogType.File);
-                }
-            });
+            Utils.CreateTask(taskAction, $"An error occured while executing the task {taskName}", LogModule.Tasks);
         }
     }
 }

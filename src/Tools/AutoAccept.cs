@@ -9,7 +9,7 @@ public class AutoAccept
 {
     public static void AutoAcceptQueue()
     {
-        _ = ClientRequest("POST", "lol-matchmaking/v1/ready-check/accept", true);
+        ClientRequest("POST", "lol-matchmaking/v1/ready-check/accept", true);
         if (!Global.AcceptedCurrentMatch)
         {
             Logger.Info(LogModule.AutoAccept, "Auto accept the current match...");

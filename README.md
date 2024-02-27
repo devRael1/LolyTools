@@ -13,7 +13,7 @@ A set of several small tools for league of legends.
 
 You must install .NET Desktop Runtime 6 / .NET Runtime 6 - Windows to use this tool.
 
-.NET Desktop Runtime 6 -> [x86 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.16-windows-x86-installer) / [x64 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.16-windows-x64-installer)
+.NET Desktop Runtime 6 -> [x86 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.16-windows-x86-installer) / [x64 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.16-windows-x64-installer)<br>
 .NET Runtime 6 -> [x86 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-6.0.16-windows-x86-installer) / [x64 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-6.0.16-windows-x64-installer)
 
 No need to install this if you have a more recent version installed.
@@ -74,9 +74,9 @@ My Discord: `1043813027205619804`
 - [ ] Replace all `Console.WriteLine()` by the new log system
 - [ ] Replace all screenshots in README when the new UI will be done
 ==========================================
-- [ ] Improve the Log system (Add more informations + best managment of errors...)
 - [ ] Add a new logs system to log all requests (Client, OP.GG...)
-- [	] Improve error logs
+- [ ] Improve the Logs system (Add more informations + best managment of errors...)
+- [	] Add new system to send logs when an error occurs (Discord Webhook)
 
 ## `📝 License`
 

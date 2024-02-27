@@ -18,15 +18,15 @@ public class Player
         FlexQ = new QueueStats();
     }
 
-    public string Username { get; }
+    public string Username { get; set; }
     public string Tag { get; set; }
     public string UserTag { get; set; }
     public string UserTagUrlReady { get; set; }
-    public string Link { get; }
+    public string Link { get; set; }
     public int? Id { get; set; }
     public int? Level { get; set; }
     public QueueStats SoloDuoQ { get; }
-    public QueueStats FlexQ { get; }
+    public QueueStats FlexQ { get; set; }
 }
 
 public class QueueStats

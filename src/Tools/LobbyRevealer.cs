@@ -31,16 +31,8 @@ public class LobbyRevealer
             GetTokenOpGg();
         }
 
-        GetPlayers(Requests.ClientRequest("GET", "/chat/v5/participants/lol-champ-select", false)[1])
-        // TODO: Create a function for creating a task and logging the exception in Utils.cs
-        Task.Run(GetAdvancedPlayersStatsAsync)
-            .ContinueWith(t =>
-            {
-                if (t.IsFaulted)
-                {
-                    Logger.Error(LogModule.LobbyRevealer, "Error while fetching players stats...", t.Exception);
-                }
-            });
+        GetPlayers(Requests.ClientRequest("GET", "/chat/v5/participants/lol-champ-select", false)[1]);
+        Utils.CreateTask(GetAdvancedPlayersStats, "Unable to fetch Advanced player stats !", LogModule.LobbyRevealer);
 
         Global.FetchedPlayers = true;
     }
@@ -85,11 +77,11 @@ public class LobbyRevealer
         }
     }
 
-    public static async Task GetAdvancedPlayersStatsAsync()
+    public static void GetAdvancedPlayersStats()
     {
         Logger.Info(LogModule.LobbyRevealer, $"Getting advanced stats of {Global.PlayerList.Count} players in background...", Global.LogsMenuEnable ? LogType.Both : LogType.File);
 
-        var tasks = Global.PlayerList.Select(player => Task.Run(() =>
+        Parallel.ForEach(Global.PlayerList, player =>
         {
             string stats = GetPlayerStats(player);
             PlayerStatsResponse response = JsonConvert.DeserializeObject<PlayerStatsResponse>(stats);
@@ -106,9 +98,7 @@ public class LobbyRevealer
             currentPlayer.FlexQ.Division = (int)(summoner[1].TierInfo.Division >= 1 ? summoner[1].TierInfo.Division : 0);
             currentPlayer.FlexQ.Tier = summoner[1].TierInfo.Tier ?? "Unranked";
             currentPlayer.FlexQ.Lp = (int)(summoner[1].TierInfo.Lp >= 0 ? summoner[1].TierInfo.Lp : 0);
-        }));
-
-        await Task.WhenAll(tasks);
+        });
 
         Logger.Info(LogModule.LobbyRevealer, "Advanced stats of all players fetched !", Global.LogsMenuEnable ? LogType.Both : LogType.File);
     }

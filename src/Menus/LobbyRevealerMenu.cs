@@ -43,7 +43,7 @@ public class LobbyRevealerMenu
                         Console.WriteLine(" Loly Tools did not detect a champ select in progress.", Colors.WarningColor);
                         Console.WriteLine(" Press Enter to continue...", Colors.WarningColor);
 
-                        _ = Console.ReadKey();
+                        Console.ReadKey();
                         ResetConsole();
                         continue;
                     }

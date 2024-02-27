@@ -1,7 +1,9 @@
 ﻿using Alba.CsConsoleFormat;
+using Loly.src.Logs;
 using Loly.src.Menus.Core;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
+using Loly.src.Variables.Enums;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using Console = Colorful.Console;
@@ -140,5 +142,17 @@ public class Utils
 
         int i = (int)Math.Floor(Math.Log(bytes) / Math.Log(k));
         return $"{(bytes / Math.Pow(k, i)).ToString($"F{dm}")} {sizes[i]}{(seconds ? "/s" : "")}";
+    }
+
+    public static void CreateTask(Action action, string errorMessage, LogModule logModule)
+    {
+        Task.Run(action)
+            .ContinueWith(t =>
+            {
+                if (t.IsFaulted)
+                {
+                    Logger.Error(logModule, errorMessage, t.Exception, Global.LogsMenuEnable ? LogType.Both : LogType.File);
+                }
+            });
     }
 }

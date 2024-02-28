@@ -73,6 +73,7 @@ My Discord: `1043813027205619804`
 - [ ] Make *Refresh* system for Stats with OP.GG (POST request)
 - [ ] Replace all `Console.WriteLine()` by the new log system
 - [ ] Replace all screenshots in README when the new UI will be done
+- [ ] Add new settings to the settings file to enable/disable auto-send error with Discord Webhook
 ==========================================
 - [ ] Add a new logs system to log all requests (Client, OP.GG...)
 - [ ] Improve the Logs system (Add more informations + best managment of errors...)

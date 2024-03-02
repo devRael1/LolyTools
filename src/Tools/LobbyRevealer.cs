@@ -14,18 +14,13 @@ public class LobbyRevealer
     public static void GetTokenOpGg()
     {
         Logger.Info(LogModule.LobbyRevealer, "Fetching OP.GG token", Global.LogsMenuEnable ? LogType.Both : LogType.File);
-        string response = Requests.WebRequest("https://www.op.gg/multisearch");
+        string response = Requests.WebRequest("www.op.gg/multisearch", false);
         OpGGToken = Utils.LrParse(response, "\"buildId\":\"", "\",\"assetPrefix") ?? "null";
         Logger.Info(LogModule.LobbyRevealer, $"Fetching OP.GG token successfully (Token: {OpGGToken})", Global.LogsMenuEnable ? LogType.Both : LogType.File);
     }
 
     public static void GetLobbyRevealing()
     {
-        if (Global.FetchedPlayers)
-        {
-            return;
-        }
-
         if (OpGGToken == null)
         {
             GetTokenOpGg();
@@ -53,8 +48,8 @@ public class LobbyRevealer
             return;
         }
 
-        string url = $"https://www.op.gg/_next/data/{OpGGToken}/en_US/multisearch/{Global.Region}.json?summoners={string.Join(",", cacheNames.Select(x => x))}&region={Global.Region}";
-        string stats = Requests.WebRequest(url);
+        string url = $"www.op.gg/_next/data/{OpGGToken}/en_US/multisearch/{Global.Region}.json?summoners={string.Join(",", cacheNames.Select(x => x))}&region={Global.Region}";
+        string stats = Requests.WebRequest(url, false);
 
         MultisearchResponse response = JsonConvert.DeserializeObject<MultisearchResponse>(stats);
         foreach (Summoner sum in response.PageProps.Summoners)
@@ -105,8 +100,8 @@ public class LobbyRevealer
 
     public static string GetPlayerStats(Player player)
     {
-        string url = $"https://www.op.gg/_next/data/{OpGGToken}/en_US/summoners/{Global.Region}/{player.UserTagUrlReady}.json?region={Global.Region}&summoner={player.UserTagUrlReady}";
-        string stats = Requests.WebRequest(url);
+        string url = $"www.op.gg/_next/data/{OpGGToken}/en_US/summoners/{Global.Region}/{player.UserTagUrlReady}.json?region={Global.Region}&summoner={player.UserTagUrlReady}";
+        string stats = Requests.WebRequest(url, false);
         return stats;
     }
 }

@@ -4,129 +4,29 @@ using Loly.src.Variables.Class;
 using Loly.src.Variables.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Action = Loly.src.Variables.Class.Action;
 
 namespace Loly.src.Tools;
 
 public class PicknBan
 {
-    private static bool _hoverPick;
-    private static bool _lockedPick;
-    private static bool _hoverBan;
-    private static bool _lockedBan;
-    private static bool _cansentChatMessages;
-    private static long _champSelectStart;
-    private static InitRole _currentRole;
-
-    public static void HandleChampSelect()
+    public static void HandleChampSelectActions(ChampSelectResponse champSelectResponse, int localPlayerCellId)
     {
-        string[] currentChampSelect = Requests.ClientRequest("GET", "lol-champ-select/v1/session", true);
-        if (currentChampSelect[0] != "200")
+        List<List<Action>> champSelectActions = champSelectResponse.Actions;
+        foreach (List<Action> arrActions in champSelectActions)
         {
-            return;
-        }
-
-        dynamic currentChampSelectJson = JsonConvert.DeserializeObject(currentChampSelect[1]);
-        string currentChatRoom = currentChampSelectJson.chatDetails.multiUserChatId;
-        if (Global.LastChatRoom != currentChatRoom || Global.LastChatRoom == "")
-        {
-            _hoverPick = false;
-            _lockedPick = false;
-            _hoverBan = false;
-            _lockedBan = false;
-            _cansentChatMessages = false;
-            _champSelectStart = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-
-            Logger.Info(LogModule.PickAndBan, "New game start, champ select started now...");
-        }
-
-        if (_lockedPick && _lockedBan)
-        {
-            Logger.Info(LogModule.PickAndBan, "Waiting for game to start...");
-            Thread.Sleep(10000);
-        }
-        else
-        {
-            JArray myTeam = currentChampSelectJson.myTeam;
-            foreach (dynamic member in myTeam)
+            foreach (Action action in arrActions)
             {
-                string position = member.assignedPosition;
-                string assignedRole = position switch
-                {
-                    "utility" => "Support",
-                    "middle" => "Mid",
-                    "jungle" => "Jungle",
-                    "bottom" => "Adc",
-                    "top" => "Top",
-                    _ => "Default"
-                };
+                if (action.ActorCellId != localPlayerCellId || action.Completed) continue;
 
-                if (member.summonerId.ToString() != Global.Summoner.SummonerId)
+                if (action.Type == "pick")
                 {
-                    continue;
+                    HandlePickAction(action, champSelectResponse);
                 }
 
-                _currentRole = (InitRole)Settings.LoLRoles.GetType().GetProperty(assignedRole).GetValue(Settings.LoLRoles);
-                break;
-            }
-
-            int localPlayerCellId = currentChampSelectJson.localPlayerCellId;
-            if (_currentRole.PickChamp.Id == null)
-            {
-                _hoverPick = true;
-                _lockedPick = true;
-            }
-
-            if (_currentRole.BanChamp.Id == null)
-            {
-                _hoverBan = true;
-                _lockedBan = true;
-            }
-
-            if (Settings.AutoChat && Settings.ChatMessages.Count > 0)
-            {
-                if (Global.LastChatRoom != currentChatRoom)
+                if (action.Type == "ban")
                 {
-                    _cansentChatMessages = true;
-                }
-            }
-
-            Global.LastChatRoom = currentChatRoom;
-
-            if (Settings.AutoChat && _cansentChatMessages)
-            {
-                AutoChat.HandleChampSelectAutoChat();
-            }
-
-            if (!_hoverPick || !_lockedPick || !_hoverBan || !_lockedBan)
-            {
-                HandleChampSelectActions(currentChampSelectJson, localPlayerCellId);
-            }
-
-            _cansentChatMessages = false;
-        }
-    }
-
-    private static void HandleChampSelectActions(dynamic currentChampSelectJson, int localPlayerCellId)
-    {
-        JArray champSelectActions = currentChampSelectJson.actions;
-        foreach (dynamic arrActions in champSelectActions)
-        {
-            foreach (dynamic action in arrActions)
-            {
-                int actorCellId = action.actorCellId;
-                bool completed = action.completed;
-                string type = action.type;
-                int actionId = action.id;
-                bool actIsInProgress = action.isInProgress;
-
-                if (actorCellId == localPlayerCellId && !completed && type == "pick")
-                {
-                    HandlePickAction(actionId, actIsInProgress, currentChampSelectJson);
-                }
-
-                if (actorCellId == localPlayerCellId && !completed && type == "ban")
-                {
-                    HandleBanAction(actionId, actIsInProgress, currentChampSelectJson);
+                    HandleBanAction(action, champSelectResponse);
                 }
             }
         }
@@ -142,75 +42,75 @@ public class PicknBan
         Global.LastActionId = actionId;
     }
 
-    private static void HandlePickAction(int actionId, bool actIsInProgress, dynamic currentChampSelectJson)
+    private static void HandlePickAction(Action action, ChampSelectResponse champSelectResponse)
     {
-        if (_currentRole.PickChamp.Id == null)
+        if (ChampSelectSession.CurrentRole.PickChamp.Id == null)
         {
             return;
         }
 
-        if (!_hoverPick)
+        if (!ChampSelectSession.HoverPick)
         {
-            string champSelectPhase = currentChampSelectJson.timer.phase;
+            string champSelectPhase = champSelectResponse.Timer.Phase;
             long currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
-            if (currentTime - 3000 > _champSelectStart || champSelectPhase != "PLANNING")
+            if (currentTime - 3000 > ChampSelectSession.ChampSelectStart || champSelectPhase != "PLANNING")
             {
-                HoverChampion(actionId, "pick");
+                HoverChampion(action.Id, "pick");
             }
         }
 
-        if (!actIsInProgress)
+        if (!action.IsInProgress)
         {
             return;
         }
 
-        MarkPhaseStart(actionId);
-        if (_lockedPick)
+        MarkPhaseStart(action.Id);
+        if (ChampSelectSession.LockedPick)
         {
             return;
         }
 
-        Thread.Sleep(_currentRole.PickChamp.Delay);
-        LockChampion(actionId, "pick");
+        Thread.Sleep(ChampSelectSession.CurrentRole.PickChamp.Delay);
+        LockChampion(action.Id, "pick");
     }
 
-    private static void HandleBanAction(int actionId, bool actIsInProgress, dynamic currentChampSelectJson)
+    private static void HandleBanAction(Action action, ChampSelectResponse champSelectResponse)
     {
-        if (_currentRole.BanChamp.Id == null)
+        if (ChampSelectSession.CurrentRole.BanChamp.Id == null)
         {
             return;
         }
 
-        string champSelectPhase = currentChampSelectJson.timer.phase;
+        string champSelectPhase = champSelectResponse.Timer.Phase;
 
-        if (!actIsInProgress || champSelectPhase == "PLANNING")
+        if (!action.IsInProgress || champSelectPhase == "PLANNING")
         {
             return;
         }
 
-        MarkPhaseStart(actionId);
+        MarkPhaseStart(action.Id);
 
-        if (!_hoverBan)
+        if (!ChampSelectSession.HoverBan)
         {
-            HoverChampion(actionId, "ban");
+            HoverChampion(action.Id, "ban");
         }
 
-        if (_lockedBan)
+        if (ChampSelectSession.LockedBan)
         {
             return;
         }
 
-        Thread.Sleep(_currentRole.BanChamp.Delay);
-        LockChampion(actionId, "ban");
+        Thread.Sleep(ChampSelectSession.CurrentRole.BanChamp.Delay);
+        LockChampion(action.Id, "ban");
     }
 
     private static void HoverChampion(int actionId, string actType)
     {
-        ChampItem champion = actType == "pick" ? _currentRole.PickChamp : _currentRole.BanChamp;
-        Logger.Info(LogModule.PickAndBan, $"Hover {champion.Name} champion for {actType}...");
+        ChampItem champion = actType == "pick" ? ChampSelectSession.CurrentRole.PickChamp : ChampSelectSession.CurrentRole.BanChamp;
+        Logger.Info(LogModule.PickAndBan, $"Hover '{champion.Name}' champion for {actType}...");
 
-        string[] champSelectAction = Requests.ClientRequest("PATCH", "lol-champ-select/v1/session/actions/" + actionId, true, "{\"championId\":" + champion.Id + "}");
+        string[] champSelectAction = Requests.ClientRequest("PATCH", $"lol-champ-select/v1/session/actions/{actionId}", true, $"{{\"championId\":{champion.Id}}}");
         if (champSelectAction[0] != "204")
         {
             return;
@@ -219,20 +119,21 @@ public class PicknBan
         switch (actType)
         {
             case "pick":
-                _hoverPick = true;
+                ChampSelectSession.HoverPick = true;
                 break;
             case "ban":
-                _hoverBan = true;
+                ChampSelectSession.HoverBan = true;
                 break;
         }
     }
 
     private static void LockChampion(int actionId, string actType)
     {
-        ChampItem champion = actType == "pick" ? _currentRole.PickChamp : _currentRole.BanChamp;
-        Logger.Info(LogModule.PickAndBan, $"Locking {champion.Name} champion for {actType}...");
+        ChampItem champion = actType == "pick" ? ChampSelectSession.CurrentRole.PickChamp : ChampSelectSession.CurrentRole.BanChamp;
+        Logger.Info(LogModule.PickAndBan, $"Locking '{champion.Name}' champion for {actType}...", Global.LogsMenuEnable ? LogType.Both : LogType.File);
 
-        string[] champSelectAction = Requests.ClientRequest("PATCH", "lol-champ-select/v1/session/actions/" + actionId, true, "{\"completed\":true,\"championId\":" + champion.Id + "}");
+        string[] champSelectAction = Requests.ClientRequest("PATCH", $"lol-champ-select/v1/session/actions/{actionId}", true, 
+            $"{{\"completed\":true,\"championId\":{champion.Id}}}");
         if (champSelectAction[0] != "204")
         {
             return;
@@ -241,10 +142,10 @@ public class PicknBan
         switch (actType)
         {
             case "pick":
-                _lockedPick = true;
+                ChampSelectSession.LockedPick = true;
                 break;
             case "ban":
-                _lockedBan = true;
+                ChampSelectSession.LockedBan = true;
                 break;
         }
     }

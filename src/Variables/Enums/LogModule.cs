@@ -9,6 +9,7 @@
         LanguageChanger,
         Loly,
         Updater,
-        Tasks
+        Tasks,
+        Request
     }
 }

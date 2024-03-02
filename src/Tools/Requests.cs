@@ -1,5 +1,7 @@
-﻿using Loly.src.Tasks.Scheduled;
+﻿using Loly.src.Logs;
+using Loly.src.Tasks.Scheduled;
 using Loly.src.Variables;
+using Loly.src.Variables.Class;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -39,16 +41,27 @@ public class Requests
                 request.Content = new StringContent(body, Encoding.UTF8, "application/json");
             }
 
+            Logger.Request(new Request { Method = method, Url = url, Body = body }); // Log Request
+            
             HttpResponseMessage response = client.SendAsync(request).Result;
             int statusCode = (int)response.StatusCode;
             string statusString = statusCode.ToString();
             string responseFromServer = response.Content.ReadAsStringAsync().Result;
-            response.Dispose();
+            response.EnsureSuccessStatusCode();
 
+            Logger.Request(new Response { Method = method, StatusCode = statusCode, Data = new[] { statusString, responseFromServer } }); // Log Response
+
+            response.Dispose();
             return new[] { statusString, responseFromServer };
         }
-        catch
+        catch (HttpRequestException ex)
         {
+            Logger.Request(new Response { Method = method, StatusCode = 0, Exception = ex });
+            return new[] { "999", "" };
+        }
+        catch (Exception ex)
+        {
+            Logger.Request(new Response { Method = method, StatusCode = 0, Exception = ex });
             return new[] { "999", "" };
         }
     }
@@ -77,17 +90,38 @@ public class Requests
         return request;
     }
 
-    public static string WebRequest(string url)
+    public static string WebRequest(string url, bool logResponse = true)
     {
-        using HttpClient client = new();
-        HttpResponseMessage response = client.GetAsync(url).Result;
-        if (!response.IsSuccessStatusCode)
+        try
         {
+            using HttpClient client = new();
+
+            Logger.Request(new Request { Method = "GET", Url = url });
+
+            HttpResponseMessage response = client.GetAsync($"https://{url}").Result;
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            HttpContent responseContent = response.Content;
+            string responseString = responseContent.ReadAsStringAsync().Result;
+            response.EnsureSuccessStatusCode();
+
+            Logger.Request(new Response { Method = "GET", StatusCode = (int)response.StatusCode, 
+                Data = new[] { response.StatusCode.ToString(), logResponse ? responseString : "Not logged" } });
+
+            return responseString;
+        }
+        catch (HttpRequestException ex)
+        {
+            Logger.Request(new Response { Method = "GET", StatusCode = 0, Exception = ex });
             return null;
         }
-
-        HttpContent responseContent = response.Content;
-        string responseString = responseContent.ReadAsStringAsync().Result;
-        return responseString;
+        catch (Exception ex)
+        {
+            Logger.Request(new Response { Method = "GET", StatusCode = 0, Exception = ex });
+            return null;
+        }
     }
 }

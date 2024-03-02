@@ -17,7 +17,7 @@ public class Global
     public static Dictionary<string, string> AuthRiot = new();
     public static Dictionary<string, string> AuthClient = new();
 
-    public static CurrentSummoner Summoner { get; set; } = new();
+    public static CurrentSummoner SummonerLogged { get; set; } = new();
     public static string LastChatRoom { get; set; } = "";
     public static int LastActionId { get; set; } = 0;
     public static bool AcceptedCurrentMatch { get; set; } = false;

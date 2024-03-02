@@ -483,7 +483,7 @@ public class PicknBanMenu
     {
         List<ChampItem> champs = new();
 
-        string[] ownedChamps = Requests.WaitSuccessClientRequest("GET", "lol-champions/v1/inventories/" + Global.Summoner.SummonerId + "/champions-minimal", true);
+        string[] ownedChamps = Requests.WaitSuccessClientRequest("GET", "lol-champions/v1/inventories/" + Global.SummonerLogged.SummonerId + "/champions-minimal", true);
         dynamic champsSplit = JsonConvert.DeserializeObject(ownedChamps[1]);
         if (champsSplit == null)
         {

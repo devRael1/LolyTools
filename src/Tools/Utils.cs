@@ -2,9 +2,7 @@
 using Loly.src.Logs;
 using Loly.src.Menus.Core;
 using Loly.src.Variables;
-using Loly.src.Variables.Class;
 using Loly.src.Variables.Enums;
-using Newtonsoft.Json;
 using System.Diagnostics;
 using Console = Colorful.Console;
 
@@ -93,15 +91,11 @@ public class Utils
         return result;
     }
 
-    public static void ShowError(Exception ex)
+    public static void LogNewError(string actionName, LogModule logModule, Exception ex)
     {
-        Console.Clear();
-        Console.WriteLine("An unexpected error occurred!\n", Colors.ErrorColor);
-        Console.WriteLine(ex.Message, Colors.ErrorColor);
-        Console.WriteLine(ex.StackTrace, Colors.ErrorColor);
-        Console.WriteLine("\n Press Enter to close application...", Colors.ErrorColor);
-        _ = Console.ReadKey();
-        Environment.Exit(0);
+        Logger.Error(logModule, $"An error occured to execute : {actionName}", null, Global.LogsMenuEnable ? LogType.Both : LogType.File);
+        Logger.Error(logModule, "Please check the logs for more information.", null, Global.LogsMenuEnable ? LogType.Both : LogType.File);
+        Logger.Error(logModule, "Error message : ", ex, Global.LogsMenuEnable ? LogType.Both : LogType.File);
     }
 
     public static string FormatStr(string str)
@@ -110,9 +104,9 @@ public class Utils
         return string.Concat(str[0].ToString().ToUpper(), str.AsSpan(1));
     }
 
-    public static string GetRegion(string request)
+    public static string FormatMessage(string message)
     {
-        return JsonConvert.DeserializeObject<PlayerRegion>(request).Region;
+        return message.Replace("\"", "'").Replace("\\", "");
     }
 
     public static void ResetConsole()
@@ -151,7 +145,7 @@ public class Utils
             {
                 if (t.IsFaulted)
                 {
-                    Logger.Error(logModule, errorMessage, t.Exception, Global.LogsMenuEnable ? LogType.Both : LogType.File);
+                    LogNewError(errorMessage, logModule, t.Exception);
                 }
             });
     }

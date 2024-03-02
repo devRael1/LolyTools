@@ -44,12 +44,12 @@ namespace Loly.src.Tasks.Scheduled
                 }
                 catch (IOException ex)
                 {
-                    Logger.Error(LogModule.Tasks, $"Cannot delete folder '{folder}' because it's in use by another process...", ex);
+                    Logger.Error(LogModule.Tasks, $"Cannot delete folder '{folder}' because it's in use by another process...", ex, Global.LogsMenuEnable ? LogType.Both : LogType.File);
                     continue;
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    Logger.Error(LogModule.Tasks, $"Cannot delete folder '{folder}' because i don't have permission to access to this folder...", ex);
+                    Logger.Error(LogModule.Tasks, $"Cannot delete folder '{folder}' because i don't have permission to access to this folder...", ex, Global.LogsMenuEnable ? LogType.Both : LogType.File);
                     continue;
                 }
             }

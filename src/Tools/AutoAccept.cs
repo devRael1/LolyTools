@@ -9,19 +9,18 @@ public class AutoAccept
 {
     public static void AutoAcceptQueue()
     {
-        ClientRequest("POST", "lol-matchmaking/v1/ready-check/accept", true);
-        if (!Global.AcceptedCurrentMatch)
+        string[] response = ClientRequest("POST", "lol-matchmaking/v1/ready-check/accept", true);
+        if (response[0] != "200")
         {
-            Logger.Info(LogModule.AutoAccept, "Auto accept the current match...");
-        }
-
-        Global.AcceptedCurrentMatch = true;
-        if (!Settings.AutoAcceptOnce)
-        {
+            Logger.Info(LogModule.AutoAccept, "Failed to auto accept the current match");
             return;
         }
 
-        Settings.AutoAccept = false;
-        Settings.AutoAcceptOnce = false;
+        if (!Global.AcceptedCurrentMatch)
+        {
+            Logger.Info(LogModule.AutoAccept, "The current match has been auto accepted");
+        }
+
+        Global.AcceptedCurrentMatch = true;
     }
 }

@@ -32,7 +32,9 @@ namespace Loly.src.Tasks.Scheduled
 
                 if (Global.Region == "")
                 {
-                    Global.Region = GetRegion(Requests.WaitSuccessClientRequest("GET", "/riotclient/region-locale", true)[1]).ToLower();
+                    string response = Requests.WaitSuccessClientRequest("GET", "/riotclient/region-locale", true)[1];
+                    PlayerRegion regionSplit = JsonConvert.DeserializeObject<PlayerRegion>(response);
+                    Global.Region = regionSplit.Region.ToLower();
                 }
 
                 if (!_lcuPid.Equals(client.Id))
@@ -45,7 +47,7 @@ namespace Loly.src.Tasks.Scheduled
                 Global.IsLeagueOpen = false;
                 Global.AuthRiot.Clear();
                 Global.AuthClient.Clear();
-                Global.Summoner = new CurrentSummoner();
+                Global.SummonerLogged = new CurrentSummoner();
                 _lcuPid = 0;
             }
         }
@@ -104,7 +106,7 @@ namespace Loly.src.Tasks.Scheduled
 
         private static void LoadSummonerId(bool force = false)
         {
-            if (Global.Summoner?.SummonerId != null && !force)
+            if (Global.SummonerLogged?.SummonerId != null && !force)
             {
                 return;
             }
@@ -113,15 +115,15 @@ namespace Loly.src.Tasks.Scheduled
             string[] currentSummoner = Requests.WaitSuccessClientRequest("GET", "lol-summoner/v1/current-summoner", true);
             dynamic currentSummonerSplit = JsonConvert.DeserializeObject(currentSummoner[1]);
 
-            Global.Summoner.SummonerId = currentSummonerSplit["summonerId"];
-            Global.Summoner.DisplayName = currentSummonerSplit["displayName"];
-            Global.Summoner.GameName = currentSummonerSplit["gameName"];
-            Global.Summoner.TagLine = currentSummonerSplit["tagLine"];
-            Global.Summoner.SummonerLevel = currentSummonerSplit["summonerLevel"];
-            Global.Summoner.AccountId = currentSummonerSplit["accountId"];
-            Global.Summoner.Puuid = currentSummonerSplit["puuid"];
+            Global.SummonerLogged.SummonerId = currentSummonerSplit["summonerId"];
+            Global.SummonerLogged.DisplayName = currentSummonerSplit["displayName"];
+            Global.SummonerLogged.GameName = currentSummonerSplit["gameName"];
+            Global.SummonerLogged.TagLine = currentSummonerSplit["tagLine"];
+            Global.SummonerLogged.SummonerLevel = currentSummonerSplit["summonerLevel"];
+            Global.SummonerLogged.AccountId = currentSummonerSplit["accountId"];
+            Global.SummonerLogged.Puuid = currentSummonerSplit["puuid"];
 
-            Logger.Info(LogModule.Loly, $"Summoner ID loaded : {Global.Summoner.SummonerId}", Global.LogsMenuEnable ? LogType.Both : LogType.File);
+            Logger.Info(LogModule.Loly, $"Summoner ID loaded : {Global.SummonerLogged.SummonerId}", Global.LogsMenuEnable ? LogType.Both : LogType.File);
         }
     }
 }

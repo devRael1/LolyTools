@@ -89,14 +89,14 @@ public class Interface
 
     private static void ShowLoggedUser()
     {
-        if (Global.Summoner.SummonerId != null)
+        if (Global.SummonerLogged.SummonerId != null)
         {
-            string text = $"Logged in as {Global.Summoner.GetFullGameName()} [Summoner ID : {Global.Summoner.SummonerId}]";
+            string text = $"Logged in as {Global.SummonerLogged.GetFullGameName()} [Summoner ID : {Global.SummonerLogged.SummonerId}]";
             Console.SetCursorPosition((Console.WindowWidth - text.Length) / 2, Console.CursorTop);
             Console.Write("Logged in as ", Colors.InfoColor);
-            Console.Write(Global.Summoner.GetFullGameName(), Colors.PrimaryColor);
+            Console.Write(Global.SummonerLogged.GetFullGameName(), Colors.PrimaryColor);
             Console.Write(" [Summoner ID : ", Colors.InfoColor);
-            Console.Write(Global.Summoner.SummonerId, Colors.PrimaryColor);
+            Console.Write(Global.SummonerLogged.SummonerId, Colors.PrimaryColor);
             Console.Write("]", Colors.InfoColor);
         }
         else

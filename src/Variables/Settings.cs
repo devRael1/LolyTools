@@ -1,6 +1,7 @@
 ﻿using Loly.src.Logs;
 using Loly.src.Tools;
 using Loly.src.Variables.Class;
+using Loly.src.Variables.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -133,8 +134,11 @@ public class Settings
         }
         catch (Exception ex)
         {
-            Logger.Error(Enums.LogModule.AutoChat, "Error while saving settings...", ex);
-            Utils.ShowError(ex);
+            Logger.Error(LogModule.Loly, "Error while saving settings...", null, LogType.Console);
+            Utils.LogNewError("Save Settings", LogModule.Loly, ex);
+            Logger.Error(LogModule.Loly, "Press Enter to close application...", null, LogType.Console);
+            Console.ReadKey();
+            Environment.Exit(0);
         }
     }
 
@@ -147,8 +151,11 @@ public class Settings
             }
             catch (Exception ex)
             {
-                Logger.Error(Enums.LogModule.AutoChat, "Error while saving settings...", ex);
-                Utils.ShowError(ex);
+                Logger.Error(LogModule.Loly, "Error while saving file settings...", null, LogType.Console);
+                Utils.LogNewError("Save File Settings", LogModule.Loly, ex);
+                Logger.Error(LogModule.Loly, "Press Enter to close application...", null, LogType.Console);
+                Console.ReadKey();
+                Environment.Exit(0);
             }
         }
     }

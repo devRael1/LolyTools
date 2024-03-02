@@ -1,6 +1,10 @@
 ﻿using Gommon;
 using Loly.src.Menus.Core;
+using Loly.src.Tools;
+using Loly.src.Variables.Class;
 using Loly.src.Variables.Enums;
+using Newtonsoft.Json;
+using Portable.Xaml.Markup;
 using System.Drawing;
 using System.Text;
 using Console = Colorful.Console;
@@ -11,10 +15,12 @@ public static class Logger
 {
     public const string LogFolder = "Logs";
     private const string LogTempFile = $"{LogFolder}/temp_loly.log";
+    private const string LogReqsFile = $"{LogFolder}/temp_request_loly.log";
 
     private static readonly object Lock = new();
     private static readonly object Lock2 = new();
     private static readonly object Lock3 = new();
+    private static readonly object Lock4 = new();
     private static bool _headerPrinted;
 
     static Logger()
@@ -30,12 +36,17 @@ public static class Logger
         }
         else if (logType == LogType.File)
         {
-            Lock2.Lock(() => ExecuteWithoutConsole(s, from, message));
+            Lock2.Lock(() => ExecuteWithoutConsole(s, from, message, e));
         }
         else
         {
             Lock3.Lock(() => ExecuteOnlyInConsole(s, from, message));
         }
+    }
+
+    private static void Log(IRequest value)
+    {
+        Lock4.Lock(() => ExecuteLogRequest(value));
     }
 
     internal static void PrintHeader()
@@ -68,7 +79,12 @@ public static class Logger
         Log(LogSeverity.Warning, src, message, e, logType);
     }
 
-    private static void Execute(LogSeverity s, LogModule src, string message, Exception e)
+    public static void Request(IRequest value)
+    {
+        Log(value);
+    }
+
+    private static void Execute(LogSeverity s, LogModule module, string message, Exception e)
     {
         StringBuilder contentFile = new();
         (Color color, string value) = VerifySeverity(s);
@@ -77,7 +93,7 @@ public static class Logger
         DateTime dt = DateTime.Now.ToLocalTime();
         contentFile.Append($"[{dt.FormatDate()}] {value}» ");
 
-        (color, value) = VerifySource(src);
+        (color, value) = VerifySource(module);
         Append($"{value}» ", color);
         contentFile.Append($"{value}» ");
 
@@ -102,7 +118,7 @@ public static class Logger
         }
     }
 
-    private static void ExecuteWithoutConsole(LogSeverity s, LogModule src, string message)
+    private static void ExecuteWithoutConsole(LogSeverity s, LogModule module, string message, Exception e)
     {
         StringBuilder contentFile = new();
 
@@ -110,7 +126,7 @@ public static class Logger
         DateTime dt = DateTime.Now.ToLocalTime();
         contentFile.Append($"[{dt.FormatDate()}] {value}» ");
 
-        (_, value) = VerifySource(src);
+        (_, value) = VerifySource(module);
         contentFile.Append($"{value}» ");
 
         if (!string.IsNullOrWhiteSpace(message))
@@ -118,11 +134,21 @@ public static class Logger
             contentFile.Append(message);
         }
 
+        if (e != null)
+        {
+            string toWrite = $"{Environment.NewLine}{e.Message}{Environment.NewLine}{e.StackTrace}";
+            contentFile.Append(toWrite);
+        }
+
         contentFile.AppendLine();
         File.AppendAllText(NormalizeLogFilePath(LogTempFile, DateTime.Now, LogFolder), contentFile.ToString());
+        if (e != null)
+        {
+            File.AppendAllText(NormalizeLogFilePath(LogTempFile, DateTime.Now, LogFolder), e.ToString());
+        }
     }
 
-    private static void ExecuteOnlyInConsole(LogSeverity s, LogModule src, string message)
+    private static void ExecuteOnlyInConsole(LogSeverity s, LogModule module, string message)
     {
         (Color color, string value) = VerifySeverity(s);
         Append($"{value}", color);
@@ -130,7 +156,7 @@ public static class Logger
         DateTime dt = DateTime.Now.ToLocalTime();
         Append($"[{dt.FormatDate()}] {value}» ", color);
 
-        (color, value) = VerifySource(src);
+        (color, value) = VerifySource(module);
         Append($"{value}» ", color);
 
         if (!string.IsNullOrWhiteSpace(message))
@@ -139,6 +165,49 @@ public static class Logger
         }
 
         Console.Write(Environment.NewLine);
+    }
+
+    private static void ExecuteLogRequest(IRequest valueOfRequest)
+    {
+        StringBuilder contentFile = new();
+
+        (_, string value) = VerifySeverity(LogSeverity.Debug);
+        DateTime dt = DateTime.Now.ToLocalTime();
+        contentFile.Append($"[{dt.FormatDate()}] {value}» ");
+
+        (_, value) = VerifySource(LogModule.Request);
+        contentFile.Append($"{value}» ");
+
+        if (valueOfRequest is Request request)
+        {
+            if (!string.IsNullOrWhiteSpace(request.Method) || !string.IsNullOrWhiteSpace(request.Url))
+            {
+                contentFile.Append($"Request to API - Endpoint: {request.Url} - Method: {request.Method}");
+                if (!string.IsNullOrWhiteSpace(request.Body)) contentFile.Append($"- Payload: {request.Body}");
+            }
+        }
+
+        if (valueOfRequest is Response response)
+        {
+            if (!string.IsNullOrWhiteSpace(response.Method))
+            {
+                contentFile.Append($"Response from API - Status: {response.StatusCode} - Method: {response.Method}");
+                if (response.Data != null) contentFile.Append($"- Response: {response.Data[1]}");
+            }
+        }
+
+        if (valueOfRequest.Exception != null)
+        {
+            string toWrite = $"{Environment.NewLine}{valueOfRequest.Exception.Message}{Environment.NewLine}{valueOfRequest.Exception.StackTrace}";
+            contentFile.Append(toWrite);
+        }
+
+        contentFile.AppendLine();
+        File.AppendAllText(NormalizeLogFilePath(LogReqsFile, DateTime.Now, LogFolder), contentFile.ToString());
+        if (valueOfRequest.Exception != null)
+        {
+            File.AppendAllText(NormalizeLogFilePath(LogReqsFile, DateTime.Now, LogFolder), valueOfRequest.Exception.ToString());
+        }
     }
 
     private static string NormalizeLogFilePath(string logFile, DateTime date, string pathToCheck)
@@ -176,6 +245,7 @@ public static class Logger
             LogModule.LanguageChanger => (Color.Red, "[LANGUAGE CHANGER]"),
             LogModule.Loly => (Color.DarkGreen, "[LOLY TOOLS]"),
             LogModule.Tasks => (Color.Aqua, "[TASKS]"),
+            LogModule.Request => (Color.DarkOrange, "[REQUEST]"),
             _ => throw new InvalidOperationException($"The specified LogSource {source} is invalid.")
         };
     }

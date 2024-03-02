@@ -44,7 +44,7 @@ public class Interface
         Console.Write(Environment.NewLine);
         Console.Write(Environment.NewLine);
 
-        TopLength = array.Length + 5;
+        TopLength = array.Length + 4;
     }
 
     public static void ShowLogsArt()

@@ -43,9 +43,9 @@ public class ToolsMenu
                 case 1:
                     if (!Settings.LobbyRevealer)
                     {
-                        Console.WriteLine(" < Lobby Revealer > is not enabled in the settings.", Colors.WarningColor);
-                        Console.WriteLine(" Please go to 'Settings' menu and enable it.", Colors.WarningColor);
-                        Console.WriteLine(" Press Enter to continue...", Colors.WarningColor);
+                        DisplayColor(" < Lobby Revealer > is not enabled in the settings.", Colors.WarningColor, Colors.PrimaryColor);
+                        DisplayColor(" Please go to 'Settings' menu and enable it.", Colors.WarningColor, Colors.PrimaryColor);
+                        DisplayColor(" Press Enter to continue...", Colors.WarningColor, Colors.PrimaryColor);
                         Console.ReadKey();
                     }
                     else
@@ -57,9 +57,9 @@ public class ToolsMenu
                 case 2:
                     if (!Settings.AutoAccept)
                     {
-                        Console.WriteLine(" < Auto Accept > is not enabled in the settings.", Colors.WarningColor);
-                        Console.WriteLine(" Please go to 'Settings' menu and enable it.", Colors.WarningColor);
-                        Console.WriteLine(" Press Enter to continue...", Colors.WarningColor);
+                        DisplayColor(" < Auto Accept > is not enabled in the settings.", Colors.WarningColor, Colors.PrimaryColor);
+                        DisplayColor(" Please go to 'Settings' menu and enable it.", Colors.WarningColor, Colors.PrimaryColor);
+                        DisplayColor(" Press Enter to continue...", Colors.WarningColor, Colors.PrimaryColor);
                         Console.ReadKey();
                     }
                     else
@@ -71,9 +71,9 @@ public class ToolsMenu
                 case 3:
                     if (!Settings.AutoChat)
                     {
-                        Console.WriteLine(" < Auto Chat > is not enabled in the settings.", Colors.WarningColor);
-                        Console.WriteLine(" Please go to 'Settings' menu and enable it.", Colors.WarningColor);
-                        Console.WriteLine(" Press Enter to continue...", Colors.WarningColor);
+                        DisplayColor(" < Auto Chat > is not enabled in the settings.", Colors.WarningColor, Colors.PrimaryColor);
+                        DisplayColor(" Please go to 'Settings' menu and enable it.", Colors.WarningColor, Colors.PrimaryColor);
+                        DisplayColor(" Press Enter to continue...", Colors.WarningColor, Colors.PrimaryColor);
                         Console.ReadKey();
                     }
                     else
@@ -85,9 +85,9 @@ public class ToolsMenu
                 case 4:
                     if (!Settings.PicknBan)
                     {
-                        Console.WriteLine(" < Pick and Ban > is not enabled in the settings.", Colors.WarningColor);
-                        Console.WriteLine(" Please go to 'Settings' menu and enable it.", Colors.WarningColor);
-                        Console.WriteLine(" Press Enter to continue...", Colors.WarningColor);
+                        DisplayColor(" < Pick and Ban > is not enabled in the settings.", Colors.WarningColor, Colors.PrimaryColor);
+                        DisplayColor(" Please go to 'Settings' menu and enable it.", Colors.WarningColor, Colors.PrimaryColor);
+                        DisplayColor(" Press Enter to continue...", Colors.WarningColor, Colors.PrimaryColor);
                         Console.ReadKey();
                     }
                     else

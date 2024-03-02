@@ -111,9 +111,7 @@ public class LanguageChangerMenu
 
         while (!File.Exists(path))
         {
-            Console.Write(DateTime.Now.ToString("[hh:mm:ss]"), Colors.PrimaryColor);
-            Console.Write("» Drag and drop your 'LeagueClient.exe' file:", Colors.InfoColor);
-            Console.Write(Environment.NewLine);
+            DisplayColor($"`{DateTime.Now:[hh:mm:ss]}`» Drag and drop your 'LeagueClient.exe' file:", Colors.InfoColor, Colors.PrimaryColor);
             Console.Write("» ");
 
             try
@@ -122,13 +120,13 @@ public class LanguageChangerMenu
 
                 if (path == "")
                 {
-                    Console.WriteLine("[WARNING]» The path cannot by empty...", Colors.WarningColor);
+                    DisplayColor("[WARNING]» The path cannot by empty...", Colors.WarningColor, Colors.PrimaryColor);
                 }
                 else
                 {
                     if (!File.Exists(path))
                     {
-                        Console.WriteLine("[WARNING]» The file does not exist...", Colors.WarningColor);
+                        DisplayColor("[WARNING]» The file does not exist...", Colors.WarningColor, Colors.PrimaryColor);
                     }
                     else
                     {
@@ -138,8 +136,8 @@ public class LanguageChangerMenu
             }
             catch
             {
-                Console.WriteLine("[WARNING]» Unable to get path of the file !", Colors.WarningColor);
-                Console.WriteLine("[WARNING]» Please try again... ", Colors.WarningColor);
+                DisplayColor("[WARNING]» Unable to get path of the file !", Colors.WarningColor, Colors.PrimaryColor);
+                DisplayColor("[WARNING]» Please try again... ", Colors.WarningColor, Colors.PrimaryColor);
                 path = "";
             }
         }
@@ -166,19 +164,19 @@ public class LanguageChangerMenu
             try
             {
                 CreateShortcut(_codeLanguageChoosed, _exePath);
-                Console.WriteLine("[SUCCESS]» Shortcut created successfully !", Colors.SuccessColor);
-                Console.WriteLine("To play with the new language, you need to close your 'League of Legends' and the 'Riot Client' completely !", Colors.SuccessColor);
-                Console.WriteLine("After this done, you can use the new shortcut on your desktop !", Colors.SuccessColor);
-                Console.WriteLine("Press 'Enter' to continue...", Colors.SuccessColor);
+                DisplayColor("[SUCCESS]» Shortcut created successfully !", Colors.SuccessColor, Colors.PrimaryColor);
+                DisplayColor("To play with the new language, you need to close your 'League of Legends' and the 'Riot Client' completely !", Colors.InfoColor, Colors.PrimaryColor);
+                DisplayColor("After this done, you can use the new shortcut on your desktop !", Colors.InfoColor, Colors.PrimaryColor);
+                DisplayColor("Press 'Enter' to continue...", Colors.InfoColor, Colors.PrimaryColor);
             }
             catch
             {
-                Console.WriteLine("[ERROR]» Unable to create shortcut !", Colors.ErrorColor);
-                Console.WriteLine("Please try again later...", Colors.ErrorColor);
-                Console.WriteLine("Press 'Enter' to continue....", Colors.ErrorColor);
+                DisplayColor("[ERROR]» Unable to create shortcut !", Colors.ErrorColor, Colors.PrimaryColor);
+                DisplayColor("Please try again later...", Colors.ErrorColor, Colors.PrimaryColor);
+                DisplayColor("Press 'Enter' to continue....", Colors.ErrorColor, Colors.PrimaryColor);
             }
 
-            _ = Console.ReadKey();
+            Console.ReadKey();
         }
 
         ResetConsole();

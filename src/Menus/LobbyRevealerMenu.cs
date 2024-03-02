@@ -39,10 +39,9 @@ public class LobbyRevealerMenu
                 case 2:
                     if (Global.PlayerList.Count == 0)
                     {
-                        Console.WriteLine(" No Players in the list.", Colors.WarningColor);
-                        Console.WriteLine(" Loly Tools did not detect a champ select in progress.", Colors.WarningColor);
-                        Console.WriteLine(" Press Enter to continue...", Colors.WarningColor);
-
+                        DisplayColor("No Players in the list.", Colors.WarningColor, Colors.PrimaryColor);
+                        DisplayColor("Loly Tools did not detect a champ select in progress.", Colors.WarningColor, Colors.PrimaryColor);
+                        DisplayColor("Press Enter to continue...", Colors.WarningColor, Colors.PrimaryColor);
                         Console.ReadKey();
                         ResetConsole();
                         continue;
@@ -69,13 +68,11 @@ public class LobbyRevealerMenu
 
         choices.Add("Back");
 
-        string[] choices2 = choices.ToArray();
-
-        while (choice != choices2.Length)
+        while (choice != choices.Count)
         {
             ShowOpggMenu();
 
-            MenuBuilder opGgMenu = MenuBuilder.BuildMenu(choices2, Console.CursorTop + 1);
+            MenuBuilder opGgMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop + 1);
             choice = 10;
             while (choice == 10)
             {
@@ -84,12 +81,12 @@ public class LobbyRevealerMenu
 
             ResetConsole();
 
-            if (choice == choices2.Length)
+            if (choice == choices.Count)
             {
                 break;
             }
 
-            if (choice == choices2.Length - 1)
+            if (choice == choices.Count - 1)
             {
                 string url = $"https://www.op.gg/multisearch/{Global.Region}?summoners=";
                 for (int i = 0; i < Global.PlayerList.Count; i++)
@@ -108,8 +105,6 @@ public class LobbyRevealerMenu
                 OpenUrl(Global.PlayerList[choice - 1].Link);
             }
         }
-
-        GetLobbyRevealerMenu();
     }
 
     private static void GetStatsMenu()
@@ -125,13 +120,11 @@ public class LobbyRevealerMenu
 
         choices.Add("Back");
 
-        string[] choices2 = choices.ToArray();
-
         ShowGlobalStatsMenu();
 
-        while (choice != choices2.Length)
+        while (choice != choices.Count)
         {
-            MenuBuilder statsMenu = MenuBuilder.BuildMenu(choices2, Console.CursorTop + 1);
+            MenuBuilder statsMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop + 1);
             choice = 10;
             while (choice == 10)
             {
@@ -140,12 +133,12 @@ public class LobbyRevealerMenu
 
             ResetConsole();
 
-            if (choice == choices2.Length)
+            if (choice == choices.Count)
             {
                 break;
             }
 
-            if (choice == choices2.Length - 1)
+            if (choice == choices.Count - 1)
             {
                 ShowGlobalStatsMenu();
             }
@@ -154,8 +147,6 @@ public class LobbyRevealerMenu
                 ShowPlayerStats(Global.PlayerList[choice - 1]);
             }
         }
-
-        GetLobbyRevealerMenu();
     }
 
     private static void ShowOpggMenu()
@@ -225,7 +216,7 @@ public class LobbyRevealerMenu
             Cell nameCell = new(player.Username) { Color = Colors.MenuTextColor };
             string rank = $"{player.SoloDuoQ.Tier} {player.SoloDuoQ.Division} ({player.SoloDuoQ.Lp} LP)";
 
-            int winrate = (int)Math.Round((float)(player.SoloDuoQ.Wins / (player.SoloDuoQ.Wins + player.SoloDuoQ.Losses) * 100));
+            int winrate = (int)Math.Round((double)(player.SoloDuoQ.Wins * 100.0 / (player.SoloDuoQ.Wins + player.SoloDuoQ.Losses)));
             if (winrate >= 0)
             {
                 rank += $" | {winrate}%";
@@ -247,19 +238,12 @@ public class LobbyRevealerMenu
         Console.SetCursorPosition(0, TopLength);
 
         int winratesoloq = player.SoloDuoQ.Wins + player.SoloDuoQ.Losses > 0 ?
-            (int)Math.Round((float)(player.SoloDuoQ.Wins / (player.SoloDuoQ.Wins + player.SoloDuoQ.Losses) * 100)) : 0;
+            (int)Math.Round((double)(player.SoloDuoQ.Wins * 100.0 / (player.SoloDuoQ.Wins + player.SoloDuoQ.Losses))) : 0;
         int winrateflex = player.FlexQ.Wins + player.FlexQ.Losses > 0 ?
-            (int)Math.Round((float)(player.FlexQ.Wins / (player.FlexQ.Wins + player.FlexQ.Losses) * 100)) : 0;
+            (int)Math.Round((double)(player.FlexQ.Wins * 100.0 / (player.FlexQ.Wins + player.FlexQ.Losses))) : 0;
 
-        if (winratesoloq <= 0)
-        {
-            winratesoloq = 0;
-        }
-
-        if (winrateflex <= 0)
-        {
-            winrateflex = 0;
-        }
+        if (winratesoloq <= 0) winratesoloq = 0;
+        if (winrateflex <= 0) winrateflex = 0;
 
         Document rectangle = new();
         Border border1 = new()

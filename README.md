@@ -30,6 +30,7 @@ No need to install this if you have a more recent version installed.
 - [x] Advanced Logs system (Real Time & Persistent)
 - [x] Language Changer (Shortcuts on Desktop)
 - [x] Use JSON file to save your settings
+- [x] Very low CPU and RAM 
 - [x] Auto update (Github API)
 
 More features coming soon...

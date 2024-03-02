@@ -21,17 +21,11 @@ public class AutoChatMenu
             string[] choices = { "Add Message", "Delete Message", "See Messages", "Clear Messages", "Back" };
 
             MenuBuilder autoChatMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
-            while (choice == 7)
-            {
-                choice = autoChatMenu.RunMenu();
-            }
+            while (choice == 7) choice = autoChatMenu.RunMenu();
 
             ResetConsole();
 
-            if (choice == choices.Length)
-            {
-                break;
-            }
+            if (choice == choices.Length) break;
 
             switch (choice)
             {
@@ -87,9 +81,7 @@ public class AutoChatMenu
         string msg = "";
         while (msg == "")
         {
-            Console.Write(DateTime.Now.ToString("[hh:mm:ss]"), Colors.PrimaryColor);
-            Console.Write("» Enter message to send automatically when you enterring in lobby (max 200 characters):", Colors.InfoColor);
-            Console.Write(Environment.NewLine);
+            DisplayColor($"`{DateTime.Now:[hh:mm:ss]}`» Enter message to send automatically when you enterring in lobby (max 200 characters):", Colors.InfoColor, Colors.PrimaryColor);
             Console.Write("» ");
 
             try
@@ -98,18 +90,17 @@ public class AutoChatMenu
 
                 if (msg == "")
                 {
-                    Console.WriteLine("[WARNING]» Your message is empty ! Please try again... ", Colors.WarningColor);
+                    DisplayColor("[WARNING]» Your message is empty ! Please try again... ", Colors.WarningColor, Colors.PrimaryColor);
                 }
                 else if (msg.Length > 200)
                 {
-                    Console.WriteLine("[WARNING]» Your message is too long ! Please try again... ", Colors.WarningColor);
+                    DisplayColor("[WARNING]» Your message is too long ! Please try again... ", Colors.WarningColor, Colors.PrimaryColor);
                 }
                 else if (Settings.ChatMessages.Count >= 5)
                 {
-                    Console.WriteLine("[WARNING]» You can't add more than 5 messages ! Please remove 1 message before adding a new one... ", Colors.WarningColor);
-                    Console.WriteLine("[WARNING]» Press any key to continue...", Colors.WarningColor);
-
-                    _ = Console.ReadKey();
+                    DisplayColor("[WARNING]» You can't add more than 5 messages ! Please remove 1 message before adding a new one... ", Colors.WarningColor, Colors.PrimaryColor);
+                    DisplayColor("[WARNING]» Press any key to continue...", Colors.WarningColor, Colors.PrimaryColor);
+                    Console.ReadKey();
                     ResetConsole();
                     msg = "bypass";
                 }
@@ -121,16 +112,18 @@ public class AutoChatMenu
                     Settings.SaveSettings();
 
                     Console.Write(Environment.NewLine);
-                    Console.WriteLine("[SUCCESS]» Your message has been added successfully...", Colors.SuccessColor);
-                    Console.WriteLine("[SUCCESS]» Press any key to continue...", Colors.SuccessColor);
-
-                    _ = Console.ReadKey();
+                    DisplayColor("[SUCCESS]» Your message has been added successfully...", Colors.SuccessColor, Colors.PrimaryColor);
+                    DisplayColor("[SUCCESS]» Press any key to continue...", Colors.SuccessColor, Colors.PrimaryColor);
+                    Console.ReadKey();
                     ResetConsole();
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                Console.WriteLine("[ERROR]» An error has occured ! Please try again... ", Colors.ErrorColor);
+                DisplayColor("[ERROR]» An error has occured !", Colors.ErrorColor, Colors.PrimaryColor);
+                DisplayColor(ex.ToString(), Colors.ErrorColor, Colors.PrimaryColor);
+                DisplayColor("[ERROR]» Press any key to retry...", Colors.ErrorColor, Colors.PrimaryColor);
+                Console.ReadKey();
                 msg = "";
             }
         }
@@ -144,12 +137,11 @@ public class AutoChatMenu
         List<string> choices = Settings.ChatMessages.Select((x, index) => $"Message N°{index + 1}").ToList();
         choices.Add("Back");
 
-        string[] choices2 = choices.ToArray();
-        while (choice != choices2.Length)
+        while (choice != choices.Count)
         {
             ShowMessages();
 
-            MenuBuilder delMessageMenu = MenuBuilder.BuildMenu(choices2, Console.CursorTop + 1);
+            MenuBuilder delMessageMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop + 1);
             choice = 10;
             while (choice == 10)
             {
@@ -158,7 +150,7 @@ public class AutoChatMenu
 
             ResetConsole();
 
-            if (choice == choices2.Length)
+            if (choice == choices.Count)
             {
                 break;
             }
@@ -167,8 +159,6 @@ public class AutoChatMenu
             Settings.SaveSettings();
             goto START;
         }
-
-        GetAutoChatMenu();
     }
 
     private static void SeeMessages()
@@ -202,9 +192,8 @@ public class AutoChatMenu
         MenuBuilder.SetCursorVisibility(true);
 
         UpdateMenuTitle("ac_clear");
-        Console.Write(DateTime.Now.ToString("[hh:mm:ss]"), Colors.PrimaryColor);
-        Console.Write("» Are you sure you want to clear all messages ? (y/n): ", Colors.InfoColor);
-        Console.Write(Environment.NewLine);
+
+        DisplayColor($"`{DateTime.Now:[hh:mm:ss]}`» Are you sure you want to clear all messages ? (y/n):", Colors.InfoColor, Colors.PrimaryColor);
         Console.Write("» ");
 
         string choice = Console.ReadLine().ToLower();
@@ -214,10 +203,9 @@ public class AutoChatMenu
             Settings.SaveSettings();
 
             Console.Write(Environment.NewLine);
-            Console.WriteLine("[SUCCESS]» All messages have been cleared successfully...", Colors.SuccessColor);
-            Console.WriteLine("[SUCCESS]» Press any key to continue...", Colors.SuccessColor);
-
-            _ = Console.ReadKey();
+            DisplayColor("[SUCCESS]» All messages have been cleared successfully", Colors.SuccessColor, Colors.PrimaryColor);
+            DisplayColor("[SUCCESS]» Press any key to continue...", Colors.SuccessColor, Colors.PrimaryColor);
+            Console.ReadKey();
             ResetConsole();
         }
         else

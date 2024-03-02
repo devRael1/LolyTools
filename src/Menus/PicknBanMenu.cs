@@ -111,9 +111,9 @@ public class PicknBanMenu
                     {
                         ResetConsole();
 
-                        Console.WriteLine("[WARNING]» To configure pick / ban champion, you need to open 'League of Legends' game.", Colors.WarningColor);
-                        Console.WriteLine("[WARNING]» Please start your 'League of Legends' game and try again...", Colors.WarningColor);
-                        Console.WriteLine("[WARNING]» Press any key to continue...", Colors.WarningColor);
+                        DisplayColor("[WARNING]» To configure pick / ban champion, you need to open 'League of Legends' game.", Colors.WarningColor, Colors.PrimaryColor);
+                        DisplayColor("[WARNING]» Please start your 'League of Legends' game and try again...", Colors.WarningColor, Colors.PrimaryColor);
+                        DisplayColor("[WARNING]» Press any key to continue...", Colors.WarningColor, Colors.PrimaryColor);
                         Console.ReadKey();
                     }
 
@@ -124,8 +124,8 @@ public class PicknBanMenu
                     {
                         ResetConsole();
 
-                        Console.WriteLine("[WARNING]» You can't remove the champion because it is not configured.", Colors.WarningColor);
-                        Console.WriteLine("[WARNING]» Press any key to continue...", Colors.WarningColor);
+                        DisplayColor("[WARNING]» You can't remove the champion because it is not configured.", Colors.WarningColor, Colors.PrimaryColor);
+                        DisplayColor("[WARNING]» Press any key to continue...", Colors.WarningColor, Colors.PrimaryColor);
                         Console.ReadKey();
                         ResetConsole();
                     }
@@ -303,9 +303,10 @@ public class PicknBanMenu
         string champName = "";
         while (champName == "")
         {
-            Console.Write(DateTime.Now.ToString("[hh:mm:ss]"), Colors.PrimaryColor);
-            Console.Write($"» Enter name of champion you want to auto {action}:", Colors.InfoColor);
-            Console.Write(Environment.NewLine);
+            //Console.Write(DateTime.Now.ToString("[hh:mm:ss]"), Colors.PrimaryColor);
+            //Console.Write($"", Colors.InfoColor);
+            //Console.Write(Environment.NewLine);
+            DisplayColor($"`{DateTime.Now:[hh:mm:ss]}`» Enter name of champion you want to auto '{action}':", Colors.InfoColor, Colors.PrimaryColor);
             Console.Write("» ");
 
             try
@@ -314,20 +315,20 @@ public class PicknBanMenu
 
                 if (champName == "")
                 {
-                    Console.WriteLine("[WARNING]» Champion name cannot be empty !", Colors.WarningColor);
+                    DisplayColor("[WARNING]» Champion name cannot be empty !", Colors.WarningColor, Colors.PrimaryColor);
                     continue;
                 }
 
                 ChampItem champ = Global.ChampionsList.Find(x => x.Name.ToLower() == champName);
                 if (champ == null)
                 {
-                    Console.WriteLine($"[WARNING]» Champion \"{FormatStr(champName)}\" does not exist !", Colors.WarningColor);
+                    DisplayColor($"[WARNING]» Champion \"{FormatStr(champName)}\" does not exist !", Colors.WarningColor, Colors.PrimaryColor);
                     champName = "";
                 }
                 else if (!champ.Free && action != "ban")
                 {
-                    Console.WriteLine($"[WARNING]» You can't select the '{FormatStr(champName)}' champion because you don't own it.", Colors.WarningColor);
-                    Console.WriteLine("[WARNING]» Please buy the champion, restart the software and try again !", Colors.WarningColor);
+                    DisplayColor($"[WARNING]» You can't select the '{FormatStr(champName)}' champion because you don't own it.", Colors.WarningColor, Colors.PrimaryColor);
+                    DisplayColor("[WARNING]» Please buy the champion, restart the software and try again !", Colors.WarningColor, Colors.PrimaryColor);
                     champName = "";
                 }
                 else
@@ -352,15 +353,16 @@ public class PicknBanMenu
                     _cachedRole = role;
 
                     Console.Write(Environment.NewLine);
-                    Console.WriteLine($"[SUCCESS]» Champion '{FormatStr(champName)}' selected successfully for {action} !", Colors.SuccessColor);
-                    Console.WriteLine("[SUCCESS]» Press any key to continue...", Colors.SuccessColor);
+
+                    DisplayColor($"[SUCCESS]» Champion '{FormatStr(champName)}' selected successfully for {action} !", Colors.SuccessColor, Colors.PrimaryColor);
+                    DisplayColor("[SUCCESS]» Press any key to continue...", Colors.SuccessColor, Colors.PrimaryColor);
                     Console.ReadKey();
                     ResetConsole();
                 }
             }
             catch
             {
-                Console.WriteLine($"[WARNING]» Champion \"{FormatStr(champName)}\" does not exist !", Colors.WarningColor);
+                DisplayColor($"[WARNING]» Champion \"{FormatStr(champName)}\" does not exist !", Colors.WarningColor, Colors.PrimaryColor);
                 champName = "";
             }
         }
@@ -379,11 +381,8 @@ public class PicknBanMenu
 
         while (delay == 0 || delay < minDelay || delay > maxDelay)
         {
-            Console.Write(DateTime.Now.ToString("[hh:mm:ss]"), Colors.PrimaryColor);
-            Console.Write($"» Enter delay to auto {action} champion (recommanded {minDelay}-{maxDelay}ms):\n", Colors.InfoColor);
-            Console.Write(DateTime.Now.ToString("[hh:mm:ss]"), Colors.PrimaryColor);
-            Console.Write("» Enter the delay in miliseconds (ex: 1500 = 1,5sec, 4000 = 4sec...)", Colors.InfoColor);
-            Console.Write(Environment.NewLine);
+            DisplayColor($"`{DateTime.Now:[hh:mm:ss]}`» Enter the delay to auto '{action}' champion (recommanded {minDelay}-{maxDelay}ms):", Colors.InfoColor, Colors.PrimaryColor);
+            DisplayColor($"`{DateTime.Now:[hh:mm:ss]}`» Enter the delay in miliseconds (ex: 1500 = 1,5sec, 4000 = 4sec...)", Colors.InfoColor, Colors.PrimaryColor);
             Console.Write("» ");
 
             try
@@ -393,7 +392,7 @@ public class PicknBanMenu
 
                 if (delay == 0 || delay < minDelay || delay > maxDelay)
                 {
-                    Console.WriteLine($"[WARNING]» Delay must be between {minDelay}ms and {maxDelay}ms !", Colors.WarningColor);
+                    DisplayColor($"[WARNING]» Delay must be between {minDelay}ms and {maxDelay}ms !", Colors.WarningColor, Colors.PrimaryColor);
                 }
                 else
                 {
@@ -410,8 +409,8 @@ public class PicknBanMenu
                     Settings.SaveSettings();
 
                     Console.Write(Environment.NewLine);
-                    Console.WriteLine($"[SUCCESS]» The {delay}ms delay has been configured correctly for auto {action} !", Colors.SuccessColor);
-                    Console.WriteLine("[SUCCESS]» Press any key to continue...", Colors.SuccessColor);
+                    DisplayColor($"[SUCCESS]» The {delay}ms delay has been configured correctly for auto {action} !", Colors.SuccessColor, Colors.PrimaryColor);
+                    DisplayColor("[SUCCESS]» Press any key to continue...", Colors.SuccessColor, Colors.PrimaryColor);
 
                     Console.ReadKey();
                     ResetConsole();
@@ -419,8 +418,8 @@ public class PicknBanMenu
             }
             catch
             {
-                Console.WriteLine($"[WARNING]» Unable to convert '{input}' to delay !", Colors.WarningColor);
-                Console.WriteLine("[WARNING]» Please try again... ", Colors.WarningColor);
+                DisplayColor($"[WARNING]» Unable to convert '{input}' to delay !", Colors.WarningColor, Colors.PrimaryColor);
+                DisplayColor("[WARNING]» Please try again... ", Colors.WarningColor, Colors.PrimaryColor);
                 input = "";
                 delay = 0;
             }
@@ -466,8 +465,8 @@ public class PicknBanMenu
             _cachedRole = role;
             ResetConsole();
 
-            Console.WriteLine($"[SUCCESS]» Champion '{FormatStr(cacheName)}' removed successfully for {action} !", Colors.SuccessColor);
-            Console.WriteLine("[SUCCESS]» Press any key to continue...", Colors.SuccessColor);
+            DisplayColor($"[SUCCESS]» Champion '{FormatStr(cacheName)}' removed successfully for {action} !", Colors.SuccessColor, Colors.PrimaryColor);
+            DisplayColor("[SUCCESS]» Press any key to continue...", Colors.SuccessColor, Colors.PrimaryColor);
 
             Console.ReadKey();
         }

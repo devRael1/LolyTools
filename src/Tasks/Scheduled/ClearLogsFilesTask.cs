@@ -11,8 +11,7 @@ namespace Loly.src.Tasks.Scheduled
         {
             int filesBotLogs = ClearLogsFiles(Directory.GetDirectories(Logger.LogFolder));
 
-            Logger.Info(LogModule.Loly, $"Clear {filesBotLogs} logs folder(s) older than [{Settings.ClearLogsFilesDays} days]...",
-                Global.LogsMenuEnable ? LogType.Both : LogType.File);
+            Logger.Info(LogModule.Loly, $"Clear {filesBotLogs} logs folder(s) older than [{Settings.ClearLogsFilesDays} days]...");
         }
 
         private static int ClearLogsFiles(string[] folders)
@@ -44,12 +43,12 @@ namespace Loly.src.Tasks.Scheduled
                 }
                 catch (IOException ex)
                 {
-                    Logger.Error(LogModule.Tasks, $"Cannot delete folder '{folder}' because it's in use by another process...", ex, Global.LogsMenuEnable ? LogType.Both : LogType.File);
+                    Logger.Error(LogModule.Tasks, $"Cannot delete folder '{folder}' because it's in use by another process...", ex);
                     continue;
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    Logger.Error(LogModule.Tasks, $"Cannot delete folder '{folder}' because i don't have permission to access to this folder...", ex, Global.LogsMenuEnable ? LogType.Both : LogType.File);
+                    Logger.Error(LogModule.Tasks, $"Cannot delete folder '{folder}' because i don't have permission to access to this folder...", ex);
                     continue;
                 }
             }

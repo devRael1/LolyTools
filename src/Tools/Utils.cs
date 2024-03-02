@@ -10,7 +10,7 @@ namespace Loly.src.Tools;
 
 public class Utils
 {
-    public static int TopLength = 0;
+    public static int TopLength { get; set; } = 0;
 
     public static Span CreateSpan(string content, int espaces, ConsoleColor color)
     {
@@ -93,9 +93,9 @@ public class Utils
 
     public static void LogNewError(string actionName, LogModule logModule, Exception ex)
     {
-        Logger.Error(logModule, $"An error occured to execute : {actionName}", null, Global.LogsMenuEnable ? LogType.Both : LogType.File);
-        Logger.Error(logModule, "Please check the logs for more information.", null, Global.LogsMenuEnable ? LogType.Both : LogType.File);
-        Logger.Error(logModule, "Error message : ", ex, Global.LogsMenuEnable ? LogType.Both : LogType.File);
+        Logger.Error(logModule, $"An error occured to execute : {actionName}", null);
+        Logger.Error(logModule, "Please check the logs for more information.", null);
+        Logger.Error(logModule, "Error message : ", ex);
     }
 
     public static string FormatStr(string str)

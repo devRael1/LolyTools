@@ -13,6 +13,7 @@ public class AutoAccept
         if (response[0] != "200")
         {
             Logger.Info(LogModule.AutoAccept, "Failed to auto accept the current match");
+            Logger.Info(LogModule.AutoAccept, "Check logs to get more informations.");
             return;
         }
 

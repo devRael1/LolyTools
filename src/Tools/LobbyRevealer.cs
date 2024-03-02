@@ -13,10 +13,10 @@ public class LobbyRevealer
 
     public static void GetTokenOpGg()
     {
-        Logger.Info(LogModule.LobbyRevealer, "Fetching OP.GG token", Global.LogsMenuEnable ? LogType.Both : LogType.File);
+        Logger.Info(LogModule.LobbyRevealer, "Fetching OP.GG token");
         string response = Requests.WebRequest("www.op.gg/multisearch", false);
         OpGGToken = Utils.LrParse(response, "\"buildId\":\"", "\",\"assetPrefix") ?? "null";
-        Logger.Info(LogModule.LobbyRevealer, $"Fetching OP.GG token successfully (Token: {OpGGToken})", Global.LogsMenuEnable ? LogType.Both : LogType.File);
+        Logger.Info(LogModule.LobbyRevealer, $"Fetching OP.GG token successfully (Token: {OpGGToken})");
     }
 
     public static void GetLobbyRevealing()
@@ -36,7 +36,7 @@ public class LobbyRevealer
     {
         Global.PlayerList.Clear();
 
-        Logger.Info(LogModule.LobbyRevealer, "Fetching Players for revealing lobby...", Global.LogsMenuEnable ? LogType.Both : LogType.File);
+        Logger.Info(LogModule.LobbyRevealer, "Fetching Players for revealing lobby");
         ParticipantsResponse teamPlayers = JsonConvert.DeserializeObject<ParticipantsResponse>(req);
 
         List<string> cacheNames = (from Participant player in teamPlayers.Participants select $"{player.GameName}#{player.GameTag}").Cast<string>().ToList();
@@ -74,7 +74,7 @@ public class LobbyRevealer
 
     public static void GetAdvancedPlayersStats()
     {
-        Logger.Info(LogModule.LobbyRevealer, $"Getting advanced stats of {Global.PlayerList.Count} players in background...", Global.LogsMenuEnable ? LogType.Both : LogType.File);
+        Logger.Info(LogModule.LobbyRevealer, $"Getting advanced stats of {Global.PlayerList.Count} players in background...");
 
         Parallel.ForEach(Global.PlayerList, player =>
         {
@@ -95,7 +95,7 @@ public class LobbyRevealer
             currentPlayer.FlexQ.Lp = (int)(summoner[1].TierInfo.Lp >= 0 ? summoner[1].TierInfo.Lp : 0);
         });
 
-        Logger.Info(LogModule.LobbyRevealer, "Advanced stats of all players fetched !", Global.LogsMenuEnable ? LogType.Both : LogType.File);
+        Logger.Info(LogModule.LobbyRevealer, "Advanced stats of all players fetched !");
     }
 
     public static string GetPlayerStats(Player player)

@@ -82,7 +82,8 @@ namespace Loly.src.Tasks.Scheduled
             catch
             {
                 ResetConsole();
-                Console.WriteLine(" Unable to find League Client running on your computer.\n Press Enter to close application...", Colors.ErrorColor);
+                Logger.Info(LogModule.Loly, "Unable to find League Client running on your computer");
+                Logger.Info(LogModule.Loly, "Press Enter to close application...");
                 _ = Console.ReadKey();
                 Environment.Exit(0);
             }
@@ -111,7 +112,7 @@ namespace Loly.src.Tasks.Scheduled
                 return;
             }
 
-            Logger.Info(LogModule.Loly, "Getting your summoner ID...", Global.LogsMenuEnable ? LogType.Both : LogType.File);
+            Logger.Info(LogModule.Loly, "Getting your Summoner ID");
             string[] currentSummoner = Requests.WaitSuccessClientRequest("GET", "lol-summoner/v1/current-summoner", true);
             dynamic currentSummonerSplit = JsonConvert.DeserializeObject(currentSummoner[1]);
 
@@ -123,7 +124,7 @@ namespace Loly.src.Tasks.Scheduled
             Global.SummonerLogged.AccountId = currentSummonerSplit["accountId"];
             Global.SummonerLogged.Puuid = currentSummonerSplit["puuid"];
 
-            Logger.Info(LogModule.Loly, $"Summoner ID loaded : {Global.SummonerLogged.SummonerId}", Global.LogsMenuEnable ? LogType.Both : LogType.File);
+            Logger.Info(LogModule.Loly, $"Summoner ID loaded : {Global.SummonerLogged.SummonerId}");
         }
     }
 }

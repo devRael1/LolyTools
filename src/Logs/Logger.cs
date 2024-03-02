@@ -1,10 +1,8 @@
 ﻿using Gommon;
 using Loly.src.Menus.Core;
-using Loly.src.Tools;
+using Loly.src.Variables;
 using Loly.src.Variables.Class;
 using Loly.src.Variables.Enums;
-using Newtonsoft.Json;
-using Portable.Xaml.Markup;
 using System.Drawing;
 using System.Text;
 using Console = Colorful.Console;
@@ -28,7 +26,7 @@ public static class Logger
         Directory.CreateDirectory(LogFolder);
     }
 
-    private static void Log(LogSeverity s, LogModule from, string message, Exception e = null, LogType logType = LogType.Both)
+    private static void Log(LogSeverity s, LogModule from, string message, Exception e = null, LogType logType = LogType.None)
     {
         if (logType == LogType.Both)
         {
@@ -59,23 +57,31 @@ public static class Logger
         }
     }
 
-    public static void Debug(LogModule src, string message)
+    public static void Info(LogModule src, string message, LogType logType = LogType.None)
     {
-        Log(LogSeverity.Debug, src, message);
-    }
+        if (logType == LogType.None)
+        {
+            logType = Global.LogsMenuEnable ? LogType.Both : LogType.File;
+        }
 
-    public static void Info(LogModule src, string message, LogType logType = LogType.Both)
-    {
         Log(LogSeverity.Info, src, message, null, logType);
     }
 
-    public static void Error(LogModule src, string message, Exception e = null, LogType logType = LogType.Both)
+    public static void Error(LogModule src, string message, Exception e = null, LogType logType = LogType.None)
     {
+        if (logType == LogType.None)
+        {
+            logType = Global.LogsMenuEnable ? LogType.Both : LogType.File;
+        }
         Log(LogSeverity.Error, src, message, e, logType);
     }
 
-    public static void Warn(LogModule src, string message, Exception e = null, LogType logType = LogType.Both)
+    public static void Warn(LogModule src, string message, Exception e = null, LogType logType = LogType.None)
     {
+        if (logType == LogType.None)
+        {
+            logType = Global.LogsMenuEnable ? LogType.Both : LogType.File;
+        }
         Log(LogSeverity.Warning, src, message, e, logType);
     }
 
@@ -183,7 +189,10 @@ public static class Logger
             if (!string.IsNullOrWhiteSpace(request.Method) || !string.IsNullOrWhiteSpace(request.Url))
             {
                 contentFile.Append($"Request to API - Endpoint: {request.Url} - Method: {request.Method}");
-                if (!string.IsNullOrWhiteSpace(request.Body)) contentFile.Append($"- Payload: {request.Body}");
+                if (!string.IsNullOrWhiteSpace(request.Body))
+                {
+                    contentFile.Append($"- Payload: {request.Body}");
+                }
             }
         }
 
@@ -192,7 +201,10 @@ public static class Logger
             if (!string.IsNullOrWhiteSpace(response.Method))
             {
                 contentFile.Append($"Response from API - Status: {response.StatusCode} - Method: {response.Method}");
-                if (response.Data != null) contentFile.Append($"- Response: {response.Data[1]}");
+                if (response.Data != null)
+                {
+                    contentFile.Append($"- Response: {response.Data[1]}");
+                }
             }
         }
 

@@ -41,15 +41,15 @@ public class Requests
                 request.Content = new StringContent(body, Encoding.UTF8, "application/json");
             }
 
-            Logger.Request(new Request { Method = method, Url = url, Body = body }); // Log Request
-            
+            Logger.Request(new Request { Method = method, Url = url, Body = body });
+
             HttpResponseMessage response = client.SendAsync(request).Result;
             int statusCode = (int)response.StatusCode;
             string statusString = statusCode.ToString();
             string responseFromServer = response.Content.ReadAsStringAsync().Result;
             response.EnsureSuccessStatusCode();
 
-            Logger.Request(new Response { Method = method, StatusCode = statusCode, Data = new[] { statusString, responseFromServer } }); // Log Response
+            Logger.Request(new Response { Method = method, StatusCode = statusCode, Data = new[] { statusString, responseFromServer } });
 
             response.Dispose();
             return new[] { statusString, responseFromServer };
@@ -108,8 +108,12 @@ public class Requests
             string responseString = responseContent.ReadAsStringAsync().Result;
             response.EnsureSuccessStatusCode();
 
-            Logger.Request(new Response { Method = "GET", StatusCode = (int)response.StatusCode, 
-                Data = new[] { response.StatusCode.ToString(), logResponse ? responseString : "Not logged" } });
+            Logger.Request(new Response
+            {
+                Method = "GET",
+                StatusCode = (int)response.StatusCode,
+                Data = new[] { response.StatusCode.ToString(), logResponse ? responseString : "NOT LOGGED" }
+            });
 
             return responseString;
         }

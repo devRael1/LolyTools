@@ -76,8 +76,6 @@ My Discord: `1043813027205619804`
 - [ ] Add new settings to the settings file to enable/disable auto-send error with Discord Webhook
 - [ ] Update `Updater.cs` with new Logger system...
 ==========================================
-- [ ] Add a new logs system to log all requests (Client, OP.GG...)
-- [ ] Improve the Logs system (Add more informations + best managment of errors...)
 - [	] Add new system to send logs when an error occurs (Discord Webhook)
 
 ## `📝 License`

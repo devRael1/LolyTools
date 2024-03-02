@@ -1,4 +1,7 @@
-﻿namespace Loly.src.Tools;
+﻿using Loly.src.Logs;
+using Loly.src.Variables.Enums;
+
+namespace Loly.src.Tools;
 
 public class LanguageChanger
 {
@@ -14,11 +17,13 @@ public class LanguageChanger
 
         dynamic shell = Activator.CreateInstance(Type.GetTypeFromProgID("WScript.Shell")!);
 
+        Logger.Info(LogModule.LanguageChanger, $"Create new shortcut for '{language.Split("_")[1]}' in progress");
         dynamic shortcut = shell.CreateShortcut(shortcutPath);
         shortcut.TargetPath = exeFilePath;
         shortcut.Arguments = $"--locale={language}";
         shortcut.WorkingDirectory = Path.GetDirectoryName(exeFilePath);
         shortcut.Save();
+        Logger.Info(LogModule.LanguageChanger, $"Create new shortcut for '{language.Split("_")[1]}' done");
     }
 
     public static string AutoDetectExePath()

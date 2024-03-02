@@ -8,7 +8,6 @@ using System.Diagnostics;
 using System.Management;
 using System.Text;
 using static Loly.src.Tools.Utils;
-using Console = Colorful.Console;
 
 namespace Loly.src.Tasks.Scheduled
 {

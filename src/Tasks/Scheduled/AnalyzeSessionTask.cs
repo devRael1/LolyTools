@@ -1,5 +1,7 @@
 ﻿using Loly.src.Tools;
 using Loly.src.Variables;
+using Loly.src.Variables.Enums;
+using static Loly.src.Tools.Utils;
 
 namespace Loly.src.Tasks.Scheduled
 {
@@ -36,10 +38,12 @@ namespace Loly.src.Tasks.Scheduled
                 case "Lobby":
                     Global.FetchedPlayers = false;
                     Global.AcceptedCurrentMatch = false;
+                    Global.ChampSelectInProgress = false;
                     Thread.Sleep(TimeSpan.FromSeconds(5));
                     break;
                 case "Matchmaking":
                     Global.FetchedPlayers = false;
+                    Global.ChampSelectInProgress = false;
                     Thread.Sleep(TimeSpan.FromSeconds(5));
                     break;
                 case "ReadyCheck":
@@ -47,6 +51,7 @@ namespace Loly.src.Tasks.Scheduled
                     break;
                 case "ChampSelect":
                     HandleChampSelectPhase();
+                    Thread.Sleep(TimeSpan.FromSeconds(5));
                     break;
                 case "InProgress":
                     Thread.Sleep(TimeSpan.FromSeconds(10));
@@ -61,9 +66,13 @@ namespace Loly.src.Tasks.Scheduled
                     Thread.Sleep(TimeSpan.FromSeconds(15));
                     break;
                 case "None":
+                    Global.ChampSelectInProgress = false;
+                    Global.FetchedPlayers = false;
                     Thread.Sleep(TimeSpan.FromSeconds(5));
                     break;
                 default:
+                    Global.ChampSelectInProgress = false;
+                    Global.FetchedPlayers = false;
                     Thread.Sleep(TimeSpan.FromSeconds(10));
                     break;
             }
@@ -77,6 +86,7 @@ namespace Loly.src.Tasks.Scheduled
         private static void HandleReadyCheckPhase()
         {
             Global.FetchedPlayers = false;
+            Global.ChampSelectInProgress = false;
 
             if (!Settings.AutoAccept)
             {
@@ -101,13 +111,16 @@ namespace Loly.src.Tasks.Scheduled
 
             if (Settings.LobbyRevealer && !Global.FetchedPlayers)
             {
-                LobbyRevealer.GetLobbyRevealing();
+                CreateTask(LobbyRevealer.GetLobbyRevealing, $"LobbyRevealing the current lobby", LogModule.Loly);
             }
 
             if (Settings.AutoChat || Settings.PicknBan)
             {
-                ChampSelectSession.HandleChampSelect();
+                CreateTask(ChampSelectSession.HandleChampSelect, $"ChampSelect session analyze", LogModule.Loly);
             }
+
+            Thread.Sleep(TimeSpan.FromSeconds(2));
+            Global.ChampSelectInProgress = true;
         }
     }
 }

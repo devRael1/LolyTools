@@ -2,6 +2,7 @@
 using Loly.src.Menus.Core;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
+using static Loly.src.Menus.Core.Interface;
 using static Loly.src.Tools.Utils;
 
 namespace Loly.src.Menus;
@@ -18,7 +19,7 @@ public class CreditsMenu
             UpdateMenuTitle("credits");
             string[] choices = { "Github Repository", "Back" };
 
-            MenuBuilder creditsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+            MenuBuilder creditsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
             while (choice == 7)
             {
                 choice = creditsMenu.RunMenu();

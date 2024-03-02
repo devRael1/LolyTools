@@ -1,6 +1,4 @@
 ﻿using Loly.src.Variables.Class;
-using System.Drawing;
-using Console = Colorful.Console;
 
 namespace Loly.src.Menus.Core;
 
@@ -50,7 +48,7 @@ internal class MenuBuilder
         }
     }
 
-    private static void SetConsoleTextColor(Color foreground)
+    private static void SetConsoleTextColor(ConsoleColor foreground)
     {
         Console.ForegroundColor = foreground;
     }
@@ -125,7 +123,7 @@ internal class MenuBuilder
         {
             Console.ResetColor();
             SetCursorPosition(_drawMenuRowPos + i, _drawMenuColumnPos);
-            SetConsoleTextColor(Color.White);
+            SetConsoleTextColor(ConsoleColor.White);
             if (i == _currentSelection - 1)
             {
                 SetConsoleTextColor(Colors.PrimaryColor);

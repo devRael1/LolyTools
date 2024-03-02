@@ -2,10 +2,9 @@
 using Loly.src.Menus.Core;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
+using static Loly.src.Menus.Core.Interface;
 using static Loly.src.Menus.ToolsMenu;
-using static Loly.src.Tools.AutoChat;
 using static Loly.src.Tools.Utils;
-using Console = Colorful.Console;
 
 namespace Loly.src.Menus;
 
@@ -21,7 +20,7 @@ public class AutoChatMenu
             UpdateMenuTitle("ac");
             string[] choices = { "Add Message", "Delete Message", "See Messages", "Clear Messages", "Back" };
 
-            MenuBuilder autoChatMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+            MenuBuilder autoChatMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
             while (choice == 7)
             {
                 choice = autoChatMenu.RunMenu();
@@ -150,7 +149,7 @@ public class AutoChatMenu
         {
             ShowMessages();
 
-            MenuBuilder delMessageMenu = MenuBuilder.BuildMenu(choices2, Console.CursorTop);
+            MenuBuilder delMessageMenu = MenuBuilder.BuildMenu(choices2, Console.CursorTop + 1);
             choice = 10;
             while (choice == 10)
             {
@@ -182,7 +181,7 @@ public class AutoChatMenu
         {
             ShowMessages();
 
-            MenuBuilder seeMessageMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+            MenuBuilder seeMessageMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
             choice = 10;
             while (choice == 10)
             {

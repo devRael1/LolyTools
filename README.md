@@ -68,15 +68,9 @@ My Discord: `1043813027205619804`
 
 ### v2.0.0 UPDATE COMING SOON...
 
-- [ ] **IMPORTANT : Patch all tools**
 - [ ] Make dodge (champ select) detection for logs system
-- [ ] Make *Refresh* system for Stats with OP.GG (POST request)
-- [ ] Replace all `Console.WriteLine()` by the new log system
 - [ ] Replace all screenshots in README when the new UI will be done
-- [ ] Add new settings to the settings file to enable/disable auto-send error with Discord Webhook
 - [ ] Update `Updater.cs` with new Logger system...
-==========================================
-- [	] Add new system to send logs when an error occurs (Discord Webhook)
 
 ## `📝 License`
 

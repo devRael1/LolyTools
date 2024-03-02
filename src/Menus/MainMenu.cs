@@ -1,4 +1,5 @@
 ﻿using Loly.src.Menus.Core;
+using static Loly.src.Menus.Core.Interface;
 using static Loly.src.Menus.CreditsMenu;
 using static Loly.src.Menus.LogsMenu;
 using static Loly.src.Menus.SettingsMenu;

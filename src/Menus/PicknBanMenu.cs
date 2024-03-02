@@ -4,9 +4,9 @@ using Loly.src.Tools;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
 using Newtonsoft.Json;
+using static Loly.src.Menus.Core.Interface;
 using static Loly.src.Menus.ToolsMenu;
 using static Loly.src.Tools.Utils;
-using Console = Colorful.Console;
 
 namespace Loly.src.Menus;
 
@@ -114,8 +114,7 @@ public class PicknBanMenu
                         Console.WriteLine("[WARNING]» To configure pick / ban champion, you need to open 'League of Legends' game.", Colors.WarningColor);
                         Console.WriteLine("[WARNING]» Please start your 'League of Legends' game and try again...", Colors.WarningColor);
                         Console.WriteLine("[WARNING]» Press any key to continue...", Colors.WarningColor);
-
-                        _ = Console.ReadKey();
+                        Console.ReadKey();
                     }
 
                     break;
@@ -127,8 +126,7 @@ public class PicknBanMenu
 
                         Console.WriteLine("[WARNING]» You can't remove the champion because it is not configured.", Colors.WarningColor);
                         Console.WriteLine("[WARNING]» Press any key to continue...", Colors.WarningColor);
-
-                        _ = Console.ReadKey();
+                        Console.ReadKey();
                         ResetConsole();
                     }
                     else
@@ -356,8 +354,7 @@ public class PicknBanMenu
                     Console.Write(Environment.NewLine);
                     Console.WriteLine($"[SUCCESS]» Champion '{FormatStr(champName)}' selected successfully for {action} !", Colors.SuccessColor);
                     Console.WriteLine("[SUCCESS]» Press any key to continue...", Colors.SuccessColor);
-
-                    _ = Console.ReadKey();
+                    Console.ReadKey();
                     ResetConsole();
                 }
             }
@@ -416,7 +413,7 @@ public class PicknBanMenu
                     Console.WriteLine($"[SUCCESS]» The {delay}ms delay has been configured correctly for auto {action} !", Colors.SuccessColor);
                     Console.WriteLine("[SUCCESS]» Press any key to continue...", Colors.SuccessColor);
 
-                    _ = Console.ReadKey();
+                    Console.ReadKey();
                     ResetConsole();
                 }
             }
@@ -472,7 +469,7 @@ public class PicknBanMenu
             Console.WriteLine($"[SUCCESS]» Champion '{FormatStr(cacheName)}' removed successfully for {action} !", Colors.SuccessColor);
             Console.WriteLine("[SUCCESS]» Press any key to continue...", Colors.SuccessColor);
 
-            _ = Console.ReadKey();
+            Console.ReadKey();
         }
 
         ResetConsole();

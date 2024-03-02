@@ -8,26 +8,28 @@ namespace Loly.src.Tools;
 
 public class PicknBan
 {
-    public static void HandleChampSelectActions(ChampSelectResponse champSelectResponse, int localPlayerCellId)
+    public static ChampSelectResponse ChampSelectResponse { get; set; }
+
+    public static void HandleChampSelectActions()
     {
-        List<List<Action>> champSelectActions = champSelectResponse.Actions;
+        List<List<Action>> champSelectActions = ChampSelectResponse.Actions;
         foreach (List<Action> arrActions in champSelectActions)
         {
             foreach (Action action in arrActions)
             {
-                if (action.ActorCellId != localPlayerCellId || action.Completed)
+                if (action.ActorCellId != ChampSelectResponse.LocalPlayerCellId || action.Completed)
                 {
                     continue;
                 }
 
                 if (action.Type == "pick")
                 {
-                    HandlePickAction(action, champSelectResponse);
+                    HandlePickAction(action);
                 }
 
                 if (action.Type == "ban")
                 {
-                    HandleBanAction(action, champSelectResponse);
+                    HandleBanAction(action);
                 }
             }
         }
@@ -43,7 +45,7 @@ public class PicknBan
         Global.LastActionId = actionId;
     }
 
-    private static void HandlePickAction(Action action, ChampSelectResponse champSelectResponse)
+    private static void HandlePickAction(Action action)
     {
         if (ChampSelectSession.CurrentRole.PickChamp.Id == null)
         {
@@ -52,7 +54,7 @@ public class PicknBan
 
         if (!ChampSelectSession.HoverPick)
         {
-            string champSelectPhase = champSelectResponse.Timer.Phase;
+            string champSelectPhase = ChampSelectResponse.Timer.Phase;
             long currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
             if (currentTime - 3000 > ChampSelectSession.ChampSelectStart || champSelectPhase != "PLANNING")
@@ -76,14 +78,14 @@ public class PicknBan
         LockChampion(action.Id, "pick");
     }
 
-    private static void HandleBanAction(Action action, ChampSelectResponse champSelectResponse)
+    private static void HandleBanAction(Action action)
     {
         if (ChampSelectSession.CurrentRole.BanChamp.Id == null)
         {
             return;
         }
 
-        string champSelectPhase = champSelectResponse.Timer.Phase;
+        string champSelectPhase = ChampSelectResponse.Timer.Phase;
 
         if (!action.IsInProgress || champSelectPhase == "PLANNING")
         {

@@ -1,10 +1,8 @@
 ﻿using Alba.CsConsoleFormat;
 using Loly.src.Logs;
 using Loly.src.Menus.Core;
-using Loly.src.Variables;
 using Loly.src.Variables.Enums;
 using System.Diagnostics;
-using Console = Colorful.Console;
 
 namespace Loly.src.Tools;
 
@@ -39,42 +37,6 @@ public class Utils
             url = url.Replace("&", "^&");
             Process.Start(new ProcessStartInfo(url) { UseShellExecute = true }).Close();
         }
-    }
-
-    public static void UpdateMenuTitle(string active)
-    {
-        Console.Title = active switch
-        {
-            "main" => $"{Global.SoftName} by {Global.SoftAuthor} - Main Menu",
-            "logs" => $"{Global.SoftName} by {Global.SoftAuthor} - Logs Menu",
-            "tools" => $"{Global.SoftName} by {Global.SoftAuthor} - Tools Menu",
-            "settings" => $"{Global.SoftName} by {Global.SoftAuthor} - Settings Menu",
-            "credits" => $"{Global.SoftName} by {Global.SoftAuthor} - Credits Menu",
-            "lv" => $"{Global.SoftName} by {Global.SoftAuthor} - Lobby Revealer Menu",
-            "lv_get_opgg" => $"{Global.SoftName} by {Global.SoftAuthor} > Lobby Revealer - Get OP.GG Menu",
-            "lv_get_stats" => $"{Global.SoftName} by {Global.SoftAuthor} > Lobby Revealer - Get Stats Menu",
-            "aa" => $"{Global.SoftName} by {Global.SoftAuthor} - Auto Accept Menu",
-            "pnb" => $"{Global.SoftName} by {Global.SoftAuthor} - Pick'n'Ban Menu",
-            "pnb_pob" => $"{Global.SoftName} by {Global.SoftAuthor} > Pick'n'Ban - Pick or Ban Menu",
-            "pnb_pick" => $"{Global.SoftName} by {Global.SoftAuthor} > Pick'n'Ban - Pick Menu",
-            "pnb_ban" => $"{Global.SoftName} by {Global.SoftAuthor} > Pick'n'Ban - Ban Menu",
-            "pnb_pick_c" => $"{Global.SoftName} by {Global.SoftAuthor} > Pick'n'Ban - Pick Champion Menu",
-            "pnb_ban_c" => $"{Global.SoftName} by {Global.SoftAuthor} > Pick'n'Ban - Ban Champion Menu",
-            "pnb_pick_delay" => $"{Global.SoftName} by {Global.SoftAuthor} > Pick'n'Ban - Pick Champion Delay Menu",
-            "pnb_ban_delay" => $"{Global.SoftName} by {Global.SoftAuthor} > Pick'n'Ban - Ban Champion Delay Menu",
-            "pnb_pick_del_c" => $"{Global.SoftName} by {Global.SoftAuthor} > Pick'n'Ban - Remove Pick Champion Menu",
-            "pnb_ban_del_c" => $"{Global.SoftName} by {Global.SoftAuthor} > Pick'n'Ban - Remove Ban Champion Menu",
-            "ac" => $"{Global.SoftName} by {Global.SoftAuthor} - Auto Chat Menu",
-            "ac_add" => $"{Global.SoftName} by {Global.SoftAuthor} > Auto Chat - Add Message Menu",
-            "ac_del" => $"{Global.SoftName} by {Global.SoftAuthor} > Auto Chat - Delete Message Menu",
-            "ac_see" => $"{Global.SoftName} by {Global.SoftAuthor} > Auto Chat - See Messages Menu",
-            "ac_clear" => $"{Global.SoftName} by {Global.SoftAuthor} > Auto Chat - Clear Messages Menu",
-            "lc" => $"{Global.SoftName} by {Global.SoftAuthor} - Language Changer Menu",
-            "lc_languages" => $"{Global.SoftName} by {Global.SoftAuthor} > Language Changer - Languages Menu",
-            "lc_exe" => $"{Global.SoftName} by {Global.SoftAuthor} > Language Changer - Get League Client Exe Menu",
-            "lc_confirm" => $"{Global.SoftName} by {Global.SoftAuthor} > Language Changer - Confirm Menu",
-            _ => Console.Title
-        };
     }
 
     public static string LrParse(string source, string left, string right, int innt = 0)
@@ -148,5 +110,24 @@ public class Utils
                     LogNewError(errorMessage, logModule, t.Exception);
                 }
             });
+    }
+
+    public static void DisplayColor(string message, ConsoleColor color, ConsoleColor color2)
+    {
+        bool estEnCouleurSecondaire = false;
+
+        foreach (char caractere in message)
+        {
+            if (caractere == '`')
+            {
+                estEnCouleurSecondaire = !estEnCouleurSecondaire;
+                continue;
+            }
+
+            Console.ForegroundColor = estEnCouleurSecondaire ? color2 : color;
+            Console.Write(caractere);
+        }
+        Console.Write(Environment.NewLine);
+        Console.ResetColor();
     }
 }

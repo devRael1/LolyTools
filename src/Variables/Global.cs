@@ -26,6 +26,7 @@ public class Global
     public static bool LogsMenuEnable { get; set; } = false;
     public static string Region { get; set; } = "";
     public static bool IsProdEnvironment { get; set; } = false;
+    public static bool ChampSelectInProgress { get; set; } = false;
 
     public static string Session
     {

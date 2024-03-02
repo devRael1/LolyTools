@@ -3,9 +3,9 @@ using Loly.src.Menus.Core;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
 using Newtonsoft.Json.Linq;
+using static Loly.src.Menus.Core.Interface;
 using static Loly.src.Menus.MainMenu;
 using static Loly.src.Tools.Utils;
-using Console = Colorful.Console;
 
 namespace Loly.src.Menus;
 
@@ -30,7 +30,7 @@ public class SettingsMenu
             };
             string[] variables = { "EnableAutoUpdate", "LobbyRevealer", "AutoAccept", "AutoChat", "PicknBan" };
 
-            MenuBuilder settingsMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop);
+            MenuBuilder settingsMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop + 1);
             while (choice == 7)
             {
                 choice = settingsMenu.RunMenu();

@@ -3,9 +3,7 @@ using Loly.src.Menus.Core;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
 using Loly.src.Variables.Enums;
-using System.Drawing;
 using System.Text;
-using Console = Colorful.Console;
 
 namespace Loly.src.Logs;
 
@@ -93,7 +91,7 @@ public static class Logger
     private static void Execute(LogSeverity s, LogModule module, string message, Exception e)
     {
         StringBuilder contentFile = new();
-        (Color color, string value) = VerifySeverity(s);
+        (ConsoleColor color, string value) = VerifySeverity(s);
         Append($"{value}", color);
 
         DateTime dt = DateTime.Now.ToLocalTime();
@@ -105,13 +103,13 @@ public static class Logger
 
         if (!string.IsNullOrWhiteSpace(message))
         {
-            Append(message, Color.White, ref contentFile);
+            Append(message, color, ref contentFile);
         }
 
         if (e != null)
         {
             string toWrite = $"{Environment.NewLine}{e.Message}{Environment.NewLine}{e.StackTrace}";
-            Append(toWrite, Color.IndianRed, ref contentFile);
+            Append(toWrite, ConsoleColor.DarkGreen, ref contentFile);
         }
 
         Console.Write(Environment.NewLine);
@@ -156,7 +154,7 @@ public static class Logger
 
     private static void ExecuteOnlyInConsole(LogSeverity s, LogModule module, string message)
     {
-        (Color color, string value) = VerifySeverity(s);
+        (ConsoleColor color, string value) = VerifySeverity(s);
         Append($"{value}", color);
 
         DateTime dt = DateTime.Now.ToLocalTime();
@@ -167,7 +165,7 @@ public static class Logger
 
         if (!string.IsNullOrWhiteSpace(message))
         {
-            Append(message, Color.White);
+            Append(message, color);
         }
 
         Console.Write(Environment.NewLine);
@@ -233,44 +231,44 @@ public static class Logger
         return logFile.Replace("temp_", $"{today}/");
     }
 
-    private static void Append(string m, Color c)
+    private static void Append(string m, ConsoleColor c)
     {
         Console.ForegroundColor = c;
         Console.Write(m);
     }
 
-    private static void Append(string m, Color c, ref StringBuilder sb)
+    private static void Append(string m, ConsoleColor c, ref StringBuilder sb)
     {
         Console.ForegroundColor = c;
         Console.Write(m);
         sb.Append(m);
     }
 
-    private static (Color Color, string Source) VerifySource(LogModule source)
+    private static (ConsoleColor Color, string Source) VerifySource(LogModule source)
     {
         return source switch
         {
-            LogModule.PickAndBan => (Color.RoyalBlue, "[PICK AND BAN]"),
-            LogModule.AutoChat => (Color.RoyalBlue, "[AUTO CHAT]"),
-            LogModule.AutoAccept => (Color.Gold, "[AUTO ACCEPT]"),
-            LogModule.LobbyRevealer => (Color.LimeGreen, "[LOBBY REVEALER]"),
-            LogModule.LanguageChanger => (Color.Red, "[LANGUAGE CHANGER]"),
-            LogModule.Loly => (Color.DarkGreen, "[LOLY TOOLS]"),
-            LogModule.Tasks => (Color.Aqua, "[TASKS]"),
-            LogModule.Request => (Color.DarkOrange, "[REQUEST]"),
+            LogModule.PickAndBan => (ConsoleColor.Blue, "[PICK AND BAN]"),
+            LogModule.AutoChat => (ConsoleColor.Yellow, "[AUTO CHAT]"),
+            LogModule.AutoAccept => (ConsoleColor.Yellow, "[AUTO ACCEPT]"),
+            LogModule.LobbyRevealer => (ConsoleColor.Magenta, "[LOBBY REVEALER]"),
+            LogModule.LanguageChanger => (ConsoleColor.Gray, "[LANGUAGE CHANGER]"),
+            LogModule.Loly => (ConsoleColor.Cyan, "[LOLY TOOLS]"),
+            LogModule.Tasks => (ConsoleColor.DarkCyan, "[TASKS]"),
+            LogModule.Request => (ConsoleColor.Red, "[REQUEST]"),
             _ => throw new InvalidOperationException($"The specified LogSource {source} is invalid.")
         };
     }
 
-    private static (Color Color, string Level) VerifySeverity(LogSeverity severity)
+    private static (ConsoleColor Color, string Level) VerifySeverity(LogSeverity severity)
     {
         DateTime date = DateTime.Now.ToLocalTime();
         return severity switch
         {
-            LogSeverity.Error => (Color.DarkRed, $"[{date:HH:mm:ss}][ERROR]"),
-            LogSeverity.Warning => (Color.Yellow, $"[{date:HH:mm:ss}][WARNING]"),
-            LogSeverity.Info => (Color.SpringGreen, $"[{date:HH:mm:ss}][INFORMATION]"),
-            LogSeverity.Debug => (Color.SandyBrown, $"[{date:HH:mm:ss}][DEBUG]"),
+            LogSeverity.Error => (ConsoleColor.DarkRed, $"[{date:HH:mm:ss}][ERROR]"),
+            LogSeverity.Warning => (ConsoleColor.DarkYellow, $"[{date:HH:mm:ss}][WARNING]"),
+            LogSeverity.Info => (ConsoleColor.DarkGreen, $"[{date:HH:mm:ss}][INFORMATION]"),
+            LogSeverity.Debug => (ConsoleColor.DarkGray, $"[{date:HH:mm:ss}][DEBUG]"),
             _ => throw new InvalidOperationException($"The specified LogSeverity ({severity}) is invalid.")
         };
     }

@@ -3,6 +3,7 @@ using Loly.src.Variables;
 using Loly.src.Variables.Class;
 using Loly.src.Variables.Enums;
 using Newtonsoft.Json;
+using static Loly.src.Tools.Utils;
 
 namespace Loly.src.Tools
 {
@@ -18,6 +19,11 @@ namespace Loly.src.Tools
 
         public static void HandleChampSelect()
         {
+            if (Global.ChampSelectInProgress)
+            {
+                return;
+            }
+
             string[] currentChampSelect = Requests.ClientRequest("GET", "lol-champ-select/v1/session", true);
             if (currentChampSelect[0] != "200")
             {
@@ -48,7 +54,10 @@ namespace Loly.src.Tools
                 List<MemberTeam> myTeam = champSelectResponse.MyTeam;
                 foreach (MemberTeam member in myTeam)
                 {
-                    if (member.SummonerId.ToString() != Global.SummonerLogged.SummonerId) continue;
+                    if (member.SummonerId.ToString() != Global.SummonerLogged.SummonerId)
+                    {
+                        continue;
+                    }
 
                     string position = member.AssignedPosition;
                     string assignedRole = position.ToLower() switch
@@ -90,13 +99,13 @@ namespace Loly.src.Tools
 
                 if (Settings.AutoChat && CanSentMessages)
                 {
-                    AutoChat.HandleChampSelectAutoChat();
+                    CreateTask(AutoChat.HandleChampSelectAutoChat, $"Sending Auto Chat messages", LogModule.AutoChat);
                 }
 
-                int localPlayerCellId = champSelectResponse.LocalPlayerCellId;
                 if (!HoverPick || !LockedPick || !HoverBan || !LockedBan)
                 {
-                    PicknBan.HandleChampSelectActions(champSelectResponse, localPlayerCellId);
+                    PicknBan.ChampSelectResponse = champSelectResponse;
+                    CreateTask(PicknBan.HandleChampSelectActions, $"Handling Pick and Ban", LogModule.PickAndBan);
                 }
 
                 CanSentMessages = false;

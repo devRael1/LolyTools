@@ -2,9 +2,9 @@
 using Loly.src.Menus.Core;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
+using static Loly.src.Menus.Core.Interface;
 using static Loly.src.Menus.ToolsMenu;
 using static Loly.src.Tools.Utils;
-using Console = Colorful.Console;
 
 namespace Loly.src.Menus;
 
@@ -18,7 +18,7 @@ public class LobbyRevealerMenu
             UpdateMenuTitle("lv");
             string[] choices = { "Get OP.GG", "Get Stats", "Back" };
 
-            MenuBuilder lobbyRevealerMenu = MenuBuilder.BuildMenu(choices, TopLength);
+            MenuBuilder lobbyRevealerMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
             while (choice == 7)
             {
                 choice = lobbyRevealerMenu.RunMenu();
@@ -75,7 +75,7 @@ public class LobbyRevealerMenu
         {
             ShowOpggMenu();
 
-            MenuBuilder opGgMenu = MenuBuilder.BuildMenu(choices2, Console.CursorTop);
+            MenuBuilder opGgMenu = MenuBuilder.BuildMenu(choices2, Console.CursorTop + 1);
             choice = 10;
             while (choice == 10)
             {
@@ -131,7 +131,7 @@ public class LobbyRevealerMenu
 
         while (choice != choices2.Length)
         {
-            MenuBuilder statsMenu = MenuBuilder.BuildMenu(choices2, Console.CursorTop);
+            MenuBuilder statsMenu = MenuBuilder.BuildMenu(choices2, Console.CursorTop + 1);
             choice = 10;
             while (choice == 10)
             {

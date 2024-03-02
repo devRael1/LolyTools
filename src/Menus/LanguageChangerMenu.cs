@@ -1,10 +1,10 @@
 ﻿using Alba.CsConsoleFormat;
 using Loly.src.Menus.Core;
 using Loly.src.Variables.Class;
+using static Loly.src.Menus.Core.Interface;
 using static Loly.src.Menus.ToolsMenu;
 using static Loly.src.Tools.LanguageChanger;
 using static Loly.src.Tools.Utils;
-using Console = Colorful.Console;
 
 namespace Loly.src.Menus;
 
@@ -33,7 +33,7 @@ public class LanguageChangerMenu
             UpdateMenuTitle("lc");
             string[] choices = { "Create new Shortcut", "Back" };
 
-            MenuBuilder languageChangerMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+            MenuBuilder languageChangerMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
             while (choice == 7)
             {
                 choice = languageChangerMenu.RunMenu();

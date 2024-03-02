@@ -21,13 +21,18 @@ public class LobbyRevealer
 
     public static void GetLobbyRevealing()
     {
+        if (Global.ChampSelectInProgress)
+        {
+            return;
+        }
+
         if (OpGGToken == null)
         {
             GetTokenOpGg();
         }
 
         GetPlayers(Requests.ClientRequest("GET", "/chat/v5/participants/lol-champ-select", false)[1]);
-        Utils.CreateTask(GetAdvancedPlayersStats, "Unable to fetch Advanced player stats !", LogModule.LobbyRevealer);
+        Utils.CreateTask(GetAdvancedPlayersStats, "Fetching Advanced player stats !", LogModule.LobbyRevealer);
 
         Global.FetchedPlayers = true;
     }

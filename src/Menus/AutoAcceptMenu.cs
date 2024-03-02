@@ -3,9 +3,9 @@ using Loly.src.Menus.Core;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
 using Newtonsoft.Json.Linq;
+using static Loly.src.Menus.Core.Interface;
 using static Loly.src.Menus.ToolsMenu;
 using static Loly.src.Tools.Utils;
-using Console = Colorful.Console;
 
 namespace Loly.src.Menus;
 
@@ -22,7 +22,7 @@ public class AutoAcceptMenu
             string[] choices = { $"Auto Accept Once    - {CheckBoolean(Settings.AutoAcceptOnce)}", "Back" };
             string[] variables = { "AutoAcceptOnce" };
 
-            MenuBuilder autoAcceptMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+            MenuBuilder autoAcceptMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
             while (choice == 7)
             {
                 choice = autoAcceptMenu.RunMenu();

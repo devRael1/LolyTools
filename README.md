@@ -25,12 +25,12 @@ No need to install this if you have a more recent version installed.
 - [x] Lobby Revealer (Ranked games)
 - [x] Auto Accept match (Auto accept queue)
 - [x] Auto Pick and Ban champion (By roles => Top, Jungle, Mid, ADC, Support)
-- [x] Auto Chat (Auto send messages when you are in lobby)
+- [x] Auto Chat (Auto send messages when champ select start)
 - [x] Get OP.GG stats of your team (SoloQ & DuoQ / FlexQ)
 - [x] Advanced Logs system (Real Time & Persistent)
 - [x] Language Changer (Shortcuts on Desktop)
 - [x] Use JSON file to save your settings
-- [x] Very low CPU and RAM 
+- [x] Very low CPU and RAM usage
 - [x] Auto update (Github API)
 
 More features coming soon...
@@ -60,8 +60,7 @@ More features coming soon...
 
 ## `❓ Bugs report / Suggestions`
 
-If you want to report a bug or suggest a feature, you can open an
-issue [here](https://github.com/devRael1/LolyTools/issues) or contact me on Discord.
+If you want to report a bug or suggest a feature, you can open an issue [here](https://github.com/devRael1/LolyTools/issues) or contact me on Discord.
 
 My Discord: `1043813027205619804`
 

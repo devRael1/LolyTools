@@ -58,7 +58,6 @@ My Discord: `1043813027205619804`
 
 - [ ] Make dodge (champ select) detection for logs system
 - [ ] Replace all screenshots in README when the new UI will be done
-- [ ] Update `Updater.cs` with new Logger system...
 
 ## `📝 License`
 Copyright © 2024 devRael<br>

@@ -108,18 +108,14 @@ public static class Logger
 
         if (e != null)
         {
-            string toWrite = $"{Environment.NewLine}{e.Message}{Environment.NewLine}{e.StackTrace}";
-            Append(toWrite, ConsoleColor.DarkGreen, ref contentFile);
+            string toWrite = $"{Environment.NewLine}{e}";
+            Append(toWrite, ConsoleColor.DarkRed, ref contentFile);
         }
 
         Console.Write(Environment.NewLine);
 
         contentFile.AppendLine();
         File.AppendAllText(NormalizeLogFilePath(LogTempFile, DateTime.Now, LogFolder), contentFile.ToString());
-        if (e != null)
-        {
-            File.AppendAllText(NormalizeLogFilePath(LogTempFile, DateTime.Now, LogFolder), e.ToString());
-        }
     }
 
     private static void ExecuteWithoutConsole(LogSeverity s, LogModule module, string message, Exception e)
@@ -156,9 +152,6 @@ public static class Logger
     {
         (ConsoleColor color, string value) = VerifySeverity(s);
         Append($"{value}", color);
-
-        DateTime dt = DateTime.Now.ToLocalTime();
-        Append($"[{dt.FormatDate()}] {value}» ", color);
 
         (color, value) = VerifySource(module);
         Append($"{value}» ", color);
@@ -256,6 +249,7 @@ public static class Logger
             LogModule.Loly => (ConsoleColor.Cyan, "[LOLY TOOLS]"),
             LogModule.Tasks => (ConsoleColor.DarkCyan, "[TASKS]"),
             LogModule.Request => (ConsoleColor.Red, "[REQUEST]"),
+            LogModule.Updater => (ConsoleColor.White, "[UPDATER]"),
             _ => throw new InvalidOperationException($"The specified LogSource {source} is invalid.")
         };
     }

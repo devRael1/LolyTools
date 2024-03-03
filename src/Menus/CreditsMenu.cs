@@ -17,7 +17,7 @@ public class CreditsMenu
 
             int choice = 7;
             UpdateMenuTitle("credits");
-            string[] choices = { "Github Repository", "Back" };
+            string[] choices = { "Github Repository (Source Code)", "Back" };
 
             MenuBuilder creditsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
             while (choice == 7)

@@ -1,25 +1,19 @@
 ﻿# `🎮 Loly - Tools`
-
-<img src="https://i.imgur.com/irDTPDC.png" width="150" alt=""/>
+<img src="https://i.imgur.com/irDTPDC.png" width="100" alt=""/>
 
 League Of Legends Tools.<br>
 A set of several small tools for league of legends.
 
-### Works with the latest `14.4` update of League of Legends.
-
+### Works with the latest `14.4` update of League of Legends ([Patch Notes : 14.4](https://na.leagueoflegends.com/en-us/news/game-updates/patch-14-4-notes/))
 ![Loly - Tools](https://i.imgur.com/8o9dfBC.png)
 
-## `❗Usage`
-
-You must install .NET Desktop Runtime 6 / .NET Runtime 6 - Windows to use this tool.
-
-.NET Desktop Runtime 6 -> [x86 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.16-windows-x86-installer) / [x64 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.16-windows-x64-installer)<br>
-.NET Runtime 6 -> [x86 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-6.0.16-windows-x86-installer) / [x64 installer](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-6.0.16-windows-x64-installer)
-
+## `❗ Usage`
+You must install .NET Desktop Runtime 6 to use this tool.<br>
 No need to install this if you have a more recent version installed.
 
-## `⚙️ Features`
+.NET Desktop Runtime 6 -> [Official x64 installer (Microsoft)](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.27-windows-x64-installer)<br>
 
+## `⚙️ Features`
 - [x] Interactive Menu in Console
 - [x] Multi-region support (DE, FR, ES, JP, CN...)
 - [x] Lobby Revealer (Ranked games)
@@ -36,36 +30,30 @@ No need to install this if you have a more recent version installed.
 More features coming soon...
 
 ## `📷 Screenshots`
-
 ### Tools Menu
-
 <details>
 <summary>See screenshot...</summary>
 <img src="https://i.imgur.com/Dnmqt3Y.png" alt="devRael1">
 </details>
 
 ### Settings Menu
-
 <details>
 <summary>See screenshot...</summary>
 <img src="https://i.imgur.com/pbCghK5.png" alt="devRael1">
 </details>
 
 ### Logs Menu
-
 <details>
 <summary>See screenshot...</summary>
 <img src="https://i.imgur.com/1ggLk5l.png" alt="devRael1">
 </details>
 
 ## `❓ Bugs report / Suggestions`
-
 If you want to report a bug or suggest a feature, you can open an issue [here](https://github.com/devRael1/LolyTools/issues) or contact me on Discord.
 
 My Discord: `1043813027205619804`
 
 ## `🧾 Todo List`
-
 ### v2.0.0 UPDATE COMING SOON...
 
 - [ ] Make dodge (champ select) detection for logs system
@@ -73,7 +61,6 @@ My Discord: `1043813027205619804`
 - [ ] Update `Updater.cs` with new Logger system...
 
 ## `📝 License`
-
 Copyright © 2024 devRael<br>
 This project is MIT licensed.<br>
 This is not an official Riot Games product. It's not affiliated with or endorsed by Riot Games Inc.

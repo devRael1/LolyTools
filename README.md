@@ -1,11 +1,10 @@
 ﻿# `🎮 Loly - Tools`
-<img src="https://i.imgur.com/irDTPDC.png" width="100" alt=""/>
+<img src="/Ressources/logo.ico" width="100" alt=""/>
 
-League Of Legends Tools.<br>
-A set of several small tools for league of legends.
+A set of several small tools for League Of Legends.
 
 ### Works with the latest `14.4` update of League of Legends ([Patch Notes : 14.4](https://na.leagueoflegends.com/en-us/news/game-updates/patch-14-4-notes/))
-![Loly - Tools](https://i.imgur.com/8o9dfBC.png)
+![Loly - Tools](/Ressources/mainMenu.png)
 
 ## `❗ Usage`
 You must install .NET Desktop Runtime 6 to use this tool.<br>
@@ -30,22 +29,40 @@ No need to install this if you have a more recent version installed.
 More features coming soon...
 
 ## `📷 Screenshots`
+### Updater Menu
+<details>
+<summary>See screenshot...</summary>
+<img src="/Ressources/updater.png" alt="devRael1">
+</details>
+
+### Main Menu
+<details>
+<summary>See screenshot...</summary>
+<img src="/Ressources/mainMenu.png" alt="devRael1">
+</details>
+
 ### Tools Menu
 <details>
 <summary>See screenshot...</summary>
-<img src="https://i.imgur.com/Dnmqt3Y.png" alt="devRael1">
+<img src="/Ressources/toolsMenu.png" alt="devRael1">
 </details>
 
 ### Settings Menu
 <details>
 <summary>See screenshot...</summary>
-<img src="https://i.imgur.com/pbCghK5.png" alt="devRael1">
+<img src="/Ressources/settingsMenu.png" alt="devRael1">
 </details>
 
 ### Logs Menu
 <details>
 <summary>See screenshot...</summary>
-<img src="https://i.imgur.com/1ggLk5l.png" alt="devRael1">
+<img src="/Ressources/logsMenu.png" alt="devRael1">
+</details>
+
+### Credits Menu
+<details>
+<summary>See screenshot...</summary>
+<img src="/Ressources/creditsMenu.png" alt="devRael1">
 </details>
 
 ## `❓ Bugs report / Suggestions`
@@ -54,10 +71,7 @@ If you want to report a bug or suggest a feature, you can open an issue [here](h
 My Discord: `1043813027205619804`
 
 ## `🧾 Todo List`
-### v2.0.0 UPDATE COMING SOON...
-
 - [ ] Make dodge (champ select) detection for logs system
-- [ ] Replace all screenshots in README when the new UI will be done
 
 ## `📝 License`
 Copyright © 2024 devRael<br>

@@ -3,7 +3,7 @@
 
 A set of several small tools for League Of Legends.
 
-### Works with the latest `14.4` update of League of Legends ([Patch Notes : 14.4](https://na.leagueoflegends.com/en-us/news/game-updates/patch-14-4-notes/))
+### Works with the latest `14.4` update of League of Legends ([Patch Notes : 14.5](https://na.leagueoflegends.com/en-us/news/game-updates/patch-14-5-notes/))
 ![Loly - Tools](/Ressources/mainMenu.png)
 
 ## `❗ Usage`

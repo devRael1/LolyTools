@@ -65,8 +65,7 @@ More features coming soon...
 </details>
 
 ## `❓ Bugs report / Suggestions`
-If you want to report a bug or suggest a feature, you can open an issue [here](https://github.com/devRael1/LolyTools/issues) or contact me on Discord.
-
+If you want to report a bug or suggest a feature, you can open an issue [here](https://github.com/devRael1/LolyTools/issues) or contact me on Discord.<br>
 My Discord: `1043813027205619804`
 
 ## `🧾 Todo List`

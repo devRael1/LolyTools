@@ -112,16 +112,17 @@ namespace Loly.src.Tasks.Scheduled
             }
 
             Logger.Info(LogModule.Loly, "Getting your Summoner ID");
-            string[] currentSummoner = Requests.WaitSuccessClientRequest("GET", "lol-summoner/v1/current-summoner", true);
-            dynamic currentSummonerSplit = JsonConvert.DeserializeObject(currentSummoner[1]);
 
-            Global.SummonerLogged.SummonerId = currentSummonerSplit["summonerId"];
-            Global.SummonerLogged.DisplayName = currentSummonerSplit["displayName"];
-            Global.SummonerLogged.GameName = currentSummonerSplit["gameName"];
-            Global.SummonerLogged.TagLine = currentSummonerSplit["tagLine"];
-            Global.SummonerLogged.SummonerLevel = currentSummonerSplit["summonerLevel"];
-            Global.SummonerLogged.AccountId = currentSummonerSplit["accountId"];
-            Global.SummonerLogged.Puuid = currentSummonerSplit["puuid"];
+            string[] currentSummoner = Requests.WaitSuccessClientRequest("GET", "lol-summoner/v1/current-summoner", true);
+            CurrentSummoner currentSum = JsonConvert.DeserializeObject<CurrentSummoner>(currentSummoner[1]);
+
+            Global.SummonerLogged.SummonerId = currentSum.SummonerId;
+            Global.SummonerLogged.DisplayName = currentSum.DisplayName;
+            Global.SummonerLogged.GameName = currentSum.GameName;
+            Global.SummonerLogged.TagLine = currentSum.TagLine;
+            Global.SummonerLogged.SummonerLevel = currentSum.SummonerLevel;
+            Global.SummonerLogged.AccountId = currentSum.AccountId;
+            Global.SummonerLogged.Puuid = currentSum.Puuid;
 
             Logger.Info(LogModule.Loly, $"Summoner ID loaded : {Global.SummonerLogged.SummonerId}");
         }

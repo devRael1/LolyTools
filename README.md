@@ -21,7 +21,6 @@ No need to install this if you have a more recent version installed.
 - [x] Auto Chat (Auto send messages when champ select start)
 - [x] Get OP.GG stats of your team (SoloQ & DuoQ / FlexQ)
 - [x] Advanced Logs system (Real Time & Persistent)
-- [x] Language Changer (Shortcuts on Desktop)
 - [x] Use JSON file to save your settings
 - [x] Very low CPU and RAM usage
 - [x] Auto update (Github API)

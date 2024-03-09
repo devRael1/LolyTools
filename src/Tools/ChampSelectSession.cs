@@ -54,7 +54,7 @@ namespace Loly.src.Tools
                 List<MemberTeam> myTeam = champSelectResponse.MyTeam;
                 foreach (MemberTeam member in myTeam)
                 {
-                    if (member.SummonerId.ToString() != Global.SummonerLogged.SummonerId)
+                    if (!member.SummonerId.Equals(Global.SummonerLogged.SummonerId))
                     {
                         continue;
                     }

@@ -99,8 +99,6 @@ namespace Loly.src.Tasks.Scheduled
         private static void HandleChampSelectPhase()
         {
             // TODO: Create the detection of dodge champ select system
-            // ...
-
             Global.AcceptedCurrentMatch = false;
 
             if (Settings.AutoAcceptOnce)

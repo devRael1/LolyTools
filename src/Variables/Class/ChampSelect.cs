@@ -17,7 +17,7 @@
     public class MemberTeam
     {
         public string AssignedPosition { get; set; }
-        public int? SummonerId { get; set; }
+        public string SummonerId { get; set; }
     }
 
     public class Action

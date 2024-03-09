@@ -36,7 +36,7 @@ public class AutoAcceptMenu
             }
 
             JObject settings = Settings.GetSettings();
-            settings[variables[choice - 1]] = !bool.Parse(settings[variables[choice - 1]]?.ToString() ?? string.Empty);
+            settings["AutoAccept"][variables[choice - 1]] = !bool.Parse(settings["AutoAccept"][variables[choice - 1]].ToString());
             Settings.SaveFileSettings(settings);
             Settings.CreateOrUpdateSettings();
         }

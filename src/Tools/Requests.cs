@@ -56,7 +56,7 @@ public class Requests
         }
         catch (HttpRequestException ex)
         {
-            Logger.Request(new Response { Method = method, StatusCode = 0, Exception = ex });
+            Logger.Request(new Response { Method = method, StatusCode = Convert.ToInt32(ex.StatusCode), Exception = ex });
             return new[] { "999", "" };
         }
         catch (Exception ex)

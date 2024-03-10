@@ -21,11 +21,6 @@ public class LobbyRevealer
 
     public static void GetLobbyRevealing()
     {
-        if (Global.ChampSelectInProgress)
-        {
-            return;
-        }
-
         if (OpGGToken == null)
         {
             GetTokenOpGg();

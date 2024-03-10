@@ -9,6 +9,11 @@ namespace Loly.src.Tools;
 public class PicknBan
 {
     public static ChampSelectResponse ChampSelectResponse { get; set; }
+    private enum ActionType
+    {
+        Pick,
+        Ban
+    }
 
     public static void HandleChampSelectActions()
     {
@@ -17,144 +22,97 @@ public class PicknBan
         {
             foreach (Action action in arrActions)
             {
-                if (action.ActorCellId != ChampSelectResponse.LocalPlayerCellId || action.Completed)
-                {
-                    continue;
-                }
-
-                if (action.Type == "pick")
-                {
-                    HandlePickAction(action);
-                }
-
-                if (action.Type == "ban")
-                {
-                    HandleBanAction(action);
-                }
+                if (action.ActorCellId != ChampSelectResponse.LocalPlayerCellId || action.Completed) continue;
+                if (action.Type == "pick") HandlePickAction(action);
+                if (action.Type == "ban") HandleBanAction(action);
             }
         }
     }
 
     private static void MarkPhaseStart(int actionId)
     {
-        if (actionId == Global.LastActionId)
-        {
-            return;
-        }
-
+        if (actionId == Global.LastActionId) return;
         Global.LastActionId = actionId;
     }
 
     private static void HandlePickAction(Action action)
     {
-        if (ChampSelectSession.CurrentRole.PickChamp.Id == null)
-        {
-            return;
-        }
+        if (ChampSelectSession.CurrentRole.PickChamp.Id == null) return;
 
         if (!ChampSelectSession.HoverPick)
         {
             string champSelectPhase = ChampSelectResponse.Timer.Phase;
             long currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
-            if (currentTime - 3000 > ChampSelectSession.ChampSelectStart || champSelectPhase != "PLANNING")
-            {
-                HoverChampion(action.Id, "pick");
-            }
+            if (currentTime - 3000 > ChampSelectSession.ChampSelectStart || champSelectPhase != "PLANNING") HoverChampion(action.Id, ActionType.Pick);
         }
 
-        if (!action.IsInProgress)
-        {
-            return;
-        }
+        if (!action.IsInProgress) return;
 
         MarkPhaseStart(action.Id);
-        if (ChampSelectSession.LockedPick)
-        {
-            return;
-        }
+        if (ChampSelectSession.LockedPick) return;
 
         Thread.Sleep(ChampSelectSession.CurrentRole.PickChamp.Delay);
-        LockChampion(action.Id, "pick");
+        LockChampion(action.Id, ActionType.Pick);
     }
 
     private static void HandleBanAction(Action action)
     {
-        if (ChampSelectSession.CurrentRole.BanChamp.Id == null)
-        {
-            return;
-        }
-
+        if (ChampSelectSession.CurrentRole.BanChamp.Id == null) return;
         string champSelectPhase = ChampSelectResponse.Timer.Phase;
-
-        if (!action.IsInProgress || champSelectPhase == "PLANNING")
-        {
-            return;
-        }
+        if (!action.IsInProgress || champSelectPhase == "PLANNING") return;
 
         MarkPhaseStart(action.Id);
 
-        if (!ChampSelectSession.HoverBan)
-        {
-            HoverChampion(action.Id, "ban");
-        }
-
-        if (ChampSelectSession.LockedBan)
-        {
-            return;
-        }
+        if (!ChampSelectSession.HoverBan) HoverChampion(action.Id, ActionType.Ban);
+        if (ChampSelectSession.LockedBan) return;
 
         Thread.Sleep(ChampSelectSession.CurrentRole.BanChamp.Delay);
-        LockChampion(action.Id, "ban");
+        LockChampion(action.Id, ActionType.Ban);
     }
 
-    private static void HoverChampion(int actionId, string actType)
+    private static void HoverChampion(int actionId, ActionType actionType)
     {
-        ChampItem champion = actType == "pick" ? ChampSelectSession.CurrentRole.PickChamp : ChampSelectSession.CurrentRole.BanChamp;
-        Logger.Info(LogModule.PickAndBan, $"Hover '{champion.Name}' champion for {actType}");
+        ChampItem champion = actionType == ActionType.Pick ? ChampSelectSession.CurrentRole.PickChamp : ChampSelectSession.CurrentRole.BanChamp;
+        Logger.Info(LogModule.PickAndBan, $"Hover '{champion.Name}' champion for {actionType}");
 
         string[] champSelectAction = Requests.ClientRequest("PATCH", $"lol-champ-select/v1/session/actions/{actionId}", true, $"{{\"championId\":{champion.Id}}}");
-        if (champSelectAction[0] != "204")
-        {
-            return;
-        }
+        if (champSelectAction[0] != "204") return;
 
-        switch (actType)
+        switch (actionType)
         {
-            case "pick":
+            case ActionType.Pick:
                 ChampSelectSession.HoverPick = true;
                 break;
-            case "ban":
+            case ActionType.Ban:
                 ChampSelectSession.HoverBan = true;
                 break;
         }
 
-        Logger.Info(LogModule.PickAndBan, $"'{champion.Name}' has been hovered for {actType}");
+        Logger.Info(LogModule.PickAndBan, $"'{champion.Name}' has been hovered for {actionType}");
+        int delay = actionType == ActionType.Pick ? ChampSelectSession.CurrentRole.PickChamp.Delay : ChampSelectSession.CurrentRole.BanChamp.Delay;
+        Logger.Info(LogModule.PickAndBan, $"Waiting {delay}ms to '{actionType}' him");
     }
 
-    private static void LockChampion(int actionId, string actType)
+    private static void LockChampion(int actionId, ActionType actionType)
     {
-        ChampItem champion = actType == "pick" ? ChampSelectSession.CurrentRole.PickChamp : ChampSelectSession.CurrentRole.BanChamp;
-        Logger.Info(LogModule.PickAndBan, $"Locking '{champion.Name}' champion for {actType}");
+        ChampItem champion = actionType == ActionType.Pick ? ChampSelectSession.CurrentRole.PickChamp : ChampSelectSession.CurrentRole.BanChamp;
+        Logger.Info(LogModule.PickAndBan, $"Locking '{champion.Name}' champion for {actionType}");
 
         string[] champSelectAction = Requests.ClientRequest("PATCH", $"lol-champ-select/v1/session/actions/{actionId}", true,
             $"{{\"completed\":true,\"championId\":{champion.Id}}}");
-        if (champSelectAction[0] != "204")
-        {
-            return;
-        }
+        if (champSelectAction[0] != "204") return;
 
-        switch (actType)
+        switch (actionType)
         {
-            case "pick":
+            case ActionType.Pick:
                 ChampSelectSession.LockedPick = true;
                 break;
-            case "ban":
+            case ActionType.Ban:
                 ChampSelectSession.LockedBan = true;
                 break;
         }
 
-        Logger.Info(LogModule.PickAndBan, $"'{champion.Name}' has been locked for {actType}");
-
+        Logger.Info(LogModule.PickAndBan, $"'{champion.Name}' has been locked for {actionType}");
     }
 }

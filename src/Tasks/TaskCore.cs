@@ -15,18 +15,12 @@ namespace Loly.src.Tasks
 
         public void StartAllTasks()
         {
-            foreach (ScheduledTask scheduledTask in _scheduledTasks)
-            {
-                scheduledTask.Start();
-            }
+            foreach (ScheduledTask scheduledTask in _scheduledTasks) scheduledTask.Start();
         }
 
         public void StopAllTasks()
         {
-            foreach (ScheduledTask scheduledTask in _scheduledTasks)
-            {
-                scheduledTask.Stop();
-            }
+            foreach (ScheduledTask scheduledTask in _scheduledTasks) scheduledTask.Stop();
         }
     }
 }

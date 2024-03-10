@@ -9,7 +9,7 @@ public class Global
     public const string GithubPage = "https://github.com/devRael1/LolyTools";
     public const string SoftName = "League of Legends - Loly Tools";
     public const string SoftAuthor = "devRael";
-    private static string _session = "";
+    private static SessionPhase _session = SessionPhase.None;
 
     public static List<Player> PlayerList = new();
     public static List<ChampItem> ChampionsList = new();
@@ -25,10 +25,9 @@ public class Global
     public static bool IsLeagueOpen { get; set; } = false;
     public static bool LogsMenuEnable { get; set; } = false;
     public static string Region { get; set; } = "";
-    public static bool IsProdEnvironment { get; set; } = false;
-    public static bool ChampSelectInProgress { get; set; } = false;
+    public static bool IsProdEnvironment { get; set; } = true;
 
-    public static string Session
+    public static SessionPhase Session
     {
         get => _session;
         set

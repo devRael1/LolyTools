@@ -38,7 +38,7 @@ public class AutoChat
                     count++;
                 }
 
-                Thread.Sleep(attempts * 200);
+                Thread.Sleep(attempts * 100);
             }
         }
 

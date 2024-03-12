@@ -38,11 +38,12 @@ namespace Loly.src.Tasks.Scheduled
                     break;
                 case SessionPhase.Matchmaking:
                     Global.FetchedPlayers = false;
+                    Global.AcceptedCurrentMatch = false;
                     Thread.Sleep(TimeSpan.FromSeconds(5));
                     break;
                 case SessionPhase.ReadyCheck:
                     HandleReadyCheckPhase();
-                    Thread.Sleep(TimeSpan.FromSeconds(2));
+                    Thread.Sleep(TimeSpan.FromSeconds(1));
                     break;
                 case SessionPhase.ChampSelect:
                     HandleChampSelectPhase();

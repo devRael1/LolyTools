@@ -14,7 +14,7 @@ public class LobbyRevealer
     public static void GetTokenOpGg()
     {
         Logger.Info(LogModule.LobbyRevealer, "Fetching OP.GG token");
-        string response = Requests.WebRequest("www.op.gg/multisearch", false);
+        string response = Requests.WebRequest("www.op.gg", false);
         OpGGToken = Utils.LrParse(response, "\"buildId\":\"", "\",\"assetPrefix") ?? "null";
         Logger.Info(LogModule.LobbyRevealer, $"Fetching OP.GG token successfully (Token: {OpGGToken})");
     }
@@ -27,9 +27,8 @@ public class LobbyRevealer
         }
 
         GetPlayers(Requests.ClientRequest("GET", "/chat/v5/participants/lol-champ-select", false)[1]);
-        Utils.CreateTask(GetAdvancedPlayersStats, "Fetching Advanced player stats !", LogModule.LobbyRevealer);
-
         Global.FetchedPlayers = true;
+        GetAdvancedPlayersStats();
     }
 
     public static void GetPlayers(string req)

@@ -119,7 +119,7 @@ public class Requests
         }
         catch (HttpRequestException ex)
         {
-            Logger.Request(new Response { Method = "GET", StatusCode = 0, Exception = ex });
+            Logger.Request(new Response { Method = "GET", StatusCode = Convert.ToInt32(ex.StatusCode), Exception = ex });
             return null;
         }
         catch (Exception ex)

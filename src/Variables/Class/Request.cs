@@ -3,6 +3,8 @@
 public interface IRequest
 {
     public string Method { get; set; }
+    public string Url { get; set; }
+
     public Exception Exception { get; set; }
 }
 
@@ -17,6 +19,7 @@ public class Request : IRequest
 public class Response : IRequest
 {
     public string Method { get; set; }
+    public string Url { get; set; }
     public int StatusCode { get; set; }
     public string[] Data { get; set; }
     public Exception Exception { get; set; }

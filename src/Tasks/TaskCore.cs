@@ -10,7 +10,7 @@ namespace Loly.src.Tasks
         {
             _scheduledTasks.Add(new ScheduledTask(LeagueClientTask.LolClientTask, "LolClientTask", TimeSpan.FromSeconds(5), true, false));
             _scheduledTasks.Add(new ScheduledTask(AnalyzeSessionTask.AnalyzeSession, "AnalyzeSession", TimeSpan.FromMinutes(1), true, true));
-            _scheduledTasks.Add(new ScheduledTask(ClearLogsFilesTask.RunClearLogsFiles, "RunClearLogsFiles", TimeSpan.FromHours(2), true, false));
+            _scheduledTasks.Add(new ScheduledTask(ClearLogsFilesTask.RunClearLogsFiles, "RunClearLogsFiles", TimeSpan.FromHours(1), true, false));
         }
 
         public void StartAllTasks()

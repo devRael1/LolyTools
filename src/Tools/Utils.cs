@@ -100,7 +100,7 @@ public class Utils
         return $"{(bytes / Math.Pow(k, i)).ToString($"F{dm}")} {sizes[i]}{(seconds ? "/s" : "")}";
     }
 
-    public static void CreateTask(Action action, string errorMessage, LogModule logModule)
+    public static void CreateBackgroundTask(Action action, string errorMessage, LogModule logModule)
     {
         Task.Run(action)
             .ContinueWith(t =>

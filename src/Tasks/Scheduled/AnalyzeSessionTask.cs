@@ -95,7 +95,7 @@ namespace Loly.src.Tasks.Scheduled
             Global.AcceptedCurrentMatch = false;
 
             if (Settings.AutoAccept && Settings.AutoAcceptOnce) Settings.AutoAccept = false;
-            if (Settings.LobbyRevealer && !Global.FetchedPlayers) CreateTask(LobbyRevealer.GetLobbyRevealing, $"LobbyRevealing the current lobby", LogModule.Loly);
+            if (Settings.LobbyRevealer && !Global.FetchedPlayers) CreateBackgroundTask(LobbyRevealer.GetLobbyRevealing, $"LobbyRevealing the current lobby", LogModule.Loly);
             if (Settings.AutoChat || Settings.PicknBan) ChampSelectSession.HandleChampSelect();
         }
     }

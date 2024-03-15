@@ -73,7 +73,7 @@ public class LobbyRevealer
 
     public static void GetAdvancedPlayersStats()
     {
-        Logger.Info(LogModule.LobbyRevealer, $"Getting advanced stats of {Global.PlayerList.Count} players in background...");
+        Logger.Info(LogModule.LobbyRevealer, $"Fetching advanced stats of {Global.PlayerList.Count} players in background...");
 
         Parallel.ForEach(Global.PlayerList, player =>
         {

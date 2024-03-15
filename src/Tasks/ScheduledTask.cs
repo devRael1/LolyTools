@@ -35,7 +35,7 @@ namespace Loly.src.Tasks.Scheduled
         {
             if (runNow)
             {
-                Utils.CreateTask(taskAction, $"Task [{taskName}]", LogModule.Tasks);
+                Utils.CreateBackgroundTask(taskAction, $"Task [{taskName}]", LogModule.Tasks);
             }
 
             if (!infinite)
@@ -52,7 +52,7 @@ namespace Loly.src.Tasks.Scheduled
 
         private void TimerElapsed(object sender, ElapsedEventArgs e)
         {
-            Utils.CreateTask(taskAction, $"Task [{taskName}]", LogModule.Tasks);
+            Utils.CreateBackgroundTask(taskAction, $"Task [{taskName}]", LogModule.Tasks);
         }
     }
 }

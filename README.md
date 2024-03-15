@@ -28,6 +28,9 @@ No need to install this if you have a more recent version installed.
 More features coming soon...
 
 ## `📷 Screenshots`
+<details>
+<summary>Click here to see all screenshots...</summary>
+
 ### Updater Menu
 <details>
 <summary>See screenshot...</summary>
@@ -62,6 +65,8 @@ More features coming soon...
 <details>
 <summary>See screenshot...</summary>
 <img src="/Ressources/creditsMenu.png" alt="devRael1">
+</details>
+
 </details>
 
 ## `❓ Bugs report / Suggestions`

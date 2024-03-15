@@ -22,24 +22,19 @@ namespace Loly.src.Tasks.Scheduled
                 Global.IsLeagueOpen = true;
 
                 Process client = Process.GetProcessesByName("LeagueClientUx").FirstOrDefault();
-                if (Global.AuthClient.Count == 0 && Global.AuthRiot.Count == 0)
-                {
-                    GetLeagueAuth();
-                }
-
-                LoadSummonerId(false);
+                if (Global.AuthClient.Count == 0 && Global.AuthRiot.Count == 0) GetLeagueAuth();
+                if (Global.SummonerLogged.SummonerId == null) LoadSummonerId();
 
                 if (Global.Region == "")
                 {
+                    Logger.Info(LogModule.Loly, "Fetching region of your League Of Legends Client");
                     string response = Requests.WaitSuccessClientRequest("GET", "/riotclient/region-locale", true)[1];
                     PlayerRegion regionSplit = JsonConvert.DeserializeObject<PlayerRegion>(response);
                     Global.Region = regionSplit.Region.ToLower();
+                    Logger.Info(LogModule.Loly, $"Region fetched successfully : {Global.Region.ToUpper()}");
                 }
 
-                if (!_lcuPid.Equals(client.Id))
-                {
-                    _lcuPid = client.Id;
-                }
+                if (!_lcuPid.Equals(client.Id)) _lcuPid = client.Id;
             }
             else
             {
@@ -95,23 +90,15 @@ namespace Loly.src.Tasks.Scheduled
             foreach (ManagementBaseObject managementBaseObject in mngmtClass.GetInstances())
             {
                 ManagementObject o = (ManagementObject)managementBaseObject;
-                if (o["Name"].Equals(gamename))
-                {
-                    commandline = "[" + o["CommandLine"] + "]";
-                }
+                if (o["Name"].Equals(gamename)) commandline = "[" + o["CommandLine"] + "]";
             }
 
             return commandline;
         }
 
-        private static void LoadSummonerId(bool force = false)
+        private static void LoadSummonerId()
         {
-            if (Global.SummonerLogged?.SummonerId != null && !force)
-            {
-                return;
-            }
-
-            Logger.Info(LogModule.Loly, "Getting your Summoner ID");
+            Logger.Info(LogModule.Loly, "Fetching your Summoner ID");
 
             string[] currentSummoner = Requests.WaitSuccessClientRequest("GET", "lol-summoner/v1/current-summoner", true);
             CurrentSummoner currentSum = JsonConvert.DeserializeObject<CurrentSummoner>(currentSummoner[1]);
@@ -124,7 +111,7 @@ namespace Loly.src.Tasks.Scheduled
             Global.SummonerLogged.AccountId = currentSum.AccountId;
             Global.SummonerLogged.Puuid = currentSum.Puuid;
 
-            Logger.Info(LogModule.Loly, $"Summoner ID loaded : {Global.SummonerLogged.SummonerId}");
+            Logger.Info(LogModule.Loly, $"Logged Summoner ID loaded : {Global.SummonerLogged.SummonerId}");
         }
     }
 }

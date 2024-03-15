@@ -179,10 +179,10 @@ public static class Logger
         {
             if (!string.IsNullOrWhiteSpace(request.Method) || !string.IsNullOrWhiteSpace(request.Url))
             {
-                contentFile.Append($"Request to API - Endpoint: {request.Url} - Method: {request.Method}");
+                contentFile.Append($"Request to API > Endpoint: {request.Url} - Method: {request.Method}");
                 if (!string.IsNullOrWhiteSpace(request.Body))
                 {
-                    contentFile.Append($"- Payload: {request.Body}");
+                    contentFile.Append($" - Payload: {request.Body}");
                 }
             }
         }
@@ -191,10 +191,10 @@ public static class Logger
         {
             if (!string.IsNullOrWhiteSpace(response.Method))
             {
-                contentFile.Append($"Response from API - Status: {response.StatusCode} - Method: {response.Method}");
+                contentFile.Append($"Response from API > Endpoint: {response.Url} - Status: {response.StatusCode} - Method: {response.Method}");
                 if (response.Data != null)
                 {
-                    contentFile.Append($"- Response: {response.Data[1]}");
+                    contentFile.Append($" - Response: {response.Data[1]}");
                 }
             }
         }

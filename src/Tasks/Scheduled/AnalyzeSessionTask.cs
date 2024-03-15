@@ -20,79 +20,72 @@ namespace Loly.src.Tasks.Scheduled
                 string[] gameSession = Requests.ClientRequest("GET", "lol-gameflow/v1/gameflow-phase", true);
                 if (gameSession[0] == "200")
                 {
-                    string phase = gameSession[1].Replace("\\", "").Replace("\"", "");
-                    if (Global.Session != phase)
-                    {
-                        Global.Session = phase;
-                    }
-
+                    SessionPhase phase = (SessionPhase)Enum.Parse(typeof(SessionPhase), gameSession[1].Replace("\\", "").Replace("\"", ""));
+                    if (Global.Session != phase) Global.Session = phase;
                     HandlePhaseLogic(phase);
                 }
             }
         }
 
-        private static void HandlePhaseLogic(string phase)
+        private static void HandlePhaseLogic(SessionPhase phase)
         {
             switch (phase)
             {
-                case "Lobby":
+                case SessionPhase.Lobby:
                     Global.FetchedPlayers = false;
                     Global.AcceptedCurrentMatch = false;
-                    Global.ChampSelectInProgress = false;
                     Thread.Sleep(TimeSpan.FromSeconds(5));
                     break;
-                case "Matchmaking":
+                case SessionPhase.Matchmaking:
                     Global.FetchedPlayers = false;
-                    Global.ChampSelectInProgress = false;
+                    Global.AcceptedCurrentMatch = false;
                     Thread.Sleep(TimeSpan.FromSeconds(5));
                     break;
-                case "ReadyCheck":
+                case SessionPhase.ReadyCheck:
                     HandleReadyCheckPhase();
+                    Thread.Sleep(TimeSpan.FromSeconds(1));
                     break;
-                case "ChampSelect":
+                case SessionPhase.ChampSelect:
                     HandleChampSelectPhase();
                     Thread.Sleep(TimeSpan.FromSeconds(5));
                     break;
-                case "InProgress":
+                case SessionPhase.InProgress:
                     Thread.Sleep(TimeSpan.FromSeconds(10));
                     break;
-                case "WaitingForStats":
+                case SessionPhase.WaitingForStats:
                     Thread.Sleep(TimeSpan.FromSeconds(15));
                     break;
-                case "PreEndOfGame":
+                case SessionPhase.PreEndOfGame:
                     Thread.Sleep(TimeSpan.FromSeconds(10));
                     break;
-                case "EndOfGame":
+                case SessionPhase.EndOfGame:
                     Thread.Sleep(TimeSpan.FromSeconds(15));
                     break;
-                case "None":
-                    Global.ChampSelectInProgress = false;
+                case SessionPhase.None:
                     Global.FetchedPlayers = false;
+                    Global.AcceptedCurrentMatch = false;
                     Thread.Sleep(TimeSpan.FromSeconds(5));
                     break;
                 default:
-                    Global.ChampSelectInProgress = false;
                     Global.FetchedPlayers = false;
+                    Global.AcceptedCurrentMatch = false;
                     Thread.Sleep(TimeSpan.FromSeconds(10));
                     break;
             }
 
-            if (phase != "ChampSelect")
-            {
-                Global.LastChatRoom = "";
-            }
+            if (phase != SessionPhase.ChampSelect) Global.LastChatRoom = "";
         }
 
         private static void HandleReadyCheckPhase()
         {
             Global.FetchedPlayers = false;
-            Global.ChampSelectInProgress = false;
 
             if (!Settings.AutoAccept)
             {
                 Thread.Sleep(TimeSpan.FromSeconds(5));
                 return;
             }
+
             AutoAccept.AutoAcceptQueue();
         }
 
@@ -101,24 +94,9 @@ namespace Loly.src.Tasks.Scheduled
             // TODO: Create the detection of dodge champ select system
             Global.AcceptedCurrentMatch = false;
 
-            if (Settings.AutoAcceptOnce)
-            {
-                Settings.AutoAcceptOnce = false;
-                Settings.AutoAccept = false;
-            }
-
-            if (Settings.LobbyRevealer && !Global.FetchedPlayers)
-            {
-                CreateTask(LobbyRevealer.GetLobbyRevealing, $"LobbyRevealing the current lobby", LogModule.Loly);
-            }
-
-            if (Settings.AutoChat || Settings.PicknBan)
-            {
-                CreateTask(ChampSelectSession.HandleChampSelect, $"ChampSelect session analyze", LogModule.Loly);
-            }
-
-            Thread.Sleep(TimeSpan.FromSeconds(2));
-            Global.ChampSelectInProgress = true;
+            if (Settings.AutoAccept && Settings.AutoAcceptOnce) Settings.AutoAccept = false;
+            if (Settings.LobbyRevealer && !Global.FetchedPlayers) CreateBackgroundTask(LobbyRevealer.GetLobbyRevealing, $"LobbyRevealing the current lobby", LogModule.Loly);
+            if (Settings.AutoChat || Settings.PicknBan) ChampSelectSession.HandleChampSelect();
         }
     }
 }

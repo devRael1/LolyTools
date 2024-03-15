@@ -49,19 +49,19 @@ public class Requests
             string responseFromServer = response.Content.ReadAsStringAsync().Result;
             response.EnsureSuccessStatusCode();
 
-            Logger.Request(new Response { Method = method, StatusCode = statusCode, Data = new[] { statusString, responseFromServer } });
+            Logger.Request(new Response { Method = method, Url = url, StatusCode = statusCode, Data = new[] { statusString, responseFromServer } });
 
             response.Dispose();
             return new[] { statusString, responseFromServer };
         }
         catch (HttpRequestException ex)
         {
-            Logger.Request(new Response { Method = method, StatusCode = 0, Exception = ex });
+            Logger.Request(new Response { Method = method, Url = url, StatusCode = Convert.ToInt32(ex.StatusCode), Exception = ex });
             return new[] { "999", "" };
         }
         catch (Exception ex)
         {
-            Logger.Request(new Response { Method = method, StatusCode = 0, Exception = ex });
+            Logger.Request(new Response { Method = method, Url = url, StatusCode = 0, Exception = ex });
             return new[] { "999", "" };
         }
     }
@@ -95,14 +95,14 @@ public class Requests
         try
         {
             using HttpClient client = new();
+            client.DefaultRequestHeaders.UserAgent.ParseAdd(
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
 
             Logger.Request(new Request { Method = "GET", Url = url });
 
             HttpResponseMessage response = client.GetAsync($"https://{url}").Result;
-            if (!response.IsSuccessStatusCode)
-            {
-                return null;
-            }
+            if (!response.IsSuccessStatusCode) return null;
+
 
             HttpContent responseContent = response.Content;
             string responseString = responseContent.ReadAsStringAsync().Result;
@@ -111,6 +111,7 @@ public class Requests
             Logger.Request(new Response
             {
                 Method = "GET",
+                Url = url,
                 StatusCode = (int)response.StatusCode,
                 Data = new[] { response.StatusCode.ToString(), logResponse ? responseString : "NOT LOGGED" }
             });
@@ -119,12 +120,12 @@ public class Requests
         }
         catch (HttpRequestException ex)
         {
-            Logger.Request(new Response { Method = "GET", StatusCode = 0, Exception = ex });
+            Logger.Request(new Response { Method = "GET", Url = url, StatusCode = Convert.ToInt32(ex.StatusCode), Exception = ex });
             return null;
         }
         catch (Exception ex)
         {
-            Logger.Request(new Response { Method = "GET", StatusCode = 0, Exception = ex });
+            Logger.Request(new Response { Method = "GET", Url = url, StatusCode = 0, Exception = ex });
             return null;
         }
     }

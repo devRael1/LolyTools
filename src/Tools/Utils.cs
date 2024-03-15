@@ -56,8 +56,8 @@ public class Utils
     public static void LogNewError(string actionName, LogModule logModule, Exception ex)
     {
         Logger.Error(logModule, $"An error occured to execute : {actionName}", null);
-        Logger.Error(logModule, "Please check the logs for more information.", null);
-        Logger.Error(logModule, "Error message : ", ex);
+        Logger.Error(logModule, "Please check the logs file for more information.", null);
+        Logger.Error(logModule, "Error : ", ex);
     }
 
     public static string FormatStr(string str)
@@ -100,15 +100,12 @@ public class Utils
         return $"{(bytes / Math.Pow(k, i)).ToString($"F{dm}")} {sizes[i]}{(seconds ? "/s" : "")}";
     }
 
-    public static void CreateTask(Action action, string errorMessage, LogModule logModule)
+    public static void CreateBackgroundTask(Action action, string errorMessage, LogModule logModule)
     {
         Task.Run(action)
             .ContinueWith(t =>
             {
-                if (t.IsFaulted)
-                {
-                    LogNewError(errorMessage, logModule, t.Exception);
-                }
+                if (t.IsFaulted) LogNewError(errorMessage, logModule, t.Exception);
             });
     }
 

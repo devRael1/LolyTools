@@ -3,7 +3,7 @@
 
 A set of several small tools for League Of Legends.
 
-### Works with the latest `14.4` update of League of Legends ([Patch Notes : 14.5](https://na.leagueoflegends.com/en-us/news/game-updates/patch-14-5-notes/))
+### Works with the latest `14.5` update of League of Legends ([Patch Notes : 14.5](https://na.leagueoflegends.com/en-us/news/game-updates/patch-14-5-notes/))
 ![Loly - Tools](/Ressources/mainMenu.png)
 
 ## `❗ Usage`
@@ -28,6 +28,9 @@ No need to install this if you have a more recent version installed.
 More features coming soon...
 
 ## `📷 Screenshots`
+<details>
+<summary>Click here to see all screenshots...</summary>
+
 ### Updater Menu
 <details>
 <summary>See screenshot...</summary>
@@ -62,6 +65,8 @@ More features coming soon...
 <details>
 <summary>See screenshot...</summary>
 <img src="/Ressources/creditsMenu.png" alt="devRael1">
+</details>
+
 </details>
 
 ## `❓ Bugs report / Suggestions`

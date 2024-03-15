@@ -11,7 +11,7 @@ public class AutoChat
 
     public static void HandleChampSelectAutoChat()
     {
-        Logger.Info(LogModule.AutoChat, "Getting Chat & Summoner ID");
+        Logger.Info(LogModule.AutoChat, "Fetching Chat information & Summoner ID");
         string[] myChatProfile = Requests.ClientRequest("GET", "lol-chat/v1/me", true);
         ChatMe chatProfileJson = JsonConvert.DeserializeObject<ChatMe>(myChatProfile[1]);
         string currentChatId = chatProfileJson.Id;
@@ -38,7 +38,7 @@ public class AutoChat
                     count++;
                 }
 
-                Thread.Sleep(attempts * 200);
+                Thread.Sleep(attempts * 100);
             }
         }
 

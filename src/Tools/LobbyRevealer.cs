@@ -14,27 +14,21 @@ public class LobbyRevealer
     public static void GetTokenOpGg()
     {
         Logger.Info(LogModule.LobbyRevealer, "Fetching OP.GG token");
-        string response = Requests.WebRequest("www.op.gg/multisearch", false);
+        string response = Requests.WebRequest("www.op.gg", false);
         OpGGToken = Utils.LrParse(response, "\"buildId\":\"", "\",\"assetPrefix") ?? "null";
         Logger.Info(LogModule.LobbyRevealer, $"Fetching OP.GG token successfully (Token: {OpGGToken})");
     }
 
     public static void GetLobbyRevealing()
     {
-        if (Global.ChampSelectInProgress)
-        {
-            return;
-        }
-
         if (OpGGToken == null)
         {
             GetTokenOpGg();
         }
 
         GetPlayers(Requests.ClientRequest("GET", "/chat/v5/participants/lol-champ-select", false)[1]);
-        Utils.CreateTask(GetAdvancedPlayersStats, "Fetching Advanced player stats !", LogModule.LobbyRevealer);
-
         Global.FetchedPlayers = true;
+        GetAdvancedPlayersStats();
     }
 
     public static void GetPlayers(string req)
@@ -79,7 +73,7 @@ public class LobbyRevealer
 
     public static void GetAdvancedPlayersStats()
     {
-        Logger.Info(LogModule.LobbyRevealer, $"Getting advanced stats of {Global.PlayerList.Count} players in background...");
+        Logger.Info(LogModule.LobbyRevealer, $"Fetching advanced stats of {Global.PlayerList.Count} players in background...");
 
         Parallel.ForEach(Global.PlayerList, player =>
         {

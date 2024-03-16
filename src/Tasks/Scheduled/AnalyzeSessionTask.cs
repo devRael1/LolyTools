@@ -20,7 +20,8 @@ namespace Loly.src.Tasks.Scheduled
                 string[] gameSession = Requests.ClientRequest("GET", "lol-gameflow/v1/gameflow-phase", true);
                 if (gameSession[0] == "200")
                 {
-                    SessionPhase phase = (SessionPhase)Enum.Parse(typeof(SessionPhase), gameSession[1].Replace("\\", "").Replace("\"", ""));
+                    string phaseString = gameSession[1].Replace("\\", "").Replace("\"", "");
+                    if (!Enum.TryParse(phaseString, out SessionPhase phase)) phase = SessionPhase.None;
                     if (Global.Session != phase) Global.Session = phase;
                     HandlePhaseLogic(phase);
                 }
@@ -50,7 +51,10 @@ namespace Loly.src.Tasks.Scheduled
                     Thread.Sleep(TimeSpan.FromSeconds(5));
                     break;
                 case SessionPhase.InProgress:
-                    Thread.Sleep(TimeSpan.FromSeconds(10));
+                    Thread.Sleep(TimeSpan.FromSeconds(30));
+                    break;
+                case SessionPhase.Reconnect:
+                    Thread.Sleep(TimeSpan.FromSeconds(5));
                     break;
                 case SessionPhase.WaitingForStats:
                     Thread.Sleep(TimeSpan.FromSeconds(15));

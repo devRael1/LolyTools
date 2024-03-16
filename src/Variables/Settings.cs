@@ -111,7 +111,7 @@ public class Settings
     public static void SetDefaultSettings()
     {
         EnableAutoUpdate = true;
-        ClearLogsFilesDays = 7;
+        ClearLogsFilesDays = 5;
         LobbyRevealer = false;
         AutoAccept = false;
         AutoAcceptOnce = false;

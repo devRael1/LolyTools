@@ -7,6 +7,7 @@
         ReadyCheck,
         ChampSelect,
         InProgress,
+        Reconnect,
         WaitingForStats,
         PreEndOfGame,
         EndOfGame,

@@ -13,7 +13,7 @@ namespace Loly.src.Tasks.Scheduled
             {
                 if (!Global.IsLeagueOpen)
                 {
-                    Thread.Sleep(TimeSpan.FromSeconds(10));
+                    Thread.Sleep(TimeSpan.FromSeconds(5));
                     continue;
                 }
 
@@ -35,11 +35,13 @@ namespace Loly.src.Tasks.Scheduled
                 case SessionPhase.Lobby:
                     Global.FetchedPlayers = false;
                     Global.AcceptedCurrentMatch = false;
+                    Global.LobbyRevealingStarted = false;
                     Thread.Sleep(TimeSpan.FromSeconds(5));
                     break;
                 case SessionPhase.Matchmaking:
                     Global.FetchedPlayers = false;
                     Global.AcceptedCurrentMatch = false;
+                    Global.LobbyRevealingStarted = false;
                     Thread.Sleep(TimeSpan.FromSeconds(5));
                     break;
                 case SessionPhase.ReadyCheck:
@@ -73,16 +75,22 @@ namespace Loly.src.Tasks.Scheduled
                 default:
                     Global.FetchedPlayers = false;
                     Global.AcceptedCurrentMatch = false;
+                    Global.LobbyRevealingStarted = false;
                     Thread.Sleep(TimeSpan.FromSeconds(10));
                     break;
             }
 
-            if (phase != SessionPhase.ChampSelect) Global.LastChatRoom = "";
+            if (phase != SessionPhase.ChampSelect) 
+            { 
+                Global.LastChatRoom = "";
+                Global.LobbyRevealingStarted = false;
+            }
         }
 
         private static void HandleReadyCheckPhase()
         {
             Global.FetchedPlayers = false;
+            Global.LobbyRevealingStarted = false;
 
             if (!Settings.AutoAccept)
             {
@@ -99,7 +107,11 @@ namespace Loly.src.Tasks.Scheduled
             Global.AcceptedCurrentMatch = false;
 
             if (Settings.AutoAccept && Settings.AutoAcceptOnce) Settings.AutoAccept = false;
-            if (Settings.LobbyRevealer && !Global.FetchedPlayers) CreateBackgroundTask(LobbyRevealer.GetLobbyRevealing, $"LobbyRevealing the current lobby", LogModule.Loly);
+            if (Settings.LobbyRevealer && !Global.FetchedPlayers && !Global.LobbyRevealingStarted)
+            {
+                CreateBackgroundTask(LobbyRevealer.GetLobbyRevealing, $"LobbyRevealing the current lobby", LogModule.Loly);
+                Global.LobbyRevealingStarted = true;
+            }
             if (Settings.AutoChat || Settings.PicknBan) ChampSelectSession.HandleChampSelect();
         }
     }

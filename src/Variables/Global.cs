@@ -9,6 +9,7 @@ public class Global
     public const string GithubPage = "https://github.com/devRael1/LolyTools";
     public const string SoftName = "League of Legends - Loly Tools";
     public const string SoftAuthor = "devRael";
+
     private static SessionPhase _session = SessionPhase.None;
 
     public static List<Player> PlayerList = new();
@@ -21,6 +22,7 @@ public class Global
     public static string LastChatRoom { get; set; } = "";
     public static int LastActionId { get; set; } = 0;
     public static bool AcceptedCurrentMatch { get; set; } = false;
+    public static bool LobbyRevealingStarted { get; set; } = false;
     public static bool FetchedPlayers { get; set; } = false;
     public static bool IsLeagueOpen { get; set; } = false;
     public static bool LogsMenuEnable { get; set; } = false;

@@ -3,7 +3,6 @@ using Loly.src.Variables;
 using Loly.src.Variables.Class;
 using Loly.src.Variables.Enums;
 using Newtonsoft.Json;
-using static Loly.src.Tools.Utils;
 
 namespace Loly.src.Tools
 {
@@ -84,6 +83,7 @@ namespace Loly.src.Tools
             Global.LastChatRoom = currentChatRoom;
 
             if (Settings.AutoChat && CanSentMessages) AutoChat.HandleChampSelectAutoChat();
+
             if (!HoverPick || !LockedPick || !HoverBan || !LockedBan)
             {
                 PicknBan.ChampSelectResponse = champSelectResponse;

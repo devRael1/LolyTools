@@ -16,8 +16,7 @@ public class LobbyRevealer
     public static void GetTokenOpGg()
     {
         Logger.Info(LogModule.LobbyRevealer, "Fetching OP.GG token");
-        string response = Requests.WebRequest("www.op.gg", false);
-        OpGGToken = Utils.LrParse(response, "\"buildId\":\"", "\",\"assetPrefix") ?? "null";
+        OpGGToken = Utils.LrParse(Requests.WebRequest("www.op.gg", false), "\"buildId\":\"", "\",\"assetPrefix") ?? "null";
         Logger.Info(LogModule.LobbyRevealer, $"Fetching OP.GG token successfully (Token: {OpGGToken})");
     }
 
@@ -52,11 +51,9 @@ public class LobbyRevealer
             return;
         }
 
-        string encodeNames = string.Join(",", cacheNames.Select(n => HttpUtility.UrlEncode(n)));
-        string url = $"www.op.gg/_next/data/{OpGGToken}/en_US/multisearch/{Global.Region}.json?summoners={encodeNames}&region={Global.Region}";
-        string stats = Requests.WebRequest(url, false);
+        string url = $"www.op.gg/_next/data/{OpGGToken}/en_US/multisearch/{Global.Region}.json?summoners={string.Join(",", cacheNames.Select(n => HttpUtility.UrlEncode(n)))}&region={Global.Region}";
 
-        MultisearchResponse response = JsonConvert.DeserializeObject<MultisearchResponse>(stats);
+        MultisearchResponse response = JsonConvert.DeserializeObject<MultisearchResponse>(Requests.WebRequest(url, false));
         foreach (Summoner sum in response.PageProps.Summoners)
         {
             Player newPlayer = new(sum.GameName, sum.Tagline, $"https://www.op.gg/summoners/{Global.Region}/{sum.GameName}-{sum.Tagline}")
@@ -82,33 +79,16 @@ public class LobbyRevealer
     public static void GetAdvancedPlayersStats()
     {
         Logger.Info(LogModule.LobbyRevealer, $"Fetching advanced stats of {Global.PlayerList.Count} players in background");
-
-        foreach (Player player in Global.PlayerList)
-        {
-            Task.Run(() => GetPlayerStats(player)).ContinueWith(t =>
-            {
-                if (t.IsFaulted) Utils.LogNewError($"Fetch all stats of player '{player.UserTag}'", LogModule.LobbyRevealer, t.Exception);
-            });
-        }
+        Parallel.ForEach(Global.PlayerList, player => GetPlayerStats(player));
     }
 
     public static void GetPlayerStats(Player player)
     {
         string url = $"www.op.gg/_next/data/{OpGGToken}/en_US/summoners/{Global.Region}/{player.UserTagUrlReady}.json?region={Global.Region}&summoner={player.UserTagUrlReady}";
-        string stats = Requests.WebRequest(url, false);
 
-        if (stats == null)
-        {
-            Logger.Error(LogModule.LobbyRevealer, $"Error while fetching advanced stats of '{player.UserTag}'");
-            Logger.Error(LogModule.LobbyRevealer, "Please check the request logs for more information");
-            return;
-        }
-
-        PlayerStatsResponse response = JsonConvert.DeserializeObject<PlayerStatsResponse>(stats);
+        PlayerStatsResponse response = JsonConvert.DeserializeObject<PlayerStatsResponse>(Requests.WebRequest(url, false));
         List<LeagueStat> summoner = response.PageProps.Data.LeagueStats;
-        int sumId = response.PageProps.Data.Id;
-
-        Player currentPlayer = Global.PlayerList.Find(x => x.Id == sumId);
+        Player currentPlayer = Global.PlayerList.Find(x => x.Id == response.PageProps.Data.Id);
 
         currentPlayer.SoloDuoQ.Wins = (int)(summoner[0].Win >= 1 ? summoner[0].Win : 0);
         currentPlayer.SoloDuoQ.Losses = (int)(summoner[0].Lose >= 1 ? summoner[0].Lose : 0);
@@ -118,9 +98,5 @@ public class LobbyRevealer
         currentPlayer.FlexQ.Division = (int)(summoner[1].TierInfo.Division >= 1 ? summoner[1].TierInfo.Division : 0);
         currentPlayer.FlexQ.Tier = summoner[1].TierInfo.Tier ?? "Unranked";
         currentPlayer.FlexQ.Lp = (int)(summoner[1].TierInfo.Lp >= 0 ? summoner[1].TierInfo.Lp : 0);
-
-        Logger.Info(LogModule.LobbyRevealer, $"Advanced stats fetched for {currentPlayer.UserTag} : " +
-            $"Solo/DuoQ: {currentPlayer.SoloDuoQ.Tier} {currentPlayer.SoloDuoQ.Division} | {currentPlayer.SoloDuoQ.Lp}LP ({currentPlayer.SoloDuoQ.Wins} Win(s)  {currentPlayer.SoloDuoQ.Losses} Losse(s)) / " +
-            $"FlexQ: {currentPlayer.FlexQ.Tier} {currentPlayer.FlexQ.Division} | {currentPlayer.FlexQ.Lp}LP ({currentPlayer.FlexQ.Wins} Win(s) {currentPlayer.FlexQ.Losses} Losse(s))");
     }
 }

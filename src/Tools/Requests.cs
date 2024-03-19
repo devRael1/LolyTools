@@ -1,9 +1,9 @@
-﻿using Loly.src.Logs;
+﻿using System.Net.Http.Headers;
+using System.Text;
+using Loly.src.Logs;
 using Loly.src.Tasks.Scheduled;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
-using System.Net.Http.Headers;
-using System.Text;
 
 namespace Loly.src.Tools;
 
@@ -17,7 +17,7 @@ public class Requests
         };
         try
         {
-            using HttpClient client = new(handler);
+            using var client = new HttpClient(handler);
 
             string token;
             int port;
@@ -43,10 +43,10 @@ public class Requests
 
             Logger.Request(new Request { Method = method, Url = url, Body = body });
 
-            HttpResponseMessage response = client.SendAsync(request).Result;
+            HttpResponseMessage response = client.SendAsync(request).GetAwaiter().GetResult();
             int statusCode = (int)response.StatusCode;
             string statusString = statusCode.ToString();
-            string responseFromServer = response.Content.ReadAsStringAsync().Result;
+            string responseFromServer = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             response.EnsureSuccessStatusCode();
 
             Logger.Request(new Response { Method = method, Url = url, StatusCode = statusCode, Data = new[] { statusString, responseFromServer } });
@@ -94,18 +94,17 @@ public class Requests
     {
         try
         {
-            using HttpClient client = new();
-            client.DefaultRequestHeaders.UserAgent.ParseAdd(
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
 
             Logger.Request(new Request { Method = "GET", Url = url });
 
-            HttpResponseMessage response = client.GetAsync($"https://{url}").Result;
+            HttpResponseMessage response = client.GetAsync($"https://{url}").GetAwaiter().GetResult();
             if (!response.IsSuccessStatusCode) return null;
 
 
             HttpContent responseContent = response.Content;
-            string responseString = responseContent.ReadAsStringAsync().Result;
+            string responseString = responseContent.ReadAsStringAsync().GetAwaiter().GetResult();
             response.EnsureSuccessStatusCode();
 
             Logger.Request(new Response

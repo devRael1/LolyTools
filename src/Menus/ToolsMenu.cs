@@ -95,6 +95,7 @@ public class ToolsMenu
                     }
                     break;
             }
+            ResetConsole();
         }
 
         StartMenu();

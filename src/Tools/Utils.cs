@@ -1,8 +1,8 @@
-﻿using Alba.CsConsoleFormat;
+﻿using System.Diagnostics;
+using Alba.CsConsoleFormat;
 using Loly.src.Logs;
 using Loly.src.Menus.Core;
 using Loly.src.Variables.Enums;
-using System.Diagnostics;
 
 namespace Loly.src.Tools;
 
@@ -73,7 +73,7 @@ public class Utils
 
     public static void ResetConsole()
     {
-        System.Console.Clear();
+        Console.Clear();
         Interface.ShowArt();
     }
 

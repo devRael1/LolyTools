@@ -12,6 +12,6 @@ namespace Loly
 
         private static int Major => 2;
         private static int Minor => 2;
-        private static int Hotfix => 0;
+        private static int Hotfix => 1;
     }
 }

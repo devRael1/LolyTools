@@ -1,9 +1,9 @@
-﻿using Gommon;
+﻿using System.Text;
+using Gommon;
 using Loly.src.Menus.Core;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
 using Loly.src.Variables.Enums;
-using System.Text;
 
 namespace Loly.src.Logs;
 
@@ -245,7 +245,6 @@ public static class Logger
             LogModule.AutoChat => (ConsoleColor.Yellow, "[AUTO CHAT]"),
             LogModule.AutoAccept => (ConsoleColor.Yellow, "[AUTO ACCEPT]"),
             LogModule.LobbyRevealer => (ConsoleColor.Magenta, "[LOBBY REVEALER]"),
-            LogModule.LanguageChanger => (ConsoleColor.Gray, "[LANGUAGE CHANGER]"),
             LogModule.Loly => (ConsoleColor.Cyan, "[LOLY TOOLS]"),
             LogModule.Tasks => (ConsoleColor.DarkCyan, "[TASKS]"),
             LogModule.Request => (ConsoleColor.Red, "[REQUEST]"),

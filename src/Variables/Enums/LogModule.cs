@@ -6,7 +6,6 @@
         AutoChat,
         AutoAccept,
         LobbyRevealer,
-        LanguageChanger,
         Loly,
         Updater,
         Tasks,

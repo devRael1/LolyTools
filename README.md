@@ -76,6 +76,7 @@ My Discord: `1043813027205619804`
 ## `🧾 Todo List`
 - [ ] Make dodge (champ select) detection for logs system
 - [ ] Add system to save all settings (all Keybinds, Colors, chat options...) of the Game
+- [ ] Patch error `Arithmetic operation resulted in an overflow` in `ShowGlobalStatsMenu` function
 
 ## `📝 License`
 Copyright © 2024 devRael<br>

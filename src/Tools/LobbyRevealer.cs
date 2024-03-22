@@ -51,7 +51,7 @@ public class LobbyRevealer
             return;
         }
 
-        string url = $"www.op.gg/_next/data/{OpGGToken}/en_US/multisearch/{Global.Region}.json?summoners={string.Join(",", cacheNames.Select(n => HttpUtility.UrlEncode(n)))}&region={Global.Region}";
+        string url = $"www.op.gg/_next/data/{OpGGToken}/en_US/multisearch/{Global.Region}.json?summoners={string.Join(", ", cacheNames.Select(n => HttpUtility.UrlEncode(n)))}&region={Global.Region}";
 
         MultisearchResponse response = JsonConvert.DeserializeObject<MultisearchResponse>(Requests.WebRequest(url, false));
         foreach (Summoner sum in response.PageProps.Summoners)

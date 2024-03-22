@@ -216,11 +216,10 @@ public class LobbyRevealerMenu
             Cell nameCell = new(player.Username) { Color = Colors.MenuTextColor };
             string rank = $"{player.SoloDuoQ.Tier} {player.SoloDuoQ.Division} ({player.SoloDuoQ.Lp} LP)";
 
-            int winrate = (int)Math.Round((double)(player.SoloDuoQ.Wins * 100.0 / (player.SoloDuoQ.Wins + player.SoloDuoQ.Losses)));
-            if (winrate >= 0)
-            {
-                rank += $" | {winrate}%";
-            }
+            int winrate = player.SoloDuoQ.Wins + player.SoloDuoQ.Losses > 0 
+                ? (int)Math.Round((double)(player.SoloDuoQ.Wins * 100.0 / (player.SoloDuoQ.Wins + player.SoloDuoQ.Losses)))
+                : 0;
+            rank += $" | {winrate}%";
 
             Cell rankCell = new(rank) { Color = Colors.MenuTextColor };
 
@@ -241,9 +240,6 @@ public class LobbyRevealerMenu
             (int)Math.Round((double)(player.SoloDuoQ.Wins * 100.0 / (player.SoloDuoQ.Wins + player.SoloDuoQ.Losses))) : 0;
         int winrateflex = player.FlexQ.Wins + player.FlexQ.Losses > 0 ?
             (int)Math.Round((double)(player.FlexQ.Wins * 100.0 / (player.FlexQ.Wins + player.FlexQ.Losses))) : 0;
-
-        if (winratesoloq <= 0) winratesoloq = 0;
-        if (winrateflex <= 0) winrateflex = 0;
 
         Document rectangle = new();
         Border border1 = new()

@@ -22,13 +22,9 @@ public class LobbyRevealer
 
     public static void GetLobbyRevealing()
     {
-        Thread.Sleep(TimeSpan.FromSeconds(3));
+        Thread.Sleep(TimeSpan.FromSeconds(5));
 
-        if (OpGGToken == null)
-        {
-            GetTokenOpGg();
-        }
-
+        if (OpGGToken == null) GetTokenOpGg();
         GetPlayers(Requests.ClientRequest("GET", "/chat/v5/participants/lol-champ-select", false)[1]);
         Global.FetchedPlayers = true;
         GetAdvancedPlayersStats();

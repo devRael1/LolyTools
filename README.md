@@ -74,9 +74,11 @@ If you want to report a bug or suggest a feature, you can open an issue [here](h
 My Discord: `1043813027205619804`
 
 ## `🧾 Todo List`
-- [ ] Make dodge (champ select) detection for logs system
+### V3.0.0 COMING SOON
+======================== V3.0.0 ========================
+- [ ] Replace OP.GG stats sytem to add a new one (U.GG with all API's)
+- [ ] Add more information in LobbyRevealer tool
 - [ ] Add system to save all settings (all Keybinds, Colors, chat options...) of the Game
-- [ ] Patch error `Arithmetic operation resulted in an overflow` in `ShowGlobalStatsMenu` function
 
 ## `📝 License`
 Copyright © 2024 devRael<br>

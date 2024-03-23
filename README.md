@@ -19,7 +19,7 @@ No need to install this if you have a more recent version installed.
 - [x] Auto Accept match (Auto accept queue)
 - [x] Auto Pick and Ban champion (By roles => Top, Jungle, Mid, ADC, Support)
 - [x] Auto Chat (Auto send messages when champ select start)
-- [x] Get OP.GG stats of your team (SoloQ & DuoQ / FlexQ)
+- [x] Get U.GG stats of your team (SoloQ & DuoQ / FlexQ...)
 - [x] Advanced Logs system (Real Time & Persistent)
 - [x] Use JSON file to save your settings
 - [x] Very low CPU and RAM usage
@@ -79,6 +79,7 @@ My Discord: `1043813027205619804`
 - [ ] Replace OP.GG stats sytem to add a new one (U.GG with all API's)
 - [ ] Add more information in LobbyRevealer tool
 - [ ] Add system to save all settings (all Keybinds, Colors, chat options...) of the Game
+- [ ] Add a second option of champion pick in case of ban of the main champion ([#5 Suggestion](https://github.com/devRael1/LolyTools/issues/5))
 
 ## `📝 License`
 Copyright © 2024 devRael<br>

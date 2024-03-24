@@ -1,12 +1,16 @@
 ﻿using Alba.CsConsoleFormat;
+
 using Loly.src.Menus.Core;
 using Loly.src.Tools;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
+
 using Newtonsoft.Json;
+
 using static Loly.src.Menus.Core.Interface;
 using static Loly.src.Menus.ToolsMenu;
 using static Loly.src.Tools.Utils;
+using static Loly.src.Variables.Global;
 
 namespace Loly.src.Menus;
 
@@ -21,11 +25,11 @@ public class PicknBanMenu
         {
             ShowRoleMenu();
 
-            int choice = 10;
+            var choice = 10;
             UpdateMenuTitle("pnb");
             string[] choices = { "Default (Blind mode)", "Top", "Jungle", "Mid", "Adc", "Support", "Back" };
 
-            MenuBuilder pickNBanMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+            var pickNBanMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
             while (choice == 10)
             {
                 choice = pickNBanMenu.RunMenu();
@@ -52,11 +56,11 @@ public class PicknBanMenu
         {
             ShowPickorBanMenu();
 
-            int choice = 7;
+            var choice = 7;
             UpdateMenuTitle("pnb_pob");
             string[] choices = { "Pick Options", "Ban Options", "Back" };
 
-            MenuBuilder pickOrBanMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+            var pickOrBanMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
             while (choice == 7)
             {
                 choice = pickOrBanMenu.RunMenu();
@@ -81,11 +85,11 @@ public class PicknBanMenu
         {
             ShowPicknBanMenu(pick);
 
-            int choice = 7;
+            var choice = 7;
             UpdateMenuTitle(pick ? "pnb_pick" : "pnb_ban");
-            string[] choices = pick ? new[] { "Pick Champion", "Remove Champion", "Pick Delay", "Back" } : new[] { "Ban Champion", "Remove Champion", "Ban Delay", "Back" };
+            var choices = pick ? new[] { "Pick Champion", "Remove Champion", "Pick Delay", "Back" } : new[] { "Ban Champion", "Remove Champion", "Ban Delay", "Back" };
 
-            MenuBuilder pickNBanMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+            var pickNBanMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
             while (choice == 7)
             {
                 choice = pickNBanMenu.RunMenu();
@@ -240,7 +244,7 @@ public class PicknBanMenu
             }
         };
 
-        string action = pick ? "Pick" : "Ban";
+        var action = pick ? "Pick" : "Ban";
         ChampItem selected = pick ? _cachedRole.PickChamp : _cachedRole.BanChamp;
 
         Border border2 = new()
@@ -268,7 +272,7 @@ public class PicknBanMenu
     {
         Console.SetCursorPosition(0, TopLength);
 
-        string action = pick ? "Pick" : "Ban";
+        var action = pick ? "Pick" : "Ban";
 
         Document rectangle = new();
         Border border1 = new()
@@ -299,8 +303,8 @@ public class PicknBanMenu
         MenuBuilder.SetCursorVisibility(true);
         UpdateMenuTitle(pick ? "pnb_pick_c" : "pnb_ban_c");
 
-        string action = pick ? "pick" : "ban";
-        string champName = "";
+        var action = pick ? "pick" : "ban";
+        var champName = "";
         while (champName == "")
         {
             //Console.Write(DateTime.Now.ToString("[hh:mm:ss]"), Colors.PrimaryColor);
@@ -333,7 +337,7 @@ public class PicknBanMenu
                 }
                 else
                 {
-                    InitRole role = (InitRole)Settings.LoLRoles.GetType().GetProperty(_role).GetValue(Settings.LoLRoles);
+                    var role = (InitRole)Settings.LoLRoles.GetType().GetProperty(_role).GetValue(Settings.LoLRoles);
 
                     if (action == "pick")
                     {
@@ -373,11 +377,11 @@ public class PicknBanMenu
         MenuBuilder.SetCursorVisibility(true);
         UpdateMenuTitle(pick ? "pnb_pick_delay" : "pnb_ban_delay");
 
-        string action = pick ? "pick" : "ban";
-        string input = "";
-        int delay = 0;
-        int minDelay = pick ? 1000 : 1500;
-        int maxDelay = pick ? 20000 : 15000;
+        var action = pick ? "pick" : "ban";
+        var input = "";
+        var delay = 0;
+        var minDelay = pick ? 1000 : 1500;
+        var maxDelay = pick ? 20000 : 15000;
 
         while (delay == 0 || delay < minDelay || delay > maxDelay)
         {
@@ -432,10 +436,10 @@ public class PicknBanMenu
         ResetConsole();
         ShowConfirmMenu(pick);
 
-        int choice = 5;
+        var choice = 5;
         string[] choices = { "Yes", "No" };
 
-        MenuBuilder removeChampMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+        var removeChampMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
         while (choice == 5)
         {
             choice = removeChampMenu.RunMenu();
@@ -443,9 +447,9 @@ public class PicknBanMenu
 
         if (choice == 1)
         {
-            InitRole role = (InitRole)Settings.LoLRoles.GetType().GetProperty(_role).GetValue(Settings.LoLRoles);
-            string cacheName = pick ? role.PickChamp.Name : role.BanChamp.Name;
-            string action = pick ? "pick" : "ban";
+            var role = (InitRole)Settings.LoLRoles.GetType().GetProperty(_role).GetValue(Settings.LoLRoles);
+            var cacheName = pick ? role.PickChamp.Name : role.BanChamp.Name;
+            var action = pick ? "pick" : "ban";
 
             if (pick)
             {
@@ -479,7 +483,7 @@ public class PicknBanMenu
     {
         List<ChampItem> champs = new();
 
-        string[] ownedChamps = Requests.WaitSuccessClientRequest("GET", "lol-champions/v1/inventories/" + Global.SummonerLogged.SummonerId + "/champions-minimal", true);
+        var ownedChamps = Requests.WaitSuccessClientRequest("GET", "lol-champions/v1/inventories/" + Global.SummonerLogged.SummonerId + "/champions-minimal", true);
         dynamic champsSplit = JsonConvert.DeserializeObject(ownedChamps[1]);
         if (champsSplit == null)
         {
@@ -504,7 +508,7 @@ public class PicknBanMenu
                 champName = "Nunu";
             }
 
-            bool isAvailable = champOwned || champFree || champFreeXboxPass;
+            var isAvailable = champOwned || champFree || champFreeXboxPass;
             champs.Add(new ChampItem { Name = champName, Id = champId, Free = isAvailable });
         }
 

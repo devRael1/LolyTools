@@ -1,7 +1,9 @@
 ﻿using Alba.CsConsoleFormat;
+
 using Loly.src.Menus.Core;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
+
 using static Loly.src.Menus.AutoAcceptMenu;
 using static Loly.src.Menus.AutoChatMenu;
 using static Loly.src.Menus.Core.Interface;
@@ -9,6 +11,7 @@ using static Loly.src.Menus.LobbyRevealerMenu;
 using static Loly.src.Menus.MainMenu;
 using static Loly.src.Menus.PicknBanMenu;
 using static Loly.src.Tools.Utils;
+using static Loly.src.Variables.Global;
 
 namespace Loly.src.Menus;
 
@@ -20,11 +23,11 @@ public class ToolsMenu
         {
             ShowToolsMenu();
 
-            int choice = 7;
+            var choice = 7;
             UpdateMenuTitle("tools");
             string[] choices = { "Lobby Revealer", "Auto Accept", "Auto Chat", "Pick and Ban", "Back" };
 
-            MenuBuilder toolsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
+            var toolsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
             while (choice == 7)
             {
                 choice = toolsMenu.RunMenu();

@@ -1,11 +1,15 @@
 ﻿using Alba.CsConsoleFormat;
+
 using Loly.src.Menus.Core;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
+
 using Newtonsoft.Json.Linq;
+
 using static Loly.src.Menus.Core.Interface;
 using static Loly.src.Menus.MainMenu;
 using static Loly.src.Tools.Utils;
+using static Loly.src.Variables.Global;
 
 namespace Loly.src.Menus;
 
@@ -17,7 +21,7 @@ public class SettingsMenu
         {
             ShowSettingsMenu();
 
-            int choice = 7;
+            var choice = 7;
             UpdateMenuTitle("settings");
             List<string> choices = new()
             {
@@ -30,7 +34,7 @@ public class SettingsMenu
             };
             string[] variables = { "EnableAutoUpdate", "LobbyRevealer", "AutoAccept", "AutoChat", "PicknBan" };
 
-            MenuBuilder settingsMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop + 1);
+            var settingsMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop + 1);
             while (choice == 7)
             {
                 choice = settingsMenu.RunMenu();

@@ -30,15 +30,15 @@ internal class MenuBuilder
 
     private void ModifyMenuLeftJustified()
     {
-        string space = "";
+        var space = "";
 
-        int maximumWidth = _options.Select(t => t.Length).Prepend(0).Max();
+        var maximumWidth = _options.Select(t => t.Length).Prepend(0).Max();
         maximumWidth += 6;
 
-        for (int i = 0; i < _options.Length; i++)
+        for (var i = 0; i < _options.Length; i++)
         {
-            int spacesToAdd = maximumWidth - _options[i].Length;
-            for (int j = 0; j < spacesToAdd; j++)
+            var spacesToAdd = maximumWidth - _options[i].Length;
+            for (var j = 0; j < spacesToAdd; j++)
             {
                 space += "";
             }
@@ -78,33 +78,33 @@ internal class MenuBuilder
 
     public int RunMenu()
     {
-        bool run = true;
+        var run = true;
         DrawMenu();
         while (run)
         {
-            int keyPressedCode = CheckKeyPress();
+            var keyPressedCode = CheckKeyPress();
             switch (keyPressedCode)
             {
                 case 10:
+                {
+                    _currentSelection--;
+                    if (_currentSelection < 1)
                     {
-                        _currentSelection--;
-                        if (_currentSelection < 1)
-                        {
-                            _currentSelection = _options.Length;
-                        }
-
-                        break;
+                        _currentSelection = _options.Length;
                     }
+
+                    break;
+                }
                 case 11:
+                {
+                    _currentSelection++;
+                    if (_currentSelection > _options.Length)
                     {
-                        _currentSelection++;
-                        if (_currentSelection > _options.Length)
-                        {
-                            _currentSelection = 1;
-                        }
-
-                        break;
+                        _currentSelection = 1;
                     }
+
+                    break;
+                }
                 case 12:
                     run = false;
                     break;
@@ -118,8 +118,8 @@ internal class MenuBuilder
 
     private void DrawMenu()
     {
-        string leftPointer = "  ";
-        for (int i = 0; i < _options.Length; i++)
+        var leftPointer = "  ";
+        for (var i = 0; i < _options.Length; i++)
         {
             Console.ResetColor();
             SetCursorPosition(_drawMenuRowPos + i, _drawMenuColumnPos);

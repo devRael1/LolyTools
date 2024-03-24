@@ -1,10 +1,14 @@
 ﻿using Alba.CsConsoleFormat;
+
 using Loly.src.Menus.Core;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
+using Loly.src.Variables.Enums;
+
 using static Loly.src.Menus.Core.Interface;
 using static Loly.src.Menus.ToolsMenu;
 using static Loly.src.Tools.Utils;
+using static Loly.src.Variables.Global;
 
 namespace Loly.src.Menus;
 
@@ -14,30 +18,24 @@ public class LobbyRevealerMenu
     {
         while (true)
         {
-            int choice = 7;
+            var choice = 7;
             UpdateMenuTitle("lv");
-            string[] choices = { "Get OP.GG", "Get Stats", "Back" };
+            string[] choices = { "Get U.GG", "Get Stats", "Back" };
 
-            MenuBuilder lobbyRevealerMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
-            while (choice == 7)
-            {
-                choice = lobbyRevealerMenu.RunMenu();
-            }
+            var lobbyRevealerMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
+            while (choice == 7) choice = lobbyRevealerMenu.RunMenu();
 
             ResetConsole();
 
-            if (choice == choices.Length)
-            {
-                break;
-            }
+            if (choice == choices.Length) break;
 
             switch (choice)
             {
                 case 1:
-                    GetOpggMenu();
+                    GetUggMenu();
                     break;
                 case 2:
-                    if (Global.PlayerList.Count == 0)
+                    if (PlayerList.Count == 0)
                     {
                         DisplayColor("No Players in the list.", Colors.WarningColor, Colors.PrimaryColor);
                         DisplayColor("Loly Tools did not detect a champ select in progress.", Colors.WarningColor, Colors.PrimaryColor);
@@ -55,101 +53,66 @@ public class LobbyRevealerMenu
         GetToolsMenu();
     }
 
-    private static void GetOpggMenu()
+    private static void GetUggMenu()
     {
-        int choice = 10;
-        UpdateMenuTitle("lv_get_opgg");
-        List<string> choices = Global.PlayerList.Select(t => $"[OP.GG] - {t.UserTag}").ToList();
+        var choice = 10;
+        UpdateMenuTitle("lv_get_ugg");
+        var choices = PlayerList.Select(t => $"[U.GG] - {t.RiotUserTag}").ToList();
 
-        if (Global.PlayerList.Count >= 1)
-        {
-            choices.Add("Get All OP.GG");
-        }
-
+        if (PlayerList.Count >= 1) choices.Add("[GLOBAL] - All U.GG");
         choices.Add("Back");
 
         while (choice != choices.Count)
         {
-            ShowOpggMenu();
+            ShowUggMenu();
 
-            MenuBuilder opGgMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop + 1);
+            var uggMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop + 1);
             choice = 10;
-            while (choice == 10)
-            {
-                choice = opGgMenu.RunMenu();
-            }
+            while (choice == 10) choice = uggMenu.RunMenu();
 
             ResetConsole();
 
-            if (choice == choices.Count)
-            {
-                break;
-            }
-
+            if (choice == choices.Count) break;
             if (choice == choices.Count - 1)
             {
-                string url = $"https://www.op.gg/multisearch/{Global.Region}?summoners=";
-                for (int i = 0; i < Global.PlayerList.Count; i++)
-                {
-                    url += $"{Global.PlayerList[i].Username}";
-                    if (i != Global.PlayerList.Count - 1)
-                    {
-                        url += ",";
-                    }
-                }
-
+                var url = $"https://u.gg/multisearch?summoners=" +
+                    $"{string.Join(",", PlayerList.Select(p => p.RiotUserTagEncoded))}&region={RegionId(Enum.Parse<Region>(Global.Region.ToUpper()))}";
                 OpenUrl(url);
             }
             else
             {
-                OpenUrl(Global.PlayerList[choice - 1].Link);
+                OpenUrl(PlayerList[choice - 1].Link);
             }
         }
     }
 
     private static void GetStatsMenu()
     {
-        int choice = 10;
+        var choice = 10;
         UpdateMenuTitle("lv_get_stats");
-        List<string> choices = Global.PlayerList.Select(t => $"{t.Username}'s Stats").ToList();
+        var choices = PlayerList.Select(t => $"[STATS] - {t.RiotUserTag}").ToList();
 
-        if (Global.PlayerList.Count > 0)
-        {
-            choices.Add("[GLOBAL] Stats");
-        }
-
+        if (PlayerList.Count > 0) choices.Add("[GLOBAL] - All Stats");
         choices.Add("Back");
 
         ShowGlobalStatsMenu();
 
         while (choice != choices.Count)
         {
-            MenuBuilder statsMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop + 1);
+            var statsMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop + 1);
             choice = 10;
-            while (choice == 10)
-            {
-                choice = statsMenu.RunMenu();
-            }
+            while (choice == 10) choice = statsMenu.RunMenu();
 
             ResetConsole();
 
-            if (choice == choices.Count)
-            {
-                break;
-            }
+            if (choice == choices.Count) break;
 
-            if (choice == choices.Count - 1)
-            {
-                ShowGlobalStatsMenu();
-            }
-            else
-            {
-                ShowPlayerStats(Global.PlayerList[choice - 1]);
-            }
+            if (choice == choices.Count - 1) ShowGlobalStatsMenu();
+            else ShowPlayerStats(PlayerList[choice - 1]);
         }
     }
 
-    private static void ShowOpggMenu()
+    private static void ShowUggMenu()
     {
         Console.SetCursorPosition(0, TopLength);
 
@@ -164,23 +127,20 @@ public class LobbyRevealerMenu
             TextWrap = TextWrap.WordWrap,
             Children =
             {
-                CreateSpan("OP.GG", 36, Colors.MenuTextColor),
+                CreateSpan("U.GG", 36, Colors.MenuTextColor),
                 new Separator()
             }
         };
 
-        for (int i = 0; i < 5; i++)
+        for (var i = 0; i < 5; i++)
         {
             border1.Children.Add(CreateSpan("Player " + (i + 1) + "     -  ", 1, Colors.MenuTextColor));
-            string usertag = Global.PlayerList.ElementAtOrDefault(i)?.UserTag ?? "null\n";
-            border1.Children.Add(CreateSpan($"{usertag}", 0, Colors.MenuPrimaryColor));
-            if (usertag == "null\n")
-            {
-                continue;
-            }
+            var usertag = PlayerList.ElementAtOrDefault(i)?.RiotUserTag ?? "null\n";
+            border1.Children.Add(CreateSpan(usertag, 0, Colors.MenuPrimaryColor));
+            if (usertag == "null\n") continue;
 
-            border1.Children.Add(CreateSpan($" ({Global.PlayerList.ElementAtOrDefault(i)?.SoloDuoQ.Tier}", 0, Colors.MenuPrimaryColor));
-            string f = Global.PlayerList.ElementAtOrDefault(i)?.SoloDuoQ.Division == 0 ? ")\n" : $" {Global.PlayerList.ElementAtOrDefault(i)?.SoloDuoQ.Division})\n";
+            border1.Children.Add(CreateSpan($" ({PlayerList.ElementAtOrDefault(i)?.SoloDuoQ.Tier}", 0, Colors.MenuPrimaryColor));
+            var f = PlayerList.ElementAtOrDefault(i)?.SoloDuoQ.Rank == "" ? ")\n" : $" {PlayerList.ElementAtOrDefault(i)?.SoloDuoQ.Rank})\n";
             border1.Children.Add(CreateSpan(f, 0, Colors.MenuPrimaryColor));
         }
 
@@ -210,13 +170,13 @@ public class LobbyRevealerMenu
             }
         };
 
-        foreach (Player player in Global.PlayerList)
+        foreach (Player player in PlayerList)
         {
             Cell levelCell = new(player.Level) { Color = Colors.MenuTextColor };
-            Cell nameCell = new(player.Username) { Color = Colors.MenuTextColor };
-            string rank = $"{player.SoloDuoQ.Tier} {player.SoloDuoQ.Division} ({player.SoloDuoQ.Lp} LP)";
+            Cell nameCell = new(player.RiotUserName) { Color = Colors.MenuTextColor };
+            var rank = $"{player.SoloDuoQ.Tier} {player.SoloDuoQ.Rank} ({player.SoloDuoQ.Lp} LP)";
 
-            int winrate = player.SoloDuoQ.Wins + player.SoloDuoQ.Losses > 0 
+            var winrate = player.SoloDuoQ.Wins + player.SoloDuoQ.Losses > 0
                 ? (int)Math.Round((double)(player.SoloDuoQ.Wins * 100.0 / (player.SoloDuoQ.Wins + player.SoloDuoQ.Losses)))
                 : 0;
             rank += $" | {winrate}%";
@@ -236,9 +196,9 @@ public class LobbyRevealerMenu
     {
         Console.SetCursorPosition(0, TopLength);
 
-        int winratesoloq = player.SoloDuoQ.Wins + player.SoloDuoQ.Losses > 0 ?
+        var winratesoloq = player.SoloDuoQ.Wins + player.SoloDuoQ.Losses > 0 ?
             (int)Math.Round((double)(player.SoloDuoQ.Wins * 100.0 / (player.SoloDuoQ.Wins + player.SoloDuoQ.Losses))) : 0;
-        int winrateflex = player.FlexQ.Wins + player.FlexQ.Losses > 0 ?
+        var winrateflex = player.FlexQ.Wins + player.FlexQ.Losses > 0 ?
             (int)Math.Round((double)(player.FlexQ.Wins * 100.0 / (player.FlexQ.Wins + player.FlexQ.Losses))) : 0;
 
         Document rectangle = new();
@@ -253,7 +213,7 @@ public class LobbyRevealerMenu
             TextWrap = TextWrap.WordWrap,
             Children =
             {
-                CreateSpan($"{player.Username} Stats (Ranked)", 0, Colors.MenuTextColor),
+                CreateSpan($"{player.RiotUserName} Stats (Ranked)", 0, Colors.MenuTextColor),
                 new Separator()
             }
         };
@@ -277,7 +237,7 @@ public class LobbyRevealerMenu
                         CreateSpan("\n", 0, Colors.MenuTextColor),
                         CreateSpan("───────── Ranked ─────────", 1, Colors.MenuTextColor),
                         CreateSpan("\nRank       - ", 0, Colors.MenuTextColor),
-                        CreateSpan($"{FormatStr(player.SoloDuoQ.Tier)} {player.SoloDuoQ.Division}", 0, Colors.MenuPrimaryColor),
+                        CreateSpan($"{FormatStr(player.SoloDuoQ.Tier)} {player.SoloDuoQ.Rank}", 0, Colors.MenuPrimaryColor),
                         CreateSpan("\nLP         - ", 0, Colors.MenuTextColor),
                         CreateSpan($"{player.SoloDuoQ.Lp}", 0, Colors.MenuPrimaryColor),
                         CreateSpan("\nWinrate    - ", 0, Colors.MenuTextColor),
@@ -300,7 +260,7 @@ public class LobbyRevealerMenu
                         CreateSpan("\n", 0, Colors.MenuTextColor),
                         CreateSpan("  ───────── Ranked ─────────", 1, Colors.MenuTextColor),
                         CreateSpan("\n  Rank       - ", 0, Colors.MenuTextColor),
-                        CreateSpan($"{FormatStr(player.FlexQ.Tier)} {player.FlexQ.Division}", 0, Colors.MenuPrimaryColor),
+                        CreateSpan($"{FormatStr(player.FlexQ.Tier)} {player.FlexQ.Rank}", 0, Colors.MenuPrimaryColor),
                         CreateSpan("\n  LP         - ", 0, Colors.MenuTextColor),
                         CreateSpan($"{player.FlexQ.Lp}", 0, Colors.MenuPrimaryColor),
                         CreateSpan("\n  Winrate    - ", 0, Colors.MenuTextColor),

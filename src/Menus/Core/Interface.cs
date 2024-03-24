@@ -1,6 +1,7 @@
-﻿using Loly.src.Variables;
-using Loly.src.Variables.Class;
+﻿using Loly.src.Variables.Class;
+
 using static Loly.src.Tools.Utils;
+using static Loly.src.Variables.Global;
 
 namespace Loly.src.Menus.Core;
 
@@ -24,11 +25,11 @@ public class Interface
 
     public static void ShowArt()
     {
-        string[] array = ArtName.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+        var array = ArtName.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
         uint num2 = 0;
         while (num2 < array.Length)
         {
-            string text2 = array[num2];
+            var text2 = array[num2];
             Console.SetCursorPosition((Console.WindowWidth - text2.Length) / 2, Console.CursorTop);
             DisplayColor(text2, Colors.PrimaryColor, Colors.InfoColor);
             num2 += 1;
@@ -37,9 +38,9 @@ public class Interface
         const string text3 = "League Of Legends";
         Console.SetCursorPosition((Console.WindowWidth - text3.Length) / 2, Console.CursorTop);
         DisplayColor("`L`eague `O`f `L`egends ", Colors.InfoColor, Colors.PrimaryColor);
-        string text4 = $"Loly Tools by {Global.SoftAuthor}";
+        var text4 = $"Loly Tools by {SoftAuthor}";
         Console.SetCursorPosition((Console.WindowWidth - text4.Length) / 2, Console.CursorTop);
-        DisplayColor($"Loly Tools by `{Global.SoftAuthor}`", Colors.InfoColor, Colors.PrimaryColor);
+        DisplayColor($"Loly Tools by `{SoftAuthor}`", Colors.InfoColor, Colors.PrimaryColor);
         ShowLoggedUser();
         Console.Write(Environment.NewLine);
         Console.Write(Environment.NewLine);
@@ -49,11 +50,11 @@ public class Interface
 
     public static void ShowLogsArt()
     {
-        string[] array = ArtNameLogs.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+        var array = ArtNameLogs.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
         uint num2 = 0;
         while (num2 < array.Length)
         {
-            string text2 = array[num2];
+            var text2 = array[num2];
             Console.SetCursorPosition((Console.WindowWidth - text2.Length) / 2, Console.CursorTop);
             DisplayColor(text2, Colors.PrimaryColor, Colors.InfoColor);
             num2 += 1;
@@ -71,15 +72,15 @@ public class Interface
 
     private static void ShowLoggedUser()
     {
-        if (Global.SummonerLogged.SummonerId != null)
+        if (SummonerLogged.SummonerId != null)
         {
-            string text = $"Logged in as {Global.SummonerLogged.GetFullGameName()} [Summoner ID : {Global.SummonerLogged.SummonerId}]";
+            var text = $"Logged in as {SummonerLogged.GetFullGameName()} [Summoner ID : {SummonerLogged.SummonerId}]";
             Console.SetCursorPosition((Console.WindowWidth - text.Length) / 2, Console.CursorTop);
-            DisplayColor($"Logged in as `{Global.SummonerLogged.GetFullGameName()}` [Summoner ID : `{Global.SummonerLogged.SummonerId}`]", Colors.InfoColor, Colors.PrimaryColor);
+            DisplayColor($"Logged in as `{SummonerLogged.GetFullGameName()}` [Summoner ID : `{SummonerLogged.SummonerId}`]", Colors.InfoColor, Colors.PrimaryColor);
         }
         else
         {
-            string text = "Not logged in for the moment";
+            var text = "Not logged in for the moment";
             Console.SetCursorPosition((Console.WindowWidth - text.Length) / 2, Console.CursorTop);
             DisplayColor("Not `logged in` for the moment", Colors.InfoColor, Colors.PrimaryColor);
         }
@@ -89,34 +90,34 @@ public class Interface
     {
         Console.Title = active switch
         {
-            "main" => $"{Global.SoftName} by {Global.SoftAuthor} - Main Menu",
-            "logs" => $"{Global.SoftName} by {Global.SoftAuthor} - Logs Menu",
-            "tools" => $"{Global.SoftName} by {Global.SoftAuthor} - Tools Menu",
-            "settings" => $"{Global.SoftName} by {Global.SoftAuthor} - Settings Menu",
-            "credits" => $"{Global.SoftName} by {Global.SoftAuthor} - Credits Menu",
-            "lv" => $"{Global.SoftName} by {Global.SoftAuthor} - Lobby Revealer Menu",
-            "lv_get_opgg" => $"{Global.SoftName} by {Global.SoftAuthor} > Lobby Revealer - Get OP.GG Menu",
-            "lv_get_stats" => $"{Global.SoftName} by {Global.SoftAuthor} > Lobby Revealer - Get Stats Menu",
-            "aa" => $"{Global.SoftName} by {Global.SoftAuthor} - Auto Accept Menu",
-            "pnb" => $"{Global.SoftName} by {Global.SoftAuthor} - Pick'n'Ban Menu",
-            "pnb_pob" => $"{Global.SoftName} by {Global.SoftAuthor} > Pick'n'Ban - Pick or Ban Menu",
-            "pnb_pick" => $"{Global.SoftName} by {Global.SoftAuthor} > Pick'n'Ban - Pick Menu",
-            "pnb_ban" => $"{Global.SoftName} by {Global.SoftAuthor} > Pick'n'Ban - Ban Menu",
-            "pnb_pick_c" => $"{Global.SoftName} by {Global.SoftAuthor} > Pick'n'Ban - Pick Champion Menu",
-            "pnb_ban_c" => $"{Global.SoftName} by {Global.SoftAuthor} > Pick'n'Ban - Ban Champion Menu",
-            "pnb_pick_delay" => $"{Global.SoftName} by {Global.SoftAuthor} > Pick'n'Ban - Pick Champion Delay Menu",
-            "pnb_ban_delay" => $"{Global.SoftName} by {Global.SoftAuthor} > Pick'n'Ban - Ban Champion Delay Menu",
-            "pnb_pick_del_c" => $"{Global.SoftName} by {Global.SoftAuthor} > Pick'n'Ban - Remove Pick Champion Menu",
-            "pnb_ban_del_c" => $"{Global.SoftName} by {Global.SoftAuthor} > Pick'n'Ban - Remove Ban Champion Menu",
-            "ac" => $"{Global.SoftName} by {Global.SoftAuthor} - Auto Chat Menu",
-            "ac_add" => $"{Global.SoftName} by {Global.SoftAuthor} > Auto Chat - Add Message Menu",
-            "ac_del" => $"{Global.SoftName} by {Global.SoftAuthor} > Auto Chat - Delete Message Menu",
-            "ac_see" => $"{Global.SoftName} by {Global.SoftAuthor} > Auto Chat - See Messages Menu",
-            "ac_clear" => $"{Global.SoftName} by {Global.SoftAuthor} > Auto Chat - Clear Messages Menu",
-            "lc" => $"{Global.SoftName} by {Global.SoftAuthor} - Language Changer Menu",
-            "lc_languages" => $"{Global.SoftName} by {Global.SoftAuthor} > Language Changer - Languages Menu",
-            "lc_exe" => $"{Global.SoftName} by {Global.SoftAuthor} > Language Changer - Get League Client Exe Menu",
-            "lc_confirm" => $"{Global.SoftName} by {Global.SoftAuthor} > Language Changer - Confirm Menu",
+            "main" => $"{SoftName} by {SoftAuthor} - Main Menu",
+            "logs" => $"{SoftName} by {SoftAuthor} - Logs Menu",
+            "tools" => $"{SoftName} by {SoftAuthor} - Tools Menu",
+            "settings" => $"{SoftName} by {SoftAuthor} - Settings Menu",
+            "credits" => $"{SoftName} by {SoftAuthor} - Credits Menu",
+            "lv" => $"{SoftName} by {SoftAuthor} - Lobby Revealer Menu",
+            "lv_get_ugg" => $"{SoftName} by {SoftAuthor} > Lobby Revealer - Get U.GG Menu",
+            "lv_get_stats" => $"{SoftName} by {SoftAuthor} > Lobby Revealer - Get Stats Menu",
+            "aa" => $"{SoftName} by {SoftAuthor} - Auto Accept Menu",
+            "pnb" => $"{SoftName} by {SoftAuthor} - Pick'n'Ban Menu",
+            "pnb_pob" => $"{SoftName} by {SoftAuthor} > Pick'n'Ban - Pick or Ban Menu",
+            "pnb_pick" => $"{SoftName} by {SoftAuthor} > Pick'n'Ban - Pick Menu",
+            "pnb_ban" => $"{SoftName} by {SoftAuthor} > Pick'n'Ban - Ban Menu",
+            "pnb_pick_c" => $"{SoftName} by {SoftAuthor} > Pick'n'Ban - Pick Champion Menu",
+            "pnb_ban_c" => $"{SoftName} by {SoftAuthor} > Pick'n'Ban - Ban Champion Menu",
+            "pnb_pick_delay" => $"{SoftName} by {SoftAuthor} > Pick'n'Ban - Pick Champion Delay Menu",
+            "pnb_ban_delay" => $"{SoftName} by {SoftAuthor} > Pick'n'Ban - Ban Champion Delay Menu",
+            "pnb_pick_del_c" => $"{SoftName} by {SoftAuthor} > Pick'n'Ban - Remove Pick Champion Menu",
+            "pnb_ban_del_c" => $"{SoftName} by {SoftAuthor} > Pick'n'Ban - Remove Ban Champion Menu",
+            "ac" => $"{SoftName} by {SoftAuthor} - Auto Chat Menu",
+            "ac_add" => $"{SoftName} by {SoftAuthor} > Auto Chat - Add Message Menu",
+            "ac_del" => $"{SoftName} by {SoftAuthor} > Auto Chat - Delete Message Menu",
+            "ac_see" => $"{SoftName} by {SoftAuthor} > Auto Chat - See Messages Menu",
+            "ac_clear" => $"{SoftName} by {SoftAuthor} > Auto Chat - Clear Messages Menu",
+            "lc" => $"{SoftName} by {SoftAuthor} - Language Changer Menu",
+            "lc_languages" => $"{SoftName} by {SoftAuthor} > Language Changer - Languages Menu",
+            "lc_exe" => $"{SoftName} by {SoftAuthor} > Language Changer - Get League Client Exe Menu",
+            "lc_confirm" => $"{SoftName} by {SoftAuthor} > Language Changer - Confirm Menu",
             _ => Console.Title
         };
     }

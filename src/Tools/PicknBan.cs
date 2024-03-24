@@ -2,6 +2,7 @@
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
 using Loly.src.Variables.Enums;
+
 using Action = Loly.src.Variables.Class.Action;
 
 namespace Loly.src.Tools;
@@ -41,8 +42,8 @@ public class PicknBan
 
         if (!ChampSelectSession.HoverPick)
         {
-            string champSelectPhase = ChampSelectResponse.Timer.Phase;
-            long currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            var champSelectPhase = ChampSelectResponse.Timer.Phase;
+            var currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
             if (currentTime - 3000 > ChampSelectSession.ChampSelectStart || champSelectPhase != "PLANNING") HoverChampion(action.Id, ActionType.Pick);
         }
@@ -59,7 +60,7 @@ public class PicknBan
     private static void HandleBanAction(Action action)
     {
         if (ChampSelectSession.CurrentRole.BanChamp.Id == null) return;
-        string champSelectPhase = ChampSelectResponse.Timer.Phase;
+        var champSelectPhase = ChampSelectResponse.Timer.Phase;
         if (!action.IsInProgress || champSelectPhase == "PLANNING") return;
 
         MarkPhaseStart(action.Id);
@@ -76,7 +77,7 @@ public class PicknBan
         ChampItem champion = actionType == ActionType.Pick ? ChampSelectSession.CurrentRole.PickChamp : ChampSelectSession.CurrentRole.BanChamp;
         Logger.Info(LogModule.PickAndBan, $"Hover '{champion.Name}' champion for {actionType}");
 
-        string[] champSelectAction = Requests.ClientRequest("PATCH", $"lol-champ-select/v1/session/actions/{actionId}", true, $"{{\"championId\":{champion.Id}}}");
+        var champSelectAction = Requests.ClientRequest("PATCH", $"lol-champ-select/v1/session/actions/{actionId}", true, $"{{\"championId\":{champion.Id}}}");
         if (champSelectAction[0] != "204") return;
 
         switch (actionType)
@@ -90,7 +91,7 @@ public class PicknBan
         }
 
         Logger.Info(LogModule.PickAndBan, $"'{champion.Name}' has been hovered for {actionType}");
-        int delay = actionType == ActionType.Pick ? ChampSelectSession.CurrentRole.PickChamp.Delay : ChampSelectSession.CurrentRole.BanChamp.Delay;
+        var delay = actionType == ActionType.Pick ? ChampSelectSession.CurrentRole.PickChamp.Delay : ChampSelectSession.CurrentRole.BanChamp.Delay;
         Logger.Info(LogModule.PickAndBan, $"Waiting {delay}ms to '{actionType}' him");
     }
 
@@ -99,7 +100,7 @@ public class PicknBan
         ChampItem champion = actionType == ActionType.Pick ? ChampSelectSession.CurrentRole.PickChamp : ChampSelectSession.CurrentRole.BanChamp;
         Logger.Info(LogModule.PickAndBan, $"Locking '{champion.Name}' champion for {actionType}");
 
-        string[] champSelectAction = Requests.ClientRequest("PATCH", $"lol-champ-select/v1/session/actions/{actionId}", true,
+        var champSelectAction = Requests.ClientRequest("PATCH", $"lol-champ-select/v1/session/actions/{actionId}", true,
             $"{{\"completed\":true,\"championId\":{champion.Id}}}");
         if (champSelectAction[0] != "204") return;
 

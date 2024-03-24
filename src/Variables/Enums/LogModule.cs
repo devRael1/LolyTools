@@ -1,14 +1,13 @@
-﻿namespace Loly.src.Variables.Enums
+﻿namespace Loly.src.Variables.Enums;
+
+public enum LogModule
 {
-    public enum LogModule
-    {
-        PickAndBan,
-        AutoChat,
-        AutoAccept,
-        LobbyRevealer,
-        Loly,
-        Updater,
-        Tasks,
-        Request
-    }
+    PickAndBan,
+    AutoChat,
+    AutoAccept,
+    LobbyRevealer,
+    Loly,
+    Updater,
+    Tasks,
+    Request
 }

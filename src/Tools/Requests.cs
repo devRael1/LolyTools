@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
+
 using Loly.src.Logs;
 using Loly.src.Tasks.Scheduled;
 using Loly.src.Variables;
@@ -7,7 +8,7 @@ using Loly.src.Variables.Class;
 
 namespace Loly.src.Tools;
 
-public class Requests
+public static class Requests
 {
     public static string[] ClientRequest(string method, string url, bool useclient, string body = null)
     {
@@ -44,9 +45,9 @@ public class Requests
             Logger.Request(new Request { Method = method, Url = url, Body = body });
 
             HttpResponseMessage response = client.SendAsync(request).GetAwaiter().GetResult();
-            int statusCode = (int)response.StatusCode;
-            string statusString = statusCode.ToString();
-            string responseFromServer = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var statusCode = (int)response.StatusCode;
+            var statusString = statusCode.ToString();
+            var responseFromServer = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             response.EnsureSuccessStatusCode();
 
             Logger.Request(new Response { Method = method, Url = url, StatusCode = statusCode, Data = new[] { statusString, responseFromServer } });
@@ -90,41 +91,45 @@ public class Requests
         return request;
     }
 
-    public static string WebRequest(string url, bool logResponse = true)
+    public static string WebRequest(string method, string url, string body = null, bool logResponse = true)
     {
         try
         {
             using var client = new HttpClient();
-            client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
+            client.DefaultRequestHeaders.UserAgent
+                .ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
+            client.BaseAddress = new Uri(url);
+            HttpRequestMessage request = new(new HttpMethod(method), url);
+            if (!string.IsNullOrEmpty(body))
+            {
+                request.Content = new StringContent(body, Encoding.UTF8, "application/json");
+            }
 
-            Logger.Request(new Request { Method = "GET", Url = url });
+            Logger.Request(new Request { Method = method, Url = url, Body = body });
 
-            HttpResponseMessage response = client.GetAsync($"https://{url}").GetAwaiter().GetResult();
-            if (!response.IsSuccessStatusCode) return null;
-
-
+            HttpResponseMessage response = client.SendAsync(request).GetAwaiter().GetResult();
             HttpContent responseContent = response.Content;
-            string responseString = responseContent.ReadAsStringAsync().GetAwaiter().GetResult();
+            var responseString = responseContent.ReadAsStringAsync().GetAwaiter().GetResult();
             response.EnsureSuccessStatusCode();
 
             Logger.Request(new Response
             {
-                Method = "GET",
+                Method = method,
                 Url = url,
                 StatusCode = (int)response.StatusCode,
-                Data = new[] { response.StatusCode.ToString(), logResponse ? responseString : "NOT LOGGED" }
+                Data = new[] { response.StatusCode.ToString(), logResponse ? responseString : "RESPONSE NOT LOGGED" }
             });
 
             return responseString;
         }
         catch (HttpRequestException ex)
         {
-            Logger.Request(new Response { Method = "GET", Url = url, StatusCode = Convert.ToInt32(ex.StatusCode), Exception = ex });
+            Logger.Request(new Response { Method = method, Url = url, StatusCode = Convert.ToInt32(ex.StatusCode), Exception = ex });
             return null;
         }
         catch (Exception ex)
         {
-            Logger.Request(new Response { Method = "GET", Url = url, StatusCode = 0, Exception = ex });
+            Logger.Request(new Response { Method = method, Url = url, StatusCode = 0, Exception = ex });
             return null;
         }
     }

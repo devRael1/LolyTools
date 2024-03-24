@@ -2,8 +2,9 @@
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
 using Loly.src.Variables.Enums;
+
 using Newtonsoft.Json;
-using System.Net;
+
 using static Loly.src.Tools.Utils;
 
 namespace Loly.src;
@@ -12,14 +13,14 @@ public class Updater
 {
     private static string GetLatestVersionFromGithub(string owner, string repo)
     {
-        string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/releases/latest";
+        var apiUrl = $"https://api.github.com/repos/{owner}/{repo}/releases/latest";
         using HttpClient client = new();
         client.DefaultRequestHeaders.UserAgent.ParseAdd(
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
 
         HttpResponseMessage httpResponse = client.GetAsync(apiUrl).Result;
         httpResponse.EnsureSuccessStatusCode();
-        string response = httpResponse.Content.ReadAsStringAsync().Result;
+        var response = httpResponse.Content.ReadAsStringAsync().Result;
         return response;
     }
 
@@ -30,14 +31,14 @@ public class Updater
 
         try
         {
-            string response = GetLatestVersionFromGithub("devRael1", "LolyTools");
+            var response = GetLatestVersionFromGithub("devRael1", "LolyTools");
             if (response.Length == 0)
             {
                 throw new Exception("Unable to fetch the latest version from Github");
             }
 
             UpdaterResponse responseUpdater = JsonConvert.DeserializeObject<UpdaterResponse>(response);
-            string version = responseUpdater.TagName;
+            var version = responseUpdater.TagName;
 
             Logger.Info(LogModule.Updater, "[2/5] Checking versions...", LogType.Console);
             Console.Write(Environment.NewLine);
@@ -72,7 +73,7 @@ public class Updater
                 Logger.Info(LogModule.Updater, $"  [x] Downloading Count: {update.DownloadCount}", LogType.Console);
                 Logger.Info(LogModule.Updater, $"  [x] Release Date: {update.CreatedAt}", LogType.Console);
 
-                string path = Path.Combine(Environment.CurrentDirectory, $"Loly Tools - v{version}.exe");
+                var path = Path.Combine(Environment.CurrentDirectory, $"Loly Tools - v{version}.exe");
 
                 using (HttpClient client = new())
                 {

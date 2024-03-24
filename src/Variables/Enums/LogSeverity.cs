@@ -1,10 +1,9 @@
-﻿namespace Loly.src.Variables.Enums
+﻿namespace Loly.src.Variables.Enums;
+
+public enum LogSeverity
 {
-    public enum LogSeverity
-    {
-        Debug,
-        Info,
-        Warning,
-        Error
-    }
+    Debug,
+    Info,
+    Warning,
+    Error
 }

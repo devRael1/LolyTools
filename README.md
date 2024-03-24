@@ -3,7 +3,7 @@
 
 A set of several small tools for League Of Legends.
 
-### Works with the latest `14.5` update of League of Legends ([Patch Notes : 14.5](https://na.leagueoflegends.com/en-us/news/game-updates/patch-14-5-notes/))
+### Works with the latest `14.6` update of League of Legends ([Patch Notes : 14.6](https://na.leagueoflegends.com/en-us/news/game-updates/patch-14-6-notes/))
 ![Loly - Tools](/Ressources/mainMenu.png)
 
 ## `❗ Usage`
@@ -80,6 +80,8 @@ My Discord: `1043813027205619804`
 - [ ] Add more information in LobbyRevealer tool
 - [ ] Add system to save all settings (all Keybinds, Colors, chat options...) of the Game
 - [ ] Add a second option of champion pick in case of ban of the main champion ([#5 Suggestion](https://github.com/devRael1/LolyTools/issues/5))
+- [ ] Add a system to auto-send logs to the developer (Discord Webhook) when an error occurs (use a setting to enable/disable)
+- [ ] Update screenshots in `README.md` with Release V3.0.0
 
 ## `📝 License`
 Copyright © 2024 devRael<br>

@@ -1,6 +1,7 @@
 ﻿using Loly.src.Logs;
 using Loly.src.Variables;
 using Loly.src.Variables.Enums;
+
 using static Loly.src.Tools.Requests;
 
 namespace Loly.src.Tools;
@@ -11,7 +12,7 @@ public class AutoAccept
     {
         if (Global.AcceptedCurrentMatch) return;
 
-        string[] response = ClientRequest("POST", "lol-matchmaking/v1/ready-check/accept", true);
+        var response = ClientRequest("POST", "lol-matchmaking/v1/ready-check/accept", true);
         if (response[0] != "204")
         {
             Logger.Warn(LogModule.AutoAccept, "Failed to auto accept the current match");

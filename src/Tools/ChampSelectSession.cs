@@ -2,6 +2,7 @@
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
 using Loly.src.Variables.Enums;
+
 using Newtonsoft.Json;
 
 namespace Loly.src.Tools
@@ -19,11 +20,11 @@ namespace Loly.src.Tools
 
         public static void HandleChampSelect()
         {
-            string[] currentChampSelect = Requests.ClientRequest("GET", "lol-champ-select/v1/session", true);
+            var currentChampSelect = Requests.ClientRequest("GET", "lol-champ-select/v1/session", true);
             if (currentChampSelect[0] != "200") return;
 
             ChampSelectResponse champSelectResponse = JsonConvert.DeserializeObject<ChampSelectResponse>(currentChampSelect[1]);
-            string currentChatRoom = champSelectResponse.ChatDetails.MultiUserChatId;
+            var currentChatRoom = champSelectResponse.ChatDetails.MultiUserChatId;
             if (Global.LastChatRoom != currentChatRoom)
             {
                 HoverPick = false;
@@ -48,8 +49,8 @@ namespace Loly.src.Tools
             {
                 if (!member.SummonerId.Equals(Global.SummonerLogged.SummonerId)) continue;
 
-                string position = member.AssignedPosition;
-                string assignedRole = position.ToLower() switch
+                var position = member.AssignedPosition;
+                var assignedRole = position.ToLower() switch
                 {
                     "utility" => "Support",
                     "middle" => "Mid",

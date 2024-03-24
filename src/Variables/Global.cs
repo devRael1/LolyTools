@@ -9,6 +9,7 @@ public class Global
     public const string GithubPage = "https://github.com/devRael1/LolyTools";
     public const string SoftName = "League of Legends - Loly Tools";
     public const string SoftAuthor = "devRael";
+    public const string UrlAPI = "https://u.gg/api";
 
     private static SessionPhase _session = SessionPhase.None;
 
@@ -28,6 +29,7 @@ public class Global
     public static bool LogsMenuEnable { get; set; } = false;
     public static string Region { get; set; } = "";
     public static bool IsProdEnvironment { get; set; } = true;
+    public static int TopLength { get; set; } = 0;
 
     public static SessionPhase Session
     {

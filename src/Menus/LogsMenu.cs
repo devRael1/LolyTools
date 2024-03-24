@@ -1,5 +1,6 @@
 ﻿using Loly.src.Variables;
 using Loly.src.Variables.Class;
+
 using static Loly.src.Menus.Core.Interface;
 using static Loly.src.Menus.MainMenu;
 using static Loly.src.Tools.Utils;

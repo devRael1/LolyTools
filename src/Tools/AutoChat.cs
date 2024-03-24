@@ -2,6 +2,7 @@
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
 using Loly.src.Variables.Enums;
+
 using Newtonsoft.Json;
 
 namespace Loly.src.Tools;
@@ -12,25 +13,25 @@ public class AutoChat
     public static void HandleChampSelectAutoChat()
     {
         Logger.Info(LogModule.AutoChat, "Fetching Chat information & Summoner ID");
-        string[] myChatProfile = Requests.ClientRequest("GET", "lol-chat/v1/me", true);
+        var myChatProfile = Requests.ClientRequest("GET", "lol-chat/v1/me", true);
         ChatMe chatProfileJson = JsonConvert.DeserializeObject<ChatMe>(myChatProfile[1]);
-        string currentChatId = chatProfileJson.Id;
+        var currentChatId = chatProfileJson.Id;
 
         Logger.Info(LogModule.AutoChat, $"Sending {Settings.ChatMessages.Count} message(s) in chat");
 
-        int count = 0;
-        string timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
-        foreach (string message in Settings.ChatMessages)
+        var count = 0;
+        var timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
+        foreach (var message in Settings.ChatMessages)
         {
-            string msg = Utils.FormatMessage(message);
+            var msg = Utils.FormatMessage(message);
 
-            int attempts = 0;
-            string httpRes = "";
+            var attempts = 0;
+            var httpRes = "";
             while (httpRes != "200" && attempts < 5)
             {
-                string body = "{\"type\":\"chat\",\"fromId\":\"" + currentChatId + "\",\"fromSummonerId\":" + Global.SummonerLogged.SummonerId +
+                var body = "{\"type\":\"chat\",\"fromId\":\"" + currentChatId + "\",\"fromSummonerId\":" + Global.SummonerLogged.SummonerId +
                               ",\"isHistorical\":false,\"timestamp\":\"" + timestamp + "\",\"body\":\"" + msg + "\"}";
-                string[] response = Requests.ClientRequest("POST", "lol-chat/v1/conversations/" + Global.LastChatRoom + "/messages", true, body);
+                var response = Requests.ClientRequest("POST", "lol-chat/v1/conversations/" + Global.LastChatRoom + "/messages", true, body);
                 attempts++;
                 httpRes = response[0];
                 if (httpRes == "200")

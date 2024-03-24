@@ -2,6 +2,7 @@
 using Loly.src.Tools;
 using Loly.src.Variables.Class;
 using Loly.src.Variables.Enums;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -73,8 +74,8 @@ public class Settings
     private static object LoadJson()
     {
         using StreamReader file = File.OpenText(FileName);
-        string json = file.ReadToEnd();
-        object items = JsonConvert.DeserializeObject(json);
+        var json = file.ReadToEnd();
+        var items = JsonConvert.DeserializeObject(json);
         return items;
     }
 
@@ -87,7 +88,7 @@ public class Settings
         }
         else
         {
-            JObject obj = JObject.Parse(LoadJson().ToString() ?? throw new InvalidOperationException());
+            var obj = JObject.Parse(LoadJson().ToString() ?? throw new InvalidOperationException());
             EnableAutoUpdate = (bool)obj[nameof(EnableAutoUpdate)];
             ClearLogsFilesDays = (int)obj[nameof(ClearLogsFilesDays)];
             LobbyRevealer = (bool)obj[nameof(Tools)][nameof(LobbyRevealer)];

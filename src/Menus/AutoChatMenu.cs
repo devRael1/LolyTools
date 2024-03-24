@@ -1,10 +1,13 @@
 ﻿using Alba.CsConsoleFormat;
+
 using Loly.src.Menus.Core;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
+
 using static Loly.src.Menus.Core.Interface;
 using static Loly.src.Menus.ToolsMenu;
 using static Loly.src.Tools.Utils;
+using static Loly.src.Variables.Global;
 
 namespace Loly.src.Menus;
 
@@ -16,11 +19,11 @@ public class AutoChatMenu
         {
             ShowAutoChatMenu();
 
-            int choice = 7;
+            var choice = 7;
             UpdateMenuTitle("ac");
             string[] choices = { "Add Message", "Delete Message", "See Messages", "Clear Messages", "Back" };
 
-            MenuBuilder autoChatMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
+            var autoChatMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
             while (choice == 7) choice = autoChatMenu.RunMenu();
 
             ResetConsole();
@@ -78,7 +81,7 @@ public class AutoChatMenu
         MenuBuilder.SetCursorVisibility(true);
         UpdateMenuTitle("ac_add");
 
-        string msg = "";
+        var msg = "";
         while (msg == "")
         {
             DisplayColor($"`{DateTime.Now:[hh:mm:ss]}`» Enter message to send automatically when you enterring in lobby (max 200 characters):", Colors.InfoColor, Colors.PrimaryColor);
@@ -132,16 +135,16 @@ public class AutoChatMenu
     private static void DeleteMessage()
     {
     START:
-        int choice = 10;
+        var choice = 10;
         UpdateMenuTitle("ac_del");
-        List<string> choices = Settings.ChatMessages.Select((x, index) => $"Message N°{index + 1}").ToList();
+        var choices = Settings.ChatMessages.Select((x, index) => $"Message N°{index + 1}").ToList();
         choices.Add("Back");
 
         while (choice != choices.Count)
         {
             ShowMessages();
 
-            MenuBuilder delMessageMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop + 1);
+            var delMessageMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop + 1);
             choice = 10;
             while (choice == 10)
             {
@@ -163,7 +166,7 @@ public class AutoChatMenu
 
     private static void SeeMessages()
     {
-        int choice = 10;
+        var choice = 10;
         UpdateMenuTitle("ac_see");
         string[] choices = { "Back" };
 
@@ -171,7 +174,7 @@ public class AutoChatMenu
         {
             ShowMessages();
 
-            MenuBuilder seeMessageMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
+            var seeMessageMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
             choice = 10;
             while (choice == 10)
             {
@@ -196,7 +199,7 @@ public class AutoChatMenu
         DisplayColor($"`{DateTime.Now:[hh:mm:ss]}`» Are you sure you want to clear all messages ? (y/n):", Colors.InfoColor, Colors.PrimaryColor);
         Console.Write("» ");
 
-        string choice = Console.ReadLine().ToLower();
+        var choice = Console.ReadLine().ToLower();
         if (choice == "y")
         {
             Settings.ChatMessages.Clear();
@@ -233,15 +236,15 @@ public class AutoChatMenu
             }
         };
 
-        int count = 0;
-        foreach (string message in Settings.ChatMessages)
+        var count = 0;
+        foreach (var message in Settings.ChatMessages)
         {
             count++;
             grid.Children.Add(new Cell($"N°{count}") { Color = Colors.MenuTextColor, Stroke = LineThickness.None, Padding = new Thickness(1) });
 
             if (message.Length > 90)
             {
-                string msg = message[..90];
+                var msg = message[..90];
                 msg += "...";
                 grid.Children.Add(new Cell(msg) { Color = Colors.MenuTextColor, Stroke = LineThickness.None, Padding = new Thickness(1) });
             }

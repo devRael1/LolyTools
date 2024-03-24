@@ -18,16 +18,13 @@ internal class Program
         Settings.SetDefaultSettings();
         Settings.CreateOrUpdateSettings();
 
-        if (Settings.EnableAutoUpdate)
-        {
-            Updater.CheckUpdate();
-        }
+        if (Settings.EnableAutoUpdate) Updater.CheckUpdate();
 
         TaskCore tasks = new();
         tasks.StartAllTasks();
 
         // Wait for the League Client (and app) to be ready
-        Thread.Sleep(3000);
+        Thread.Sleep(TimeSpan.FromSeconds(3));
 
         Logger.PrintHeader();
         Interface.ShowArt();

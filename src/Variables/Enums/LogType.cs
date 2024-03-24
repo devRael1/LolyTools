@@ -1,10 +1,9 @@
-﻿namespace Loly.src.Variables.Enums
+﻿namespace Loly.src.Variables.Enums;
+
+public enum LogType
 {
-    public enum LogType
-    {
-        Console,
-        File,
-        Both,
-        None
-    }
+    Console,
+    File,
+    Both,
+    None
 }

@@ -1,9 +1,12 @@
 ﻿using Alba.CsConsoleFormat;
+
 using Loly.src.Menus.Core;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
+
 using static Loly.src.Menus.Core.Interface;
 using static Loly.src.Tools.Utils;
+using static Loly.src.Variables.Global;
 
 namespace Loly.src.Menus;
 
@@ -15,25 +18,19 @@ public class CreditsMenu
         {
             ShowCreditsMenu();
 
-            int choice = 7;
+            var choice = 7;
             UpdateMenuTitle("credits");
             string[] choices = { "Github Repository (Source Code)", "Back" };
 
-            MenuBuilder creditsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
-            while (choice == 7)
-            {
-                choice = creditsMenu.RunMenu();
-            }
+            var creditsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
+            while (choice == 7) choice = creditsMenu.RunMenu();
 
             ResetConsole();
 
-            if (choice == choices.Length)
-            {
-                break;
-            }
+            if (choice == choices.Length) break;
 
             ShowCreditsMenu();
-            OpenUrl(Global.GithubPage);
+            OpenUrl(GithubPage);
         }
 
         MainMenu.StartMenu();

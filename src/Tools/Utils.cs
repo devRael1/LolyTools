@@ -1,19 +1,19 @@
 ﻿using System.Diagnostics;
+
 using Alba.CsConsoleFormat;
+
 using Loly.src.Logs;
 using Loly.src.Menus.Core;
 using Loly.src.Variables.Enums;
 
 namespace Loly.src.Tools;
 
-public class Utils
+public static class Utils
 {
-    public static int TopLength { get; set; } = 0;
-
     public static Span CreateSpan(string content, int espaces, ConsoleColor color)
     {
-        string spaces = "";
-        for (int i = 0; i < espaces; i++)
+        var spaces = "";
+        for (var i = 0; i < espaces; i++)
         {
             spaces += " ";
         }
@@ -34,17 +34,18 @@ public class Utils
         }
         catch
         {
-            url = url.Replace("&", "^&");
             Process.Start(new ProcessStartInfo(url) { UseShellExecute = true }).Close();
         }
     }
 
     public static string LrParse(string source, string left, string right, int innt = 0)
     {
-        int length = left.Length;
-        string result = "";
-        int num = source.IndexOf(left, innt, StringComparison.Ordinal);
-        int num2 = source.IndexOf(right, num + length, StringComparison.Ordinal);
+        if (source == null) return null;
+
+        var length = left.Length;
+        var result = "";
+        var num = source.IndexOf(left, innt, StringComparison.Ordinal);
+        var num2 = source.IndexOf(right, num + length, StringComparison.Ordinal);
         if (num != -1 & num2 != -1)
         {
             result = source[(num + length)..num2];
@@ -79,8 +80,8 @@ public class Utils
 
     public static string FindString(string text, string from, string to)
     {
-        int pFrom = text.IndexOf(from, StringComparison.Ordinal) + from.Length;
-        int pTo = text.LastIndexOf(to, StringComparison.Ordinal);
+        var pFrom = text.IndexOf(from, StringComparison.Ordinal) + from.Length;
+        var pTo = text.LastIndexOf(to, StringComparison.Ordinal);
 
         return text[pFrom..pTo];
     }
@@ -93,10 +94,10 @@ public class Utils
         }
 
         const int k = 1024;
-        int dm = decimals < 0 ? 0 : decimals;
+        var dm = decimals < 0 ? 0 : decimals;
         string[] sizes = { "Octets", "Ko", "Mo", "Go", "To", "Po", "Eo", "Zo", "Yo" };
 
-        int i = (int)Math.Floor(Math.Log(bytes) / Math.Log(k));
+        var i = (int)Math.Floor(Math.Log(bytes) / Math.Log(k));
         return $"{(bytes / Math.Pow(k, i)).ToString($"F{dm}")} {sizes[i]}{(seconds ? "/s" : "")}";
     }
 
@@ -111,9 +112,9 @@ public class Utils
 
     public static void DisplayColor(string message, ConsoleColor color, ConsoleColor color2)
     {
-        bool estEnCouleurSecondaire = false;
+        var estEnCouleurSecondaire = false;
 
-        foreach (char caractere in message)
+        foreach (var caractere in message)
         {
             if (caractere == '`')
             {
@@ -126,5 +127,29 @@ public class Utils
         }
         Console.Write(Environment.NewLine);
         Console.ResetColor();
+    }
+
+    public static string RegionId(Region region)
+    {
+        return region switch
+        {
+            Region.BR => "br1",
+            Region.EUN => "eun1",
+            Region.EUW => "euw1",
+            Region.JP => "jp1",
+            Region.KR => "kr",
+            Region.LA1 => "la1",
+            Region.LA2 => "la2",
+            Region.NA => "na1",
+            Region.OC => "oc1",
+            Region.TR => "tr1",
+            Region.RU => "ru",
+            Region.PH => "ph2",
+            Region.SG => "sg2",
+            Region.TH => "th2",
+            Region.TW => "tw2",
+            Region.VN => "vn2",
+            _ => "euw1"
+        };
     }
 }

@@ -1,8 +1,7 @@
-﻿namespace Loly.src.Variables.Enums
+﻿namespace Loly.src.Variables.Enums;
+
+public enum DevelopmentStage
 {
-    public enum DevelopmentStage
-    {
-        Development,
-        Release
-    }
+    Development,
+    Release
 }

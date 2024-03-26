@@ -8,6 +8,7 @@ using static Loly.src.Menus.AutoAcceptMenu;
 using static Loly.src.Menus.AutoChatMenu;
 using static Loly.src.Menus.Core.Interface;
 using static Loly.src.Menus.LobbyRevealerMenu;
+using static Loly.src.Menus.LolSettingsMenu;
 using static Loly.src.Menus.MainMenu;
 using static Loly.src.Menus.PicknBanMenu;
 using static Loly.src.Tools.Utils;
@@ -25,20 +26,14 @@ public class ToolsMenu
 
             var choice = 7;
             UpdateMenuTitle("tools");
-            string[] choices = { "Lobby Revealer", "Auto Accept", "Auto Chat", "Pick and Ban", "Back" };
+            string[] choices = { "Lobby Revealer", "Auto Accept", "Auto Chat", "Pick and Ban", "LoL Settings", "Back" };
 
             var toolsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
-            while (choice == 7)
-            {
-                choice = toolsMenu.RunMenu();
-            }
+            while (choice == 7) choice = toolsMenu.RunMenu();
 
             ResetConsole();
 
-            if (choice == choices.Length)
-            {
-                break;
-            }
+            if (choice == choices.Length) break;
 
             switch (choice)
             {
@@ -96,6 +91,9 @@ public class ToolsMenu
                     {
                         GetPicknBanMenu();
                     }
+                    break;
+                case 5:
+                    GetLoLSettingsMenu();
                     break;
             }
             ResetConsole();

@@ -9,5 +9,6 @@ public enum LogModule
     Loly,
     Updater,
     Tasks,
+    LolSettings,
     Request
 }

@@ -1,5 +1,7 @@
 ﻿using System.Text;
+
 using Gommon;
+
 using Loly.src.Menus.Core;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
@@ -10,6 +12,7 @@ namespace Loly.src.Logs;
 public static class Logger
 {
     public const string LogFolder = "Logs";
+    public const string LolSettingsFolder = "LoLSettings";
     private const string LogTempFile = $"{LogFolder}/temp_loly.log";
     private const string LogReqsFile = $"{LogFolder}/temp_request_loly.log";
 
@@ -22,6 +25,7 @@ public static class Logger
     static Logger()
     {
         Directory.CreateDirectory(LogFolder);
+        Directory.CreateDirectory(LolSettingsFolder);
     }
 
     private static void Log(LogSeverity s, LogModule from, string message, Exception e = null, LogType logType = LogType.None)
@@ -91,7 +95,7 @@ public static class Logger
     private static void Execute(LogSeverity s, LogModule module, string message, Exception e)
     {
         StringBuilder contentFile = new();
-        (ConsoleColor color, string value) = VerifySeverity(s);
+        (ConsoleColor color, var value) = VerifySeverity(s);
         Append($"{value}", color);
 
         DateTime dt = DateTime.Now.ToLocalTime();
@@ -108,7 +112,7 @@ public static class Logger
 
         if (e != null)
         {
-            string toWrite = $"{Environment.NewLine}{e}";
+            var toWrite = $"{Environment.NewLine}{e}";
             Append(toWrite, ConsoleColor.DarkRed, ref contentFile);
         }
 
@@ -122,7 +126,7 @@ public static class Logger
     {
         StringBuilder contentFile = new();
 
-        (_, string value) = VerifySeverity(s);
+        (_, var value) = VerifySeverity(s);
         DateTime dt = DateTime.Now.ToLocalTime();
         contentFile.Append($"[{dt.FormatDate()}] {value}» ");
 
@@ -136,7 +140,7 @@ public static class Logger
 
         if (e != null)
         {
-            string toWrite = $"{Environment.NewLine}{e.Message}{Environment.NewLine}{e.StackTrace}";
+            var toWrite = $"{Environment.NewLine}{e.Message}{Environment.NewLine}{e.StackTrace}";
             contentFile.Append(toWrite);
         }
 
@@ -150,7 +154,7 @@ public static class Logger
 
     private static void ExecuteOnlyInConsole(LogSeverity s, LogModule module, string message)
     {
-        (ConsoleColor color, string value) = VerifySeverity(s);
+        (ConsoleColor color, var value) = VerifySeverity(s);
         Append($"{value}", color);
 
         (color, value) = VerifySource(module);
@@ -168,7 +172,7 @@ public static class Logger
     {
         StringBuilder contentFile = new();
 
-        (_, string value) = VerifySeverity(LogSeverity.Debug);
+        (_, var value) = VerifySeverity(LogSeverity.Debug);
         DateTime dt = DateTime.Now.ToLocalTime();
         contentFile.Append($"[{dt.FormatDate()}] {value}» ");
 
@@ -201,7 +205,7 @@ public static class Logger
 
         if (valueOfRequest.Exception != null)
         {
-            string toWrite = $"{Environment.NewLine}{valueOfRequest.Exception.Message}{Environment.NewLine}{valueOfRequest.Exception.StackTrace}";
+            var toWrite = $"{Environment.NewLine}{valueOfRequest.Exception.Message}{Environment.NewLine}{valueOfRequest.Exception.StackTrace}";
             contentFile.Append(toWrite);
         }
 
@@ -215,8 +219,8 @@ public static class Logger
 
     private static string NormalizeLogFilePath(string logFile, DateTime date, string pathToCheck)
     {
-        string today = $"{date.Month:00}-{date.Day:00}-{date.Year:00}";
-        bool directoryExist = Directory.Exists($"{pathToCheck}/{today}");
+        var today = $"{date.Month:00}-{date.Day:00}-{date.Year:00}";
+        var directoryExist = Directory.Exists($"{pathToCheck}/{today}");
         if (!directoryExist)
         {
             Directory.CreateDirectory($"{pathToCheck}/{today}");
@@ -248,6 +252,7 @@ public static class Logger
             LogModule.Loly => (ConsoleColor.Cyan, "[LOLY TOOLS]"),
             LogModule.Tasks => (ConsoleColor.DarkCyan, "[TASKS]"),
             LogModule.Request => (ConsoleColor.Red, "[REQUEST]"),
+            LogModule.LolSettings => (ConsoleColor.DarkCyan, "[LOL SETTINGS]"),
             LogModule.Updater => (ConsoleColor.White, "[UPDATER]"),
             _ => throw new InvalidOperationException($"The specified LogSource {source} is invalid.")
         };

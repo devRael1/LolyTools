@@ -25,6 +25,7 @@ public class LeagueClientTask
             Global.IsLeagueOpen = true;
 
             Process client = Process.GetProcessesByName("LeagueClientUx").FirstOrDefault();
+            if (Global.LeagueClientPath == "") Global.LeagueClientPath = Path.GetDirectoryName(client.MainModule.FileName);
             if (Global.AuthClient.Count == 0 && Global.AuthRiot.Count == 0) GetLeagueAuth();
             if (Global.SummonerLogged.SummonerId == null) LoadSummonerId();
 

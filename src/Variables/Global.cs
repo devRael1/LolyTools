@@ -30,6 +30,7 @@ public class Global
     public static string Region { get; set; } = "";
     public static bool IsProdEnvironment { get; set; } = true;
     public static int TopLength { get; set; } = 0;
+    public static string LeagueClientPath { get; set; } = "";
 
     public static SessionPhase Session
     {

@@ -27,17 +27,11 @@ public class AutoAcceptMenu
             string[] variables = { "AutoAcceptOnce" };
 
             var autoAcceptMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
-            while (choice == 7)
-            {
-                choice = autoAcceptMenu.RunMenu();
-            }
+            while (choice == 7) choice = autoAcceptMenu.RunMenu();
 
             ResetConsole();
 
-            if (choice == choices.Length)
-            {
-                break;
-            }
+            if (choice == choices.Length) break;
 
             JObject settings = Settings.GetSettings();
             settings["AutoAccept"][variables[choice - 1]] = !bool.Parse(settings["AutoAccept"][variables[choice - 1]].ToString());

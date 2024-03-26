@@ -114,10 +114,9 @@ public class Interface
             "ac_del" => $"{SoftName} by {SoftAuthor} > Auto Chat - Delete Message Menu",
             "ac_see" => $"{SoftName} by {SoftAuthor} > Auto Chat - See Messages Menu",
             "ac_clear" => $"{SoftName} by {SoftAuthor} > Auto Chat - Clear Messages Menu",
-            "lc" => $"{SoftName} by {SoftAuthor} - Language Changer Menu",
-            "lc_languages" => $"{SoftName} by {SoftAuthor} > Language Changer - Languages Menu",
-            "lc_exe" => $"{SoftName} by {SoftAuthor} > Language Changer - Get League Client Exe Menu",
-            "lc_confirm" => $"{SoftName} by {SoftAuthor} > Language Changer - Confirm Menu",
+            "lols" => $"{SoftName} by {SoftAuthor} - League Of Legends Settings Menu",
+            "lols_import" => $"{SoftName} by {SoftAuthor} > League Of Legends Settings - Import Settings Menu",
+            "lols_export" => $"{SoftName} by {SoftAuthor} > League Of Legends Settings - Export Settings Menu",
             _ => Console.Title
         };
     }

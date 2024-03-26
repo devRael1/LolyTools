@@ -57,7 +57,7 @@ public static class Utils
     public static void LogNewError(string actionName, LogModule logModule, Exception ex)
     {
         Logger.Error(logModule, $"An error occured to execute : {actionName}", null);
-        Logger.Error(logModule, "Please check the logs file for more information.", null);
+        Logger.Error(logModule, "Please check the logs file for more information", null);
         Logger.Error(logModule, "Error : ", ex);
     }
 

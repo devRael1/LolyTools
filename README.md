@@ -77,11 +77,12 @@ My Discord: `1043813027205619804`
 ### V3.0.0 COMING SOON
 ======================== V3.0.0 ========================
 - [ ] Replace OP.GG stats sytem to add a new one (U.GG with all API's)
-- [ ] Add more information in LobbyRevealer tool
+- [ ] Add more information in LobbyRevealer tool (API's : HistoricRanks / GetPlayerOverallRanking / FetchMatchSummaries...)
 - [ ] Add system to save all settings (all Keybinds, Colors, chat options...) of the Game
 - [ ] Add a second option of champion pick in case of ban of the main champion ([#5 Suggestion](https://github.com/devRael1/LolyTools/issues/5))
 - [ ] Add a system to auto-send logs to the developer (Discord Webhook) when an error occurs (use a setting to enable/disable)
 - [ ] Update screenshots in `README.md` with Release V3.0.0
+- [ ] Upgrade the error management system in the app (use `AppDomain.CurrentDomain.UnhandledException` for each error...)
 
 ## `📝 License`
 Copyright © 2024 devRael<br>

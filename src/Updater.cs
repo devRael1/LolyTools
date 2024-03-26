@@ -20,8 +20,7 @@ public class Updater
 
         HttpResponseMessage httpResponse = client.GetAsync(apiUrl).Result;
         httpResponse.EnsureSuccessStatusCode();
-        var response = httpResponse.Content.ReadAsStringAsync().Result;
-        return response;
+        return httpResponse.Content.ReadAsStringAsync().Result;
     }
 
     public static void CheckUpdate()
@@ -32,18 +31,14 @@ public class Updater
         try
         {
             var response = GetLatestVersionFromGithub("devRael1", "LolyTools");
-            if (response.Length == 0)
-            {
-                throw new Exception("Unable to fetch the latest version from Github");
-            }
+            if (response.Length == 0) throw new Exception("Unable to fetch the latest version from Github");
 
             UpdaterResponse responseUpdater = JsonConvert.DeserializeObject<UpdaterResponse>(response);
-            var version = responseUpdater.TagName;
 
             Logger.Info(LogModule.Updater, "[2/5] Checking versions...", LogType.Console);
             Console.Write(Environment.NewLine);
 
-            if (Version.FullVersionNoStage == version)
+            if (Version.FullVersionNoStage == responseUpdater.TagName)
             {
                 Logger.Info(LogModule.Updater, "Up to date !", LogType.Console);
                 Logger.Info(LogModule.Updater, "You are using the latest version of the software", LogType.Console);
@@ -55,15 +50,14 @@ public class Updater
             {
                 Logger.Info(LogModule.Updater, "Update available :", LogType.Console);
                 Logger.Info(LogModule.Updater, $"[x] Your version : {Version.FullVersionNoStage}", LogType.Console);
-                Logger.Info(LogModule.Updater, $"[x] Latest version : {version}", LogType.Console);
+                Logger.Info(LogModule.Updater, $"[x] Latest version : {responseUpdater.TagName}", LogType.Console);
                 Logger.Info(LogModule.Updater, "Press any key to download latest version...", LogType.Console);
                 Console.ReadKey();
 
                 Asset update = responseUpdater.Assets[0];
-
                 Console.Write(Environment.NewLine);
 
-                Logger.Info(LogModule.Updater, $"[3/5] Downloading the updated software (v{version})...", LogType.Console);
+                Logger.Info(LogModule.Updater, $"[3/5] Downloading the updated software (v{responseUpdater.TagName})...", LogType.Console);
                 Logger.Info(LogModule.Updater, "[4/5] Fetching download stats...", LogType.Console);
 
                 Console.Write(Environment.NewLine);
@@ -73,7 +67,7 @@ public class Updater
                 Logger.Info(LogModule.Updater, $"  [x] Downloading Count: {update.DownloadCount}", LogType.Console);
                 Logger.Info(LogModule.Updater, $"  [x] Release Date: {update.CreatedAt}", LogType.Console);
 
-                var path = Path.Combine(Environment.CurrentDirectory, $"Loly Tools - v{version}.exe");
+                var path = Path.Combine(Environment.CurrentDirectory, $"Loly Tools - v{responseUpdater.TagName}.exe");
 
                 using (HttpClient client = new())
                 {
@@ -86,7 +80,7 @@ public class Updater
 
                 Console.Write(Environment.NewLine);
                 Logger.Info(LogModule.Updater, "[5/5] Done !", LogType.Console);
-                Logger.Info(LogModule.Updater, $"[!] Note: You can delete this executable and use the latest : Loly Tools - v{version}.exe", LogType.Console);
+                Logger.Info(LogModule.Updater, $"[!] Note: You can delete this executable and use the latest : Loly Tools - v{responseUpdater.TagName}.exe", LogType.Console);
                 Logger.Info(LogModule.Updater, "Press any key to exit...", LogType.Console);
                 Console.ReadKey();
                 Console.Clear();

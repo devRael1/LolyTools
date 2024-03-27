@@ -112,9 +112,12 @@ public class LolSettingsMenu
                 Console.Write("» ");
 
                 ConsoleKey key = Console.ReadKey().Key;
+
+                Console.WriteLine(Environment.NewLine);
+                MenuBuilder.SetCursorVisibility(false);
+
                 if (key != ConsoleKey.Y)
                 {
-                    Console.WriteLine(Environment.NewLine);
                     Logger.Info(LogModule.LolSettings, $"The settings has not been exported", LogType.Console);
                     Logger.Info(LogModule.LolSettings, $"Press any key to continue...", LogType.Console);
                     Console.ReadKey();
@@ -125,7 +128,6 @@ public class LolSettingsMenu
 
             File.Copy($"{LeagueClientPath}\\Config\\PersistedSettings.json", $"{Logger.LolSettingsFolder}\\SETTINGS - {SummonerLogged.GetFullGameName()}.json", true);
 
-            Console.WriteLine(Environment.NewLine);
             Logger.Info(LogModule.LolSettings, $"The settings has been exported to the '{Logger.LolSettingsFolder}' folder", LogType.Console);
             Logger.Info(LogModule.LolSettings, $"You can use name of file settings to import them with the 'Import Settings' menu", LogType.Console);
             Logger.Info(LogModule.LolSettings, $"Press any key to continue...", LogType.Console);
@@ -133,8 +135,7 @@ public class LolSettingsMenu
         }
         catch (Exception ex)
         {
-            Console.WriteLine(Environment.NewLine);
-            Logger.Error(LogModule.LolSettings, $"\nUnable to export settings in the '{Logger.LolSettingsFolder}' folder", null, LogType.Both);
+            Logger.Error(LogModule.LolSettings, $"Unable to export settings in the '{Logger.LolSettingsFolder}' folder", null, LogType.Both);
             Logger.Error(LogModule.LolSettings, "Please check the logs file for more information", null, LogType.Both);
             Logger.Error(LogModule.LolSettings, "Error : ", ex, LogType.Both);
             Logger.Error(LogModule.LolSettings, $"Pres any key to back to the 'Lol Settings' menu...", ex, LogType.Console);

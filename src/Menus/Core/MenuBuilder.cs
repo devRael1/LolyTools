@@ -2,7 +2,7 @@
 
 namespace Loly.src.Menus.Core;
 
-internal class MenuBuilder
+public class MenuBuilder
 {
     private readonly int _drawMenuColumnPos;
     private readonly int _drawMenuRowPos;
@@ -38,10 +38,7 @@ internal class MenuBuilder
         for (var i = 0; i < _options.Length; i++)
         {
             var spacesToAdd = maximumWidth - _options[i].Length;
-            for (var j = 0; j < spacesToAdd; j++)
-            {
-                space += "";
-            }
+            for (var j = 0; j < spacesToAdd; j++) space += "";
 
             _options[i] += space;
             space = "";
@@ -65,15 +62,8 @@ internal class MenuBuilder
 
     private static void SetCursorPosition(int row, int column)
     {
-        if (row > 0 && row < Console.WindowHeight)
-        {
-            Console.CursorTop = row;
-        }
-
-        if (column > 0 && column < Console.WindowWidth)
-        {
-            Console.CursorLeft = column;
-        }
+        if (row > 0 && row < Console.WindowHeight) Console.CursorTop = row;
+        if (column > 0 && column < Console.WindowWidth) Console.CursorLeft = column;
     }
 
     public int RunMenu()
@@ -88,21 +78,13 @@ internal class MenuBuilder
                 case 10:
                 {
                     _currentSelection--;
-                    if (_currentSelection < 1)
-                    {
-                        _currentSelection = _options.Length;
-                    }
-
+                    if (_currentSelection < 1) _currentSelection = _options.Length;
                     break;
                 }
                 case 11:
                 {
                     _currentSelection++;
-                    if (_currentSelection > _options.Length)
-                    {
-                        _currentSelection = 1;
-                    }
-
+                    if (_currentSelection > _options.Length) _currentSelection = 1;
                     break;
                 }
                 case 12:

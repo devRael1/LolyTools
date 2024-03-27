@@ -29,24 +29,19 @@ public class LobbyRevealerMenu
 
             if (choice == choices.Length) break;
 
-            switch (choice)
+            if (choice == 1) GetUggMenu();
+            else
             {
-                case 1:
-                    GetUggMenu();
-                    break;
-                case 2:
-                    if (PlayerList.Count == 0)
-                    {
-                        DisplayColor("No Players in the list.", Colors.WarningColor, Colors.PrimaryColor);
-                        DisplayColor("Loly Tools did not detect a champ select in progress.", Colors.WarningColor, Colors.PrimaryColor);
-                        DisplayColor("Press Enter to continue...", Colors.WarningColor, Colors.PrimaryColor);
-                        Console.ReadKey();
-                        ResetConsole();
-                        continue;
-                    }
-
-                    GetStatsMenu();
-                    break;
+                if (PlayerList.Count == 0)
+                {
+                    DisplayColor("No Players in the list.", Colors.WarningColor, Colors.PrimaryColor);
+                    DisplayColor("Loly Tools did not detect a champ select in progress.", Colors.WarningColor, Colors.PrimaryColor);
+                    DisplayColor("Press Enter to continue...", Colors.WarningColor, Colors.PrimaryColor);
+                    Console.ReadKey();
+                    ResetConsole();
+                    continue;
+                }
+                GetStatsMenu();
             }
         }
 
@@ -62,7 +57,7 @@ public class LobbyRevealerMenu
         if (PlayerList.Count >= 1) choices.Add("[GLOBAL] - All U.GG");
         choices.Add("Back");
 
-        while (choice != choices.Count)
+        while (true)
         {
             ShowUggMenu();
 
@@ -97,7 +92,7 @@ public class LobbyRevealerMenu
 
         ShowGlobalStatsMenu();
 
-        while (choice != choices.Count)
+        while (true)
         {
             var statsMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop + 1);
             choice = 10;

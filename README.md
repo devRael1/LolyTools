@@ -15,9 +15,10 @@ No need to install this if you have a more recent version installed.
 ## `⚙️ Features`
 - [x] Interactive Menu in Console
 - [x] Multi-region support (DE, FR, ES, JP, CN...)
-- [x] Lobby Revealer (Ranked games)
-- [x] Auto Accept match (Auto accept queue)
+- [x] Lobby Revealer/Shower (Ranked/Draft/Normal games)
+- [x] Auto Accept match (Auto accept matchmaking)
 - [x] Auto Pick and Ban champion (By roles => Top, Jungle, Mid, ADC, Support)
+- [x] Import / Export League of Legends settings for all accounts
 - [x] Auto Chat (Auto send messages when champ select start)
 - [x] Get U.GG stats of your team (SoloQ & DuoQ / FlexQ...)
 - [x] Advanced Logs system (Real Time & Persistent)
@@ -76,13 +77,15 @@ My Discord: `1043813027205619804`
 ## `🧾 Todo List`
 ### V3.0.0 COMING SOON
 ======================== V3.0.0 ========================
-- [ ] Replace OP.GG stats sytem to add a new one (U.GG with all API's)
+- [x] Replace OP.GG stats sytem to add a new one (U.GG with all API's)
 - [ ] Add more information in LobbyRevealer tool (API's : HistoricRanks / GetPlayerOverallRanking / FetchMatchSummaries...)
-- [ ] Add system to save all settings (all Keybinds, Colors, chat options...) of the Game
-- [ ] Add a second option of champion pick in case of ban of the main champion ([#5 Suggestion](https://github.com/devRael1/LolyTools/issues/5))
+- [ ] Review the menu builder system and optimize it (Code optimization / lisibility)
+- [x] Add system to save all settings (all Keybinds, Colors, chat options...) of the Game
 - [ ] Add a system to auto-send logs to the developer (Discord Webhook) when an error occurs (use a setting to enable/disable)
+- [ ] Upgrade the error management system in the app (use `AppDomain.CurrentDomain.UnhandledException` for each error
+- [ ] Add a second option of champion pick in case of ban of the main champion ([#5 Suggestion](https://github.com/devRael1/LolyTools/issues/5))
 - [ ] Update screenshots in `README.md` with Release V3.0.0
-- [ ] Upgrade the error management system in the app (use `AppDomain.CurrentDomain.UnhandledException` for each error...)
+- [x] Refactor the code of `Settings.cs` to make it more readable and optimized (create new class `Settings` in Class folder)
 
 ## `📝 License`
 Copyright © 2024 devRael<br>

@@ -1,10 +1,9 @@
 ﻿using Alba.CsConsoleFormat;
 
 using Loly.src.Menus.Core;
+using Loly.src.Tools;
 using Loly.src.Variables;
 using Loly.src.Variables.Class;
-
-using Newtonsoft.Json.Linq;
 
 using static Loly.src.Menus.Core.Interface;
 using static Loly.src.Menus.ToolsMenu;
@@ -23,8 +22,7 @@ public class AutoAcceptMenu
 
             var choice = 7;
             UpdateMenuTitle("aa");
-            string[] choices = { $"Auto Accept Once    - {CheckBoolean(Settings.AutoAcceptOnce)}", "Back" };
-            string[] variables = { "AutoAcceptOnce" };
+            string[] choices = { $"Auto Accept Once    - {CheckBoolean(Global.CurrentSettings.AutoAccept.AutoAcceptOnce)}", "Back" };
 
             var autoAcceptMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
             while (choice == 7) choice = autoAcceptMenu.RunMenu();
@@ -33,10 +31,9 @@ public class AutoAcceptMenu
 
             if (choice == choices.Length) break;
 
-            JObject settings = Settings.GetSettings();
-            settings["AutoAccept"][variables[choice - 1]] = !bool.Parse(settings["AutoAccept"][variables[choice - 1]].ToString());
-            Settings.SaveFileSettings(settings);
-            Settings.CreateOrUpdateSettings();
+            Global.CurrentSettings.AutoAccept.AutoAcceptOnce = !bool.Parse(Global.CurrentSettings.AutoAccept.AutoAcceptOnce.ToString());
+            SettingsManager.SaveFileSettings();
+            SettingsManager.CreateOrUpdateSettings();
         }
 
         GetToolsMenu();

@@ -13,6 +13,7 @@ public class Global
 
     private static SessionPhase _session = SessionPhase.None;
 
+    public static Settings CurrentSettings = new();
     public static List<Player> PlayerList = new();
     public static List<ChampItem> ChampionsList = new();
 

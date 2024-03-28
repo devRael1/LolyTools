@@ -1,10 +1,8 @@
 ﻿using Alba.CsConsoleFormat;
 
 using Loly.src.Menus.Core;
-using Loly.src.Variables;
+using Loly.src.Tools;
 using Loly.src.Variables.Class;
-
-using Newtonsoft.Json.Linq;
 
 using static Loly.src.Menus.Core.Interface;
 using static Loly.src.Menus.MainMenu;
@@ -21,45 +19,36 @@ public class SettingsMenu
         {
             ShowSettingsMenu();
 
-            var choice = 7;
             UpdateMenuTitle("settings");
             List<string> choices = new()
             {
-                $"Auto Update     - {CheckBoolean(Settings.EnableAutoUpdate)}",
-                $"Lobby Revealer  - {CheckBoolean(Settings.LobbyRevealer)}",
-                $"Auto Accept     - {CheckBoolean(Settings.AutoAccept)}",
-                $"Auto Chat       - {CheckBoolean(Settings.AutoChat)}",
-                $"Pick and Ban    - {CheckBoolean(Settings.PicknBan)}",
+                $"Auto Update     - {CheckBoolean(CurrentSettings.EnableAutoUpdate)}",
+                $"Lobby Revealer  - {CheckBoolean(CurrentSettings.Tools.LobbyRevealer)}",
+                $"Auto Accept     - {CheckBoolean(CurrentSettings.Tools.AutoAccept)}",
+                $"Auto Chat       - {CheckBoolean(CurrentSettings.Tools.AutoChat)}",
+                $"Pick and Ban    - {CheckBoolean(CurrentSettings.Tools.PicknBan)}",
                 "Back"
             };
-            string[] variables = { "EnableAutoUpdate", "LobbyRevealer", "AutoAccept", "AutoChat", "PicknBan" };
 
             var settingsMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop + 1);
-            while (choice == 7)
-            {
-                choice = settingsMenu.RunMenu();
-            }
+            var choice = 0;
+            while (choice == 0) choice = settingsMenu.RunMenu();
 
             ResetConsole();
 
-            if (choice == choices.Count)
+            if (choice == choices.Count) break;
+
+            switch (choice)
             {
-                break;
+                case 1: CurrentSettings.EnableAutoUpdate = !CurrentSettings.EnableAutoUpdate; break;
+                case 2: CurrentSettings.Tools.LobbyRevealer = !CurrentSettings.Tools.LobbyRevealer; break;
+                case 3: CurrentSettings.Tools.AutoAccept = !CurrentSettings.Tools.AutoAccept; break;
+                case 4: CurrentSettings.Tools.AutoChat = !CurrentSettings.Tools.AutoChat; break;
+                case 5: CurrentSettings.Tools.PicknBan = !CurrentSettings.Tools.PicknBan; break;
             }
 
-            JObject settings = Settings.GetSettings();
-
-            if (variables[choice - 1] == "EnableAutoUpdate")
-            {
-                settings[variables[choice - 1]] = !bool.Parse(settings[variables[choice - 1]]?.ToString() ?? string.Empty);
-            }
-            else
-            {
-                settings["Tools"][variables[choice - 1]] = !bool.Parse(settings["Tools"][variables[choice - 1]]?.ToString() ?? string.Empty);
-            }
-
-            Settings.SaveFileSettings(settings);
-            Settings.CreateOrUpdateSettings();
+            SettingsManager.SaveFileSettings();
+            SettingsManager.CreateOrUpdateSettings();
         }
 
         StartMenu();

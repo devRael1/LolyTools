@@ -46,7 +46,6 @@ public class LolSettingsMenu
         {
             ShowImportSettingMenu();
 
-            var choice = 0;
             List<string> choices = new();
 
             var files = Directory.GetFiles(Path.Combine(Environment.CurrentDirectory, Logger.LolSettingsFolder), "*.json");
@@ -63,6 +62,7 @@ public class LolSettingsMenu
             choices.Add("Back");
 
             var pickNBanMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop + 1);
+            var choice = 0;
             while (choice == 0) choice = pickNBanMenu.RunMenu();
             ResetConsole();
 

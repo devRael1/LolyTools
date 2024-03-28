@@ -6,7 +6,6 @@ using Loly.src.Variables.Class;
 using Loly.src.Variables.Enums;
 
 using static Loly.src.Menus.Core.Interface;
-using static Loly.src.Menus.ToolsMenu;
 using static Loly.src.Tools.Utils;
 using static Loly.src.Variables.Global;
 
@@ -28,24 +27,19 @@ public class LobbyRevealerMenu
             ResetConsole();
 
             if (choice == choices.Length) break;
+            if (PlayerList.Count == 0)
+            {
+                DisplayColor("No Players in the list.", Colors.WarningColor, Colors.PrimaryColor);
+                DisplayColor("Loly Tools did not detect a champ select in progress.", Colors.WarningColor, Colors.PrimaryColor);
+                DisplayColor("Press Enter to return to 'Lobby Revealer' menu", Colors.WarningColor, Colors.PrimaryColor);
+                Console.ReadKey();
+                ResetConsole();
+                break;
+            }
 
             if (choice == 1) GetUggMenu();
-            else
-            {
-                if (PlayerList.Count == 0)
-                {
-                    DisplayColor("No Players in the list.", Colors.WarningColor, Colors.PrimaryColor);
-                    DisplayColor("Loly Tools did not detect a champ select in progress.", Colors.WarningColor, Colors.PrimaryColor);
-                    DisplayColor("Press Enter to continue...", Colors.WarningColor, Colors.PrimaryColor);
-                    Console.ReadKey();
-                    ResetConsole();
-                    continue;
-                }
-                GetStatsMenu();
-            }
+            else GetStatsMenu();
         }
-
-        GetToolsMenu();
     }
 
     private static void GetUggMenu()

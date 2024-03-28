@@ -1,7 +1,7 @@
 ﻿using Alba.CsConsoleFormat;
 
 using Loly.src.Menus.Core;
-using Loly.src.Variables;
+using Loly.src.Tools;
 using Loly.src.Variables.Class;
 
 using static Loly.src.Menus.Core.Interface;
@@ -99,7 +99,7 @@ public class AutoChatMenu
                 {
                     DisplayColor("[WARNING]» Your message is too long ! Please try again... ", Colors.WarningColor, Colors.PrimaryColor);
                 }
-                else if (Settings.ChatMessages.Count >= 5)
+                else if (CurrentSettings.AutoChat.ChatMessages.Count >= 5)
                 {
                     DisplayColor("[WARNING]» You can't add more than 5 messages ! Please remove 1 message before adding a new one... ", Colors.WarningColor, Colors.PrimaryColor);
                     DisplayColor("[WARNING]» Press any key to continue...", Colors.WarningColor, Colors.PrimaryColor);
@@ -110,9 +110,8 @@ public class AutoChatMenu
                 else
                 {
                     msg = FormatMessage(msg);
-                    Settings.ChatMessages.Add(msg);
-
-                    Settings.SaveSettings();
+                    CurrentSettings.AutoChat.ChatMessages.Add(msg);
+                    SettingsManager.SaveFileSettings();
 
                     Console.Write(Environment.NewLine);
                     DisplayColor("[SUCCESS]» Your message has been added successfully...", Colors.SuccessColor, Colors.PrimaryColor);
@@ -137,7 +136,7 @@ public class AutoChatMenu
     START:
         var choice = 10;
         UpdateMenuTitle("ac_del");
-        var choices = Settings.ChatMessages.Select((x, index) => $"Message N°{index + 1}").ToList();
+        var choices = CurrentSettings.AutoChat.ChatMessages.Select((x, index) => $"Message N°{index + 1}").ToList();
         choices.Add("Back");
 
         while (choice != choices.Count)
@@ -158,8 +157,8 @@ public class AutoChatMenu
                 break;
             }
 
-            Settings.ChatMessages.RemoveAt(choice - 1);
-            Settings.SaveSettings();
+            CurrentSettings.AutoChat.ChatMessages.RemoveAt(choice - 1);
+            SettingsManager.SaveFileSettings();
             goto START;
         }
     }
@@ -202,8 +201,8 @@ public class AutoChatMenu
         var choice = Console.ReadLine().ToLower();
         if (choice == "y")
         {
-            Settings.ChatMessages.Clear();
-            Settings.SaveSettings();
+            CurrentSettings.AutoChat.ChatMessages.Clear();
+            SettingsManager.SaveFileSettings();
 
             Console.Write(Environment.NewLine);
             DisplayColor("[SUCCESS]» All messages have been cleared successfully", Colors.SuccessColor, Colors.PrimaryColor);
@@ -237,7 +236,7 @@ public class AutoChatMenu
         };
 
         var count = 0;
-        foreach (var message in Settings.ChatMessages)
+        foreach (var message in CurrentSettings.AutoChat.ChatMessages)
         {
             count++;
             grid.Children.Add(new Cell($"N°{count}") { Color = Colors.MenuTextColor, Stroke = LineThickness.None, Padding = new Thickness(1) });

@@ -3,6 +3,8 @@ using Loly.src.Tools;
 using Loly.src.Variables;
 using Loly.src.Variables.Enums;
 
+using static Loly.src.Variables.Global;
+
 namespace Loly.src.Tasks.Scheduled;
 
 public class ClearLogsFilesTask
@@ -11,7 +13,7 @@ public class ClearLogsFilesTask
     {
         var filesBotLogs = ClearLogsFiles(Directory.GetDirectories(Logger.LogFolder));
 
-        Logger.Info(LogModule.Loly, $"Clear {filesBotLogs} logs folder(s) older than [{Settings.ClearLogsFilesDays} days]...");
+        Logger.Info(LogModule.Loly, $"Clear {filesBotLogs} logs folder(s) older than [{CurrentSettings.ClearLogsFilesDays} days]...");
     }
 
     private static int ClearLogsFiles(string[] folders)
@@ -24,10 +26,7 @@ public class ClearLogsFilesTask
             DateTime dateNow = DateTime.Now;
             TimeSpan diff = dateNow - directory.CreationTime;
 
-            if (Math.Round(diff.TotalDays) < Settings.ClearLogsFilesDays)
-            {
-                continue;
-            }
+            if (Math.Round(diff.TotalDays) < CurrentSettings.ClearLogsFilesDays) continue;
 
             try
             {

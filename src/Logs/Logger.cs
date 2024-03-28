@@ -30,18 +30,9 @@ public static class Logger
 
     private static void Log(LogSeverity s, LogModule from, string message, Exception e = null, LogType logType = LogType.None)
     {
-        if (logType == LogType.Both)
-        {
-            Lock.Lock(() => Execute(s, from, message, e));
-        }
-        else if (logType == LogType.File)
-        {
-            Lock2.Lock(() => ExecuteWithoutConsole(s, from, message, e));
-        }
-        else
-        {
-            Lock3.Lock(() => ExecuteOnlyInConsole(s, from, message));
-        }
+        if (logType == LogType.Both) Lock.Lock(() => Execute(s, from, message, e));
+        else if (logType == LogType.File) Lock2.Lock(() => ExecuteWithoutConsole(s, from, message, e));
+        else Lock3.Lock(() => ExecuteOnlyInConsole(s, from, message));
     }
 
     private static void Log(IRequest value)
@@ -49,7 +40,7 @@ public static class Logger
         Lock4.Lock(() => ExecuteLogRequest(value));
     }
 
-    internal static void PrintHeader()
+    public static void PrintHeader()
     {
         if (!_headerPrinted)
         {
@@ -61,29 +52,19 @@ public static class Logger
 
     public static void Info(LogModule src, string message, LogType logType = LogType.None)
     {
-        if (logType == LogType.None)
-        {
-            logType = Global.LogsMenuEnable ? LogType.Both : LogType.File;
-        }
-
+        if (logType == LogType.None) logType = Global.LogsMenuEnable ? LogType.Both : LogType.File;
         Log(LogSeverity.Info, src, message, null, logType);
     }
 
     public static void Error(LogModule src, string message, Exception e = null, LogType logType = LogType.None)
     {
-        if (logType == LogType.None)
-        {
-            logType = Global.LogsMenuEnable ? LogType.Both : LogType.File;
-        }
+        if (logType == LogType.None) logType = Global.LogsMenuEnable ? LogType.Both : LogType.File;
         Log(LogSeverity.Error, src, message, e, logType);
     }
 
     public static void Warn(LogModule src, string message, Exception e = null, LogType logType = LogType.None)
     {
-        if (logType == LogType.None)
-        {
-            logType = Global.LogsMenuEnable ? LogType.Both : LogType.File;
-        }
+        if (logType == LogType.None) logType = Global.LogsMenuEnable ? LogType.Both : LogType.File;
         Log(LogSeverity.Warning, src, message, e, logType);
     }
 
@@ -105,10 +86,7 @@ public static class Logger
         Append($"{value}» ", color);
         contentFile.Append($"{value}» ");
 
-        if (!string.IsNullOrWhiteSpace(message))
-        {
-            Append(message, color, ref contentFile);
-        }
+        if (!string.IsNullOrWhiteSpace(message)) Append(message, color, ref contentFile);
 
         if (e != null)
         {
@@ -133,10 +111,7 @@ public static class Logger
         (_, value) = VerifySource(module);
         contentFile.Append($"{value}» ");
 
-        if (!string.IsNullOrWhiteSpace(message))
-        {
-            contentFile.Append(message);
-        }
+        if (!string.IsNullOrWhiteSpace(message)) contentFile.Append(message);
 
         if (e != null)
         {
@@ -146,10 +121,7 @@ public static class Logger
 
         contentFile.AppendLine();
         File.AppendAllText(NormalizeLogFilePath(LogTempFile, DateTime.Now, LogFolder), contentFile.ToString());
-        if (e != null)
-        {
-            File.AppendAllText(NormalizeLogFilePath(LogTempFile, DateTime.Now, LogFolder), e.ToString() + Environment.NewLine);
-        }
+        if (e != null) File.AppendAllText(NormalizeLogFilePath(LogTempFile, DateTime.Now, LogFolder), e.ToString() + Environment.NewLine);
     }
 
     private static void ExecuteOnlyInConsole(LogSeverity s, LogModule module, string message)
@@ -184,10 +156,7 @@ public static class Logger
             if (!string.IsNullOrWhiteSpace(request.Method) || !string.IsNullOrWhiteSpace(request.Url))
             {
                 contentFile.Append($"Request to API > Endpoint: {request.Url} - Method: {request.Method}");
-                if (!string.IsNullOrWhiteSpace(request.Body))
-                {
-                    contentFile.Append($" - Payload: {request.Body}");
-                }
+                if (!string.IsNullOrWhiteSpace(request.Body)) contentFile.Append($" - Payload: {request.Body}");
             }
         }
 
@@ -196,10 +165,7 @@ public static class Logger
             if (!string.IsNullOrWhiteSpace(response.Method))
             {
                 contentFile.Append($"Response from API > Endpoint: {response.Url} - Status: {response.StatusCode} - Method: {response.Method}");
-                if (response.Data != null)
-                {
-                    contentFile.Append($" - Response: {response.Data[1]}");
-                }
+                if (response.Data != null) contentFile.Append($" - Response: {response.Data[1]}");
             }
         }
 
@@ -211,20 +177,14 @@ public static class Logger
 
         contentFile.AppendLine();
         File.AppendAllText(NormalizeLogFilePath(LogReqsFile, DateTime.Now, LogFolder), contentFile.ToString());
-        if (valueOfRequest.Exception != null)
-        {
-            File.AppendAllText(NormalizeLogFilePath(LogReqsFile, DateTime.Now, LogFolder), valueOfRequest.Exception.ToString() + Environment.NewLine);
-        }
+        if (valueOfRequest.Exception != null) File.AppendAllText(NormalizeLogFilePath(LogReqsFile, DateTime.Now, LogFolder), valueOfRequest.Exception.ToString() + Environment.NewLine);
     }
 
     private static string NormalizeLogFilePath(string logFile, DateTime date, string pathToCheck)
     {
         var today = $"{date.Month:00}-{date.Day:00}-{date.Year:00}";
         var directoryExist = Directory.Exists($"{pathToCheck}/{today}");
-        if (!directoryExist)
-        {
-            Directory.CreateDirectory($"{pathToCheck}/{today}");
-        }
+        if (!directoryExist) Directory.CreateDirectory($"{pathToCheck}/{today}");
         return logFile.Replace("temp_", $"{today}/");
     }
 

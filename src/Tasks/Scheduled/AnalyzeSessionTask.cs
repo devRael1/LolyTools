@@ -1,8 +1,8 @@
 ﻿using Loly.src.Tools;
-using Loly.src.Variables;
 using Loly.src.Variables.Enums;
 
 using static Loly.src.Tools.Utils;
+using static Loly.src.Variables.Global;
 
 namespace Loly.src.Tasks.Scheduled;
 
@@ -12,7 +12,7 @@ public class AnalyzeSessionTask
     {
         while (true)
         {
-            if (!Global.IsLeagueOpen)
+            if (!IsLeagueOpen)
             {
                 Thread.Sleep(TimeSpan.FromSeconds(5));
                 continue;
@@ -23,7 +23,7 @@ public class AnalyzeSessionTask
             {
                 var phaseString = gameSession[1].Replace("\\", "").Replace("\"", "");
                 if (!Enum.TryParse(phaseString, out SessionPhase phase)) phase = SessionPhase.None;
-                if (Global.Session != phase) Global.Session = phase;
+                if (Session != phase) Session = phase;
                 HandlePhaseLogic(phase);
             }
         }
@@ -34,15 +34,15 @@ public class AnalyzeSessionTask
         switch (phase)
         {
             case SessionPhase.Lobby:
-                Global.FetchedPlayers = false;
-                Global.AcceptedCurrentMatch = false;
-                Global.LobbyRevealingStarted = false;
+                FetchedPlayers = false;
+                AcceptedCurrentMatch = false;
+                LobbyRevealingStarted = false;
                 Thread.Sleep(TimeSpan.FromSeconds(5));
                 break;
             case SessionPhase.Matchmaking:
-                Global.FetchedPlayers = false;
-                Global.AcceptedCurrentMatch = false;
-                Global.LobbyRevealingStarted = false;
+                FetchedPlayers = false;
+                AcceptedCurrentMatch = false;
+                LobbyRevealingStarted = false;
                 Thread.Sleep(TimeSpan.FromSeconds(5));
                 break;
             case SessionPhase.ReadyCheck:
@@ -69,31 +69,31 @@ public class AnalyzeSessionTask
                 Thread.Sleep(TimeSpan.FromSeconds(15));
                 break;
             case SessionPhase.None:
-                Global.FetchedPlayers = false;
-                Global.AcceptedCurrentMatch = false;
+                FetchedPlayers = false;
+                AcceptedCurrentMatch = false;
                 Thread.Sleep(TimeSpan.FromSeconds(5));
                 break;
             default:
-                Global.FetchedPlayers = false;
-                Global.AcceptedCurrentMatch = false;
-                Global.LobbyRevealingStarted = false;
+                FetchedPlayers = false;
+                AcceptedCurrentMatch = false;
+                LobbyRevealingStarted = false;
                 Thread.Sleep(TimeSpan.FromSeconds(10));
                 break;
         }
 
         if (phase != SessionPhase.ChampSelect)
         {
-            Global.LastChatRoom = "";
-            Global.LobbyRevealingStarted = false;
+            LastChatRoom = "";
+            LobbyRevealingStarted = false;
         }
     }
 
     private static void HandleReadyCheckPhase()
     {
-        Global.FetchedPlayers = false;
-        Global.LobbyRevealingStarted = false;
+        FetchedPlayers = false;
+        LobbyRevealingStarted = false;
 
-        if (!Settings.AutoAccept)
+        if (!CurrentSettings.Tools.AutoAccept)
         {
             Thread.Sleep(TimeSpan.FromSeconds(5));
             return;
@@ -105,14 +105,14 @@ public class AnalyzeSessionTask
     private static void HandleChampSelectPhase()
     {
         // TODO: Create the detection of dodge champ select system
-        Global.AcceptedCurrentMatch = false;
+        AcceptedCurrentMatch = false;
 
-        if (Settings.AutoAccept && Settings.AutoAcceptOnce) Settings.AutoAccept = false;
-        if (Settings.LobbyRevealer && !Global.FetchedPlayers && !Global.LobbyRevealingStarted)
+        if (CurrentSettings.Tools.AutoAccept && CurrentSettings.AutoAccept.AutoAcceptOnce) CurrentSettings.Tools.AutoAccept = false;
+        if (CurrentSettings.Tools.LobbyRevealer && !FetchedPlayers && !LobbyRevealingStarted)
         {
             CreateBackgroundTask(LobbyRevealer.GetLobbyRevealing, $"LobbyRevealing the current lobby", LogModule.Loly);
-            Global.LobbyRevealingStarted = true;
+            LobbyRevealingStarted = true;
         }
-        if (Settings.AutoChat || Settings.PicknBan) ChampSelectSession.HandleChampSelect();
+        if (CurrentSettings.Tools.AutoChat || CurrentSettings.Tools.PicknBan) ChampSelectSession.HandleChampSelect();
     }
 }

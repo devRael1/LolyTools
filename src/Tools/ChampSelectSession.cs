@@ -1,9 +1,10 @@
 ﻿using Loly.src.Logs;
-using Loly.src.Variables;
 using Loly.src.Variables.Class;
 using Loly.src.Variables.Enums;
 
 using Newtonsoft.Json;
+
+using static Loly.src.Variables.Global;
 
 namespace Loly.src.Tools;
 
@@ -25,7 +26,7 @@ public class ChampSelectSession
 
         ChampSelectResponse champSelectResponse = JsonConvert.DeserializeObject<ChampSelectResponse>(currentChampSelect[1]);
         var currentChatRoom = champSelectResponse.ChatDetails.MultiUserChatId;
-        if (Global.LastChatRoom != currentChatRoom)
+        if (LastChatRoom != currentChatRoom)
         {
             HoverPick = false;
             LockedPick = false;
@@ -47,7 +48,7 @@ public class ChampSelectSession
         List<MemberTeam> myTeam = champSelectResponse.MyTeam;
         foreach (MemberTeam member in myTeam)
         {
-            if (!member.SummonerId.Equals(Global.SummonerLogged.SummonerId)) continue;
+            if (!member.SummonerId.Equals(SummonerLogged.SummonerId)) continue;
 
             var position = member.AssignedPosition;
             var assignedRole = position.ToLower() switch
@@ -60,7 +61,7 @@ public class ChampSelectSession
                 _ => "Default"
             };
 
-            CurrentRole = (InitRole)Settings.LoLRoles.GetType().GetProperty(assignedRole).GetValue(Settings.LoLRoles);
+            CurrentRole = (InitRole)CurrentSettings.PicknBan.GetType().GetProperty(assignedRole).GetValue(CurrentSettings.PicknBan);
             break;
         }
 
@@ -76,14 +77,14 @@ public class ChampSelectSession
             LockedBan = true;
         }
 
-        if (Settings.AutoChat && Settings.ChatMessages.Count > 0)
+        if (CurrentSettings.Tools.AutoChat && CurrentSettings.AutoChat.ChatMessages.Count > 0)
         {
-            if (Global.LastChatRoom != currentChatRoom) CanSentMessages = true;
+            if (LastChatRoom != currentChatRoom) CanSentMessages = true;
         }
 
-        Global.LastChatRoom = currentChatRoom;
+        LastChatRoom = currentChatRoom;
 
-        if (Settings.AutoChat && CanSentMessages) AutoChat.HandleChampSelectAutoChat();
+        if (CurrentSettings.Tools.AutoChat && CanSentMessages) AutoChat.HandleChampSelectAutoChat();
 
         if (!HoverPick || !LockedPick || !HoverBan || !LockedBan)
         {

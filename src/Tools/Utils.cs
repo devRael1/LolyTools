@@ -112,18 +112,18 @@ public static class Utils
 
     public static void DisplayColor(string message, ConsoleColor color, ConsoleColor color2)
     {
-        var estEnCouleurSecondaire = false;
+        var secondaryColor = false;
 
-        foreach (var caractere in message)
+        foreach (var @char in message)
         {
-            if (caractere == '`')
+            if (@char == '`')
             {
-                estEnCouleurSecondaire = !estEnCouleurSecondaire;
+                secondaryColor = !secondaryColor;
                 continue;
             }
 
-            Console.ForegroundColor = estEnCouleurSecondaire ? color2 : color;
-            Console.Write(caractere);
+            Console.ForegroundColor = secondaryColor ? color2 : color;
+            Console.Write(@char);
         }
         Console.Write(Environment.NewLine);
         Console.ResetColor();

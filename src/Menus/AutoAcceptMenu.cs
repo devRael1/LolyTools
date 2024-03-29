@@ -2,11 +2,9 @@
 
 using Loly.src.Menus.Core;
 using Loly.src.Tools;
-using Loly.src.Variables;
 using Loly.src.Variables.Class;
 
 using static Loly.src.Menus.Core.Interface;
-using static Loly.src.Menus.ToolsMenu;
 using static Loly.src.Tools.Utils;
 using static Loly.src.Variables.Global;
 
@@ -14,30 +12,33 @@ namespace Loly.src.Menus;
 
 public class AutoAcceptMenu
 {
+    #region Get Menus
+
     public static void GetAutoAcceptMenu()
     {
         while (true)
         {
             ShowAutoAcceptMenu();
-
-            var choice = 7;
             UpdateMenuTitle("aa");
-            string[] choices = { $"Auto Accept Once    - {CheckBoolean(Global.CurrentSettings.AutoAccept.AutoAcceptOnce)}", "Back" };
 
+            string[] choices = { $"Auto Accept Once    - {CheckBoolean(CurrentSettings.AutoAccept.AutoAcceptOnce)}", "Back" };
             var autoAcceptMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
-            while (choice == 7) choice = autoAcceptMenu.RunMenu();
+            var choice = 0;
+            while (choice == 0) choice = autoAcceptMenu.RunMenu();
 
             ResetConsole();
 
             if (choice == choices.Length) break;
 
-            Global.CurrentSettings.AutoAccept.AutoAcceptOnce = !bool.Parse(Global.CurrentSettings.AutoAccept.AutoAcceptOnce.ToString());
+            CurrentSettings.AutoAccept.AutoAcceptOnce = !CurrentSettings.AutoAccept.AutoAcceptOnce;
             SettingsManager.SaveFileSettings();
             SettingsManager.CreateOrUpdateSettings();
         }
-
-        GetToolsMenu();
     }
+
+    #endregion
+
+    #region Show Menus
 
     private static void ShowAutoAcceptMenu()
     {
@@ -66,4 +67,6 @@ public class AutoAcceptMenu
         rectangle.Children.Add(border1);
         ConsoleRenderer.RenderDocument(rectangle);
     }
+
+    #endregion
 }

@@ -13,25 +13,27 @@ namespace Loly.src.Menus;
 
 public class LobbyRevealerMenu
 {
+    #region Get Menus
+
     public static void GetLobbyRevealerMenu()
     {
         while (true)
         {
-            var choice = 7;
             UpdateMenuTitle("lv");
-            string[] choices = { "Get U.GG", "Get Stats", "Back" };
 
+            string[] choices = { "Get U.GG", "Get Stats", "Back" };
             var lobbyRevealerMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
-            while (choice == 7) choice = lobbyRevealerMenu.RunMenu();
+            var choice = 0;
+            while (choice == 0) choice = lobbyRevealerMenu.RunMenu();
 
             ResetConsole();
 
             if (choice == choices.Length) break;
             if (PlayerList.Count == 0)
             {
-                DisplayColor("No Players in the list.", Colors.WarningColor, Colors.PrimaryColor);
-                DisplayColor("Loly Tools did not detect a champ select in progress.", Colors.WarningColor, Colors.PrimaryColor);
-                DisplayColor("Press Enter to return to 'Lobby Revealer' menu", Colors.WarningColor, Colors.PrimaryColor);
+                DisplayColor("`[WARNING]»` No Players in the list.", Colors.WarningColor, Colors.PrimaryColor);
+                DisplayColor("`[WARNING]»` Loly Tools did not detect a champ select in progress.", Colors.WarningColor, Colors.PrimaryColor);
+                DisplayColor("`[WARNING]»` Press Enter to return to 'Lobby Revealer' menu", Colors.WarningColor, Colors.PrimaryColor);
                 Console.ReadKey();
                 ResetConsole();
                 break;
@@ -44,20 +46,18 @@ public class LobbyRevealerMenu
 
     private static void GetUggMenu()
     {
-        var choice = 10;
-        UpdateMenuTitle("lv_get_ugg");
-        var choices = PlayerList.Select(t => $"[U.GG] - {t.RiotUserTag}").ToList();
-
-        if (PlayerList.Count >= 1) choices.Add("[GLOBAL] - All U.GG");
-        choices.Add("Back");
-
         while (true)
         {
+            UpdateMenuTitle("lv_get_ugg");
             ShowUggMenu();
 
+            var choices = PlayerList.Select(t => $"[U.GG] - {t.RiotUserTag}").ToList();
+            if (PlayerList.Count >= 1) choices.Add("[GLOBAL] - All U.GG");
+            choices.Add("Back");
+
             var uggMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop + 1);
-            choice = 10;
-            while (choice == 10) choice = uggMenu.RunMenu();
+            var choice = 0;
+            while (choice == 0) choice = uggMenu.RunMenu();
 
             ResetConsole();
 
@@ -68,38 +68,37 @@ public class LobbyRevealerMenu
                     $"{string.Join(",", PlayerList.Select(p => p.RiotUserTagEncoded))}&region={RegionId(Enum.Parse<Region>(Global.Region.ToUpper()))}";
                 OpenUrl(url);
             }
-            else
-            {
-                OpenUrl(PlayerList[choice - 1].Link);
-            }
+            else OpenUrl(PlayerList[choice - 1].Link);
         }
     }
 
     private static void GetStatsMenu()
     {
-        var choice = 10;
-        UpdateMenuTitle("lv_get_stats");
-        var choices = PlayerList.Select(t => $"[STATS] - {t.RiotUserTag}").ToList();
-
-        if (PlayerList.Count > 0) choices.Add("[GLOBAL] - All Stats");
-        choices.Add("Back");
-
-        ShowGlobalStatsMenu();
-
         while (true)
         {
+            UpdateMenuTitle("lv_get_stats");
+            ShowGlobalStatsMenu();
+
+            var choices = PlayerList.Select(t => $"[STATS] - {t.RiotUserTag}").ToList();
+            if (PlayerList.Count > 0) choices.Add("[GLOBAL] - All Stats");
+            choices.Add("Back");
+
             var statsMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop + 1);
-            choice = 10;
-            while (choice == 10) choice = statsMenu.RunMenu();
+            var choice = 0;
+            while (choice == 0) choice = statsMenu.RunMenu();
 
             ResetConsole();
 
             if (choice == choices.Count) break;
 
             if (choice == choices.Count - 1) ShowGlobalStatsMenu();
-            else ShowPlayerStats(PlayerList[choice - 1]);
+            else ShowPlayerStats(PlayerList.ElementAt(choice - 1));
         }
     }
+
+    #endregion
+
+    #region Show Menus
 
     private static void ShowUggMenu()
     {
@@ -272,4 +271,6 @@ public class LobbyRevealerMenu
         rectangle.Children.Add(border1);
         ConsoleRenderer.RenderDocument(rectangle);
     }
+
+    #endregion
 }

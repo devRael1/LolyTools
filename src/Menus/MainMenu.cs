@@ -16,15 +16,12 @@ public class MainMenu
     {
         while (true)
         {
-            var choice = 7;
             UpdateMenuTitle("main");
-            string[] choices = { "Use Tools", "Show Logs", "Settings", "Credits", "Exit" };
 
+            string[] choices = { "Use Tools", "Show Logs", "Settings", "Credits", "Exit" };
             var startMenu = MenuBuilder.BuildMenu(choices, TopLength);
-            while (choice == 7)
-            {
-                choice = startMenu.RunMenu();
-            }
+            var choice = 0;
+            while (choice == 0) choice = startMenu.RunMenu();
 
             ResetConsole();
 
@@ -46,8 +43,6 @@ public class MainMenu
                     Environment.Exit(0);
                     break;
             }
-
-            break;
         }
     }
 }

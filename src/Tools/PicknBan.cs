@@ -3,6 +3,8 @@ using Loly.src.Variables;
 using Loly.src.Variables.Class;
 using Loly.src.Variables.Enums;
 
+using Newtonsoft.Json;
+
 using Action = Loly.src.Variables.Class.Action;
 
 namespace Loly.src.Tools;
@@ -10,11 +12,6 @@ namespace Loly.src.Tools;
 public class PicknBan
 {
     public static ChampSelectResponse ChampSelectResponse { get; set; }
-    private enum ActionType
-    {
-        Pick,
-        Ban
-    }
 
     public static void HandleChampSelectActions()
     {
@@ -28,6 +25,33 @@ public class PicknBan
                 if (action.Type == "ban") HandleBanAction(action);
             }
         }
+    }
+
+    public static void LoadChampionsList()
+    {
+        // TODO : Refactor this method
+        List<ChampItem> champs = new();
+
+        var ownedChamps = Requests.WaitSuccessClientRequest("GET", "lol-champions/v1/inventories/" + Global.SummonerLogged.SummonerId + "/champions-minimal", true);
+        dynamic champsSplit = JsonConvert.DeserializeObject(ownedChamps[1]);
+        if (champsSplit == null) return;
+
+        foreach (dynamic champ in champsSplit)
+        {
+            if (champ.id == -1) continue;
+
+            string champName = champ.name;
+            if (champName == "Nunu & Willump") champName = "Nunu";
+
+            champs.Add(new ChampItem
+            {
+                Name = champName,
+                Id = champ.id,
+                Free = (bool)(champ.ownership.owned) || (bool)(champ.freeToPlay) || (bool)(champ.ownership.xboxGPReward)
+            });
+        }
+
+        foreach (ChampItem champ in champs) Global.ChampionsList.Add(champ);
     }
 
     private static void MarkPhaseStart(int actionId)

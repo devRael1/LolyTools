@@ -2,7 +2,6 @@
 using Loly.src.Variables.Class;
 
 using static Loly.src.Menus.Core.Interface;
-using static Loly.src.Menus.MainMenu;
 using static Loly.src.Tools.Utils;
 
 namespace Loly.src.Menus;
@@ -15,9 +14,9 @@ public class LogsMenu
         Console.Clear();
         ShowLogsArt();
 
-        DisplayColor($"{DateTime.Now:[hh:mm:ss]}» Start Logs System", Colors.PrimaryColor, Colors.InfoColor);
-        DisplayColor($"{DateTime.Now:[hh:mm:ss]}» All actions will be displayed in real time", Colors.PrimaryColor, Colors.InfoColor);
-        DisplayColor($"{DateTime.Now:[hh:mm:ss]}» Press any key to leave logs system...", Colors.PrimaryColor, Colors.InfoColor);
+        DisplayColor($"`{DateTime.Now:[hh:mm:ss]}»` Start Logs System", Colors.InfoColor, Colors.PrimaryColor);
+        DisplayColor($"`{DateTime.Now:[hh:mm:ss]}»` All actions will be displayed in real time", Colors.InfoColor, Colors.PrimaryColor);
+        DisplayColor($"`{DateTime.Now:[hh:mm:ss]}»` Press any key to leave logs system...", Colors.InfoColor, Colors.PrimaryColor);
 
         Global.LogsMenuEnable = true;
 
@@ -26,6 +25,5 @@ public class LogsMenu
 
         Global.LogsMenuEnable = false;
         ResetConsole();
-        StartMenu();
     }
 }

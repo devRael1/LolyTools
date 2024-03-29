@@ -12,18 +12,19 @@ namespace Loly.src.Menus;
 
 public class CreditsMenu
 {
+    #region Get Menus
+
     public static void GetCreditsMenu()
     {
         while (true)
         {
+            UpdateMenuTitle("credits");
             ShowCreditsMenu();
 
-            var choice = 7;
-            UpdateMenuTitle("credits");
             string[] choices = { "Github Repository (Source Code)", "Back" };
-
             var creditsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
-            while (choice == 7) choice = creditsMenu.RunMenu();
+            var choice = 0;
+            while (choice == 0) choice = creditsMenu.RunMenu();
 
             ResetConsole();
 
@@ -32,9 +33,11 @@ public class CreditsMenu
             ShowCreditsMenu();
             OpenUrl(GithubPage);
         }
-
-        MainMenu.StartMenu();
     }
+
+    #endregion
+
+    #region Show Menus
 
     private static void ShowCreditsMenu()
     {
@@ -70,4 +73,6 @@ public class CreditsMenu
         rectangle.Children.Add(border1);
         ConsoleRenderer.RenderDocument(rectangle);
     }
+
+    #endregion
 }

@@ -8,9 +8,10 @@ A set of several small tools for League Of Legends.
 
 ## `❗ Usage`
 You must install .NET Desktop Runtime 6 to use this tool.<br>
-No need to install this if you have a more recent version installed.
-
+No need to install this if you have a more recent version installed :<br>
 .NET Desktop Runtime 6 -> [Official x64 installer (Microsoft)](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.27-windows-x64-installer)<br>
+
+You can download the latest version of **LolyTools** [here](https://api.github.com/repos/devRael1/LolyTools/releases/latest).
 
 ## `⚙️ Features`
 - [x] Interactive Menu in Console
@@ -79,7 +80,7 @@ My Discord: `1043813027205619804`
 ======================== V3.0.0 ========================
 - [x] Replace OP.GG stats sytem to add a new one (U.GG with all API's)
 - [ ] Add more information in LobbyRevealer tool (API's : HistoricRanks / GetPlayerOverallRanking / FetchMatchSummaries...)
-- [ ] Review the menu builder system and optimize it (Code optimization / lisibility)
+- [x] Review the menu system and optimize it (Code optimization / lisibility)
 - [x] Add system to save all settings (all Keybinds, Colors, chat options...) of the Game
 - [ ] Add a system to auto-send logs to the developer (Discord Webhook) when an error occurs (use a setting to enable/disable)
 - [ ] Upgrade the error management system in the app (use `AppDomain.CurrentDomain.UnhandledException` for each error

@@ -5,7 +5,6 @@ using Loly.src.Tools;
 using Loly.src.Variables.Class;
 
 using static Loly.src.Menus.Core.Interface;
-using static Loly.src.Menus.ToolsMenu;
 using static Loly.src.Tools.Utils;
 using static Loly.src.Variables.Global;
 
@@ -13,18 +12,19 @@ namespace Loly.src.Menus;
 
 public class AutoChatMenu
 {
+    #region Get Menus
+
     public static void GetAutoChatMenu()
     {
         while (true)
         {
             ShowAutoChatMenu();
-
-            var choice = 7;
             UpdateMenuTitle("ac");
-            string[] choices = { "Add Message", "Delete Message", "See Messages", "Clear Messages", "Back" };
 
+            string[] choices = { "Add Message", "Delete Message", "See Messages", "Clear Messages", "Back" };
             var autoChatMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
-            while (choice == 7) choice = autoChatMenu.RunMenu();
+            var choice = 0;
+            while (choice == 0) choice = autoChatMenu.RunMenu();
 
             ResetConsole();
 
@@ -33,22 +33,130 @@ public class AutoChatMenu
             switch (choice)
             {
                 case 1:
-                    AddMessage();
+                    GetAddMessageMenu();
                     break;
                 case 2:
-                    DeleteMessage();
+                    GetDeleteMessageMenu();
                     break;
                 case 3:
-                    SeeMessages();
+                    GetSeeMessagesMenu();
                     break;
                 case 4:
-                    ClearMessages();
+                    GetClearMessagesMenu();
                     break;
             }
         }
-
-        GetToolsMenu();
     }
+
+    private static void GetAddMessageMenu()
+    {
+        MenuBuilder.SetCursorVisibility(true);
+        UpdateMenuTitle("ac_add");
+
+        var msg = "";
+        while (msg == "")
+        {
+            DisplayColor($"`{DateTime.Now:[hh:mm:ss]}»` Enter message to send automatically when you enterring in lobby (max 200 characters):", Colors.InfoColor, Colors.PrimaryColor);
+            Console.Write("» ");
+
+            msg = Console.ReadLine();
+
+            if (msg == "" || msg.Length > 200 || CurrentSettings.AutoChat.ChatMessages.Count >= 5)
+            {
+                if (msg == "") DisplayColor("`[WARNING]»` Your message is empty ! Please try again...", Colors.InfoColor, Colors.WarningColor);
+                else if (msg.Length > 200) DisplayColor("`[WARNING]»` Your message is too long ! Please try again...", Colors.InfoColor, Colors.WarningColor);
+                else if (CurrentSettings.AutoChat.ChatMessages.Count >= 5)
+                {
+                    DisplayColor("`[WARNING]»` You can't add more than 5 messages ! Please remove 1 message before adding a new one", Colors.InfoColor, Colors.WarningColor);
+                    DisplayColor("`[WARNING]»` Press any key to continue...", Colors.InfoColor, Colors.WarningColor);
+                    Console.ReadKey();
+                    ResetConsole();
+                }
+
+                break;
+            }
+
+            msg = FormatMessage(msg);
+            CurrentSettings.AutoChat.ChatMessages.Add(msg);
+            SettingsManager.SaveFileSettings();
+
+            Console.Write(Environment.NewLine);
+            DisplayColor("`[SUCCESS]»` Your message has been added successfully", Colors.InfoColor, Colors.SuccessColor);
+            DisplayColor("`[SUCCESS]»` Press any key to continue...", Colors.InfoColor, Colors.SuccessColor);
+            Console.ReadKey();
+            ResetConsole();
+        }
+    }
+
+    private static void GetDeleteMessageMenu()
+    {
+        UpdateMenuTitle("ac_del");
+
+        while (true)
+        {
+            ShowMessages();
+
+            var choices = CurrentSettings.AutoChat.ChatMessages.Select((x, index) => $"Message N°{index + 1}").ToList();
+            choices.Add("Back");
+
+            var choice = 0;
+            var delMessageMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop + 1);
+            while (choice == 0) choice = delMessageMenu.RunMenu();
+
+            ResetConsole();
+
+            if (choice == choices.Count) break;
+
+            CurrentSettings.AutoChat.ChatMessages.RemoveAt(choice - 1);
+            SettingsManager.SaveFileSettings();
+        }
+    }
+
+    private static void GetSeeMessagesMenu()
+    {
+        UpdateMenuTitle("ac_see");
+
+        while (true)
+        {
+            ShowMessages();
+
+            string[] choices = { "Back" };
+            var choice = 0;
+            var seeMessageMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
+            while (choice == 0) choice = seeMessageMenu.RunMenu();
+
+            ResetConsole();
+
+            if (choice == choices.Length) break;
+        }
+    }
+
+    private static void GetClearMessagesMenu()
+    {
+        MenuBuilder.SetCursorVisibility(true);
+        UpdateMenuTitle("ac_clear");
+
+        DisplayColor($"`{DateTime.Now:[hh:mm:ss]}`» Are you sure you want to clear all messages ? (Y/N):", Colors.InfoColor, Colors.PrimaryColor);
+        Console.Write("» ");
+
+        ConsoleKey key = Console.ReadKey().Key;
+        if (key == ConsoleKey.Y)
+        {
+            CurrentSettings.AutoChat.ChatMessages.Clear();
+            SettingsManager.SaveFileSettings();
+
+            Console.Write(Environment.NewLine);
+            DisplayColor("`[SUCCESS]»` All messages have been cleared successfully", Colors.InfoColor, Colors.SuccessColor);
+            DisplayColor("`[SUCCESS]»` Press any key to continue...", Colors.InfoColor, Colors.SuccessColor);
+            Console.ReadKey();
+        }
+
+        ResetConsole();
+    }
+
+    #endregion
+
+    #region Show Menus
 
     private static void ShowAutoChatMenu()
     {
@@ -74,146 +182,6 @@ public class AutoChatMenu
 
         rectangle.Children.Add(border1);
         ConsoleRenderer.RenderDocument(rectangle);
-    }
-
-    private static void AddMessage()
-    {
-        MenuBuilder.SetCursorVisibility(true);
-        UpdateMenuTitle("ac_add");
-
-        var msg = "";
-        while (msg == "")
-        {
-            DisplayColor($"`{DateTime.Now:[hh:mm:ss]}`» Enter message to send automatically when you enterring in lobby (max 200 characters):", Colors.InfoColor, Colors.PrimaryColor);
-            Console.Write("» ");
-
-            try
-            {
-                msg = Console.ReadLine();
-
-                if (msg == "")
-                {
-                    DisplayColor("[WARNING]» Your message is empty ! Please try again... ", Colors.WarningColor, Colors.PrimaryColor);
-                }
-                else if (msg.Length > 200)
-                {
-                    DisplayColor("[WARNING]» Your message is too long ! Please try again... ", Colors.WarningColor, Colors.PrimaryColor);
-                }
-                else if (CurrentSettings.AutoChat.ChatMessages.Count >= 5)
-                {
-                    DisplayColor("[WARNING]» You can't add more than 5 messages ! Please remove 1 message before adding a new one... ", Colors.WarningColor, Colors.PrimaryColor);
-                    DisplayColor("[WARNING]» Press any key to continue...", Colors.WarningColor, Colors.PrimaryColor);
-                    Console.ReadKey();
-                    ResetConsole();
-                    msg = "bypass";
-                }
-                else
-                {
-                    msg = FormatMessage(msg);
-                    CurrentSettings.AutoChat.ChatMessages.Add(msg);
-                    SettingsManager.SaveFileSettings();
-
-                    Console.Write(Environment.NewLine);
-                    DisplayColor("[SUCCESS]» Your message has been added successfully...", Colors.SuccessColor, Colors.PrimaryColor);
-                    DisplayColor("[SUCCESS]» Press any key to continue...", Colors.SuccessColor, Colors.PrimaryColor);
-                    Console.ReadKey();
-                    ResetConsole();
-                }
-            }
-            catch (Exception ex)
-            {
-                DisplayColor("[ERROR]» An error has occured !", Colors.ErrorColor, Colors.PrimaryColor);
-                DisplayColor(ex.ToString(), Colors.ErrorColor, Colors.PrimaryColor);
-                DisplayColor("[ERROR]» Press any key to retry...", Colors.ErrorColor, Colors.PrimaryColor);
-                Console.ReadKey();
-                msg = "";
-            }
-        }
-    }
-
-    private static void DeleteMessage()
-    {
-    START:
-        var choice = 10;
-        UpdateMenuTitle("ac_del");
-        var choices = CurrentSettings.AutoChat.ChatMessages.Select((x, index) => $"Message N°{index + 1}").ToList();
-        choices.Add("Back");
-
-        while (choice != choices.Count)
-        {
-            ShowMessages();
-
-            var delMessageMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop + 1);
-            choice = 10;
-            while (choice == 10)
-            {
-                choice = delMessageMenu.RunMenu();
-            }
-
-            ResetConsole();
-
-            if (choice == choices.Count)
-            {
-                break;
-            }
-
-            CurrentSettings.AutoChat.ChatMessages.RemoveAt(choice - 1);
-            SettingsManager.SaveFileSettings();
-            goto START;
-        }
-    }
-
-    private static void SeeMessages()
-    {
-        var choice = 10;
-        UpdateMenuTitle("ac_see");
-        string[] choices = { "Back" };
-
-        while (choice == 10)
-        {
-            ShowMessages();
-
-            var seeMessageMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
-            choice = 10;
-            while (choice == 10)
-            {
-                choice = seeMessageMenu.RunMenu();
-            }
-
-            ResetConsole();
-
-            if (choice == choices.Length)
-            {
-                break;
-            }
-        }
-    }
-
-    private static void ClearMessages()
-    {
-        MenuBuilder.SetCursorVisibility(true);
-
-        UpdateMenuTitle("ac_clear");
-
-        DisplayColor($"`{DateTime.Now:[hh:mm:ss]}`» Are you sure you want to clear all messages ? (y/n):", Colors.InfoColor, Colors.PrimaryColor);
-        Console.Write("» ");
-
-        var choice = Console.ReadLine().ToLower();
-        if (choice == "y")
-        {
-            CurrentSettings.AutoChat.ChatMessages.Clear();
-            SettingsManager.SaveFileSettings();
-
-            Console.Write(Environment.NewLine);
-            DisplayColor("[SUCCESS]» All messages have been cleared successfully", Colors.SuccessColor, Colors.PrimaryColor);
-            DisplayColor("[SUCCESS]» Press any key to continue...", Colors.SuccessColor, Colors.PrimaryColor);
-            Console.ReadKey();
-            ResetConsole();
-        }
-        else
-        {
-            ResetConsole();
-        }
     }
 
     private static void ShowMessages()
@@ -247,13 +215,12 @@ public class AutoChatMenu
                 msg += "...";
                 grid.Children.Add(new Cell(msg) { Color = Colors.MenuTextColor, Stroke = LineThickness.None, Padding = new Thickness(1) });
             }
-            else
-            {
-                grid.Children.Add(new Cell(message) { Color = Colors.MenuTextColor, Stroke = LineThickness.None, Padding = new Thickness(1) });
-            }
+            else grid.Children.Add(new Cell(message) { Color = Colors.MenuTextColor, Stroke = LineThickness.None, Padding = new Thickness(1) });
         }
 
         rectangle.Children.Add(grid);
         ConsoleRenderer.RenderDocument(rectangle);
     }
+
+    #endregion
 }

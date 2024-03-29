@@ -5,7 +5,6 @@ using Loly.src.Tools;
 using Loly.src.Variables.Class;
 
 using static Loly.src.Menus.Core.Interface;
-using static Loly.src.Menus.MainMenu;
 using static Loly.src.Tools.Utils;
 using static Loly.src.Variables.Global;
 
@@ -13,13 +12,15 @@ namespace Loly.src.Menus;
 
 public class SettingsMenu
 {
+    #region Get Menus
+
     public static void GetSettingsMenu()
     {
         while (true)
         {
+            UpdateMenuTitle("settings");
             ShowSettingsMenu();
 
-            UpdateMenuTitle("settings");
             List<string> choices = new()
             {
                 $"Auto Update     - {CheckBoolean(CurrentSettings.EnableAutoUpdate)}",
@@ -50,9 +51,11 @@ public class SettingsMenu
             SettingsManager.SaveFileSettings();
             SettingsManager.CreateOrUpdateSettings();
         }
-
-        StartMenu();
     }
+
+    #endregion
+
+    #region Show Menus
 
     private static void ShowSettingsMenu()
     {
@@ -79,4 +82,6 @@ public class SettingsMenu
         rectangle.Children.Add(border1);
         ConsoleRenderer.RenderDocument(rectangle);
     }
+
+    #endregion
 }

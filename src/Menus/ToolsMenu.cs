@@ -8,7 +8,6 @@ using static Loly.src.Menus.AutoChatMenu;
 using static Loly.src.Menus.Core.Interface;
 using static Loly.src.Menus.LobbyRevealerMenu;
 using static Loly.src.Menus.LolSettingsMenu;
-using static Loly.src.Menus.MainMenu;
 using static Loly.src.Menus.PicknBanMenu;
 using static Loly.src.Tools.Utils;
 using static Loly.src.Variables.Global;
@@ -17,15 +16,16 @@ namespace Loly.src.Menus;
 
 public class ToolsMenu
 {
+    #region Get Menus
+
     public static void GetToolsMenu()
     {
         while (true)
         {
             ShowToolsMenu();
-
             UpdateMenuTitle("tools");
-            string[] choices = { "Lobby Revealer", "Auto Accept", "Auto Chat", "Pick and Ban", "LoL Settings", "Back" };
 
+            string[] choices = { "Lobby Revealer", "Auto Accept", "Auto Chat", "Pick and Ban", "LoL Settings", "Back" };
             var toolsMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
             var choice = 0;
             while (choice == 0) choice = toolsMenu.RunMenu();
@@ -43,12 +43,10 @@ public class ToolsMenu
                         DisplayColor(" Please go to 'Settings' menu and enable it.", Colors.WarningColor, Colors.PrimaryColor);
                         DisplayColor(" Press Enter to continue...", Colors.WarningColor, Colors.PrimaryColor);
                         Console.ReadKey();
-                    }
-                    else
-                    {
-                        GetLobbyRevealerMenu();
+                        break;
                     }
 
+                    GetLobbyRevealerMenu();
                     break;
                 case 2:
                     if (!CurrentSettings.Tools.AutoAccept)
@@ -57,12 +55,10 @@ public class ToolsMenu
                         DisplayColor(" Please go to 'Settings' menu and enable it.", Colors.WarningColor, Colors.PrimaryColor);
                         DisplayColor(" Press Enter to continue...", Colors.WarningColor, Colors.PrimaryColor);
                         Console.ReadKey();
-                    }
-                    else
-                    {
-                        GetAutoAcceptMenu();
+                        break;
                     }
 
+                    GetAutoAcceptMenu();
                     break;
                 case 3:
                     if (!CurrentSettings.Tools.AutoChat)
@@ -71,12 +67,10 @@ public class ToolsMenu
                         DisplayColor(" Please go to 'Settings' menu and enable it.", Colors.WarningColor, Colors.PrimaryColor);
                         DisplayColor(" Press Enter to continue...", Colors.WarningColor, Colors.PrimaryColor);
                         Console.ReadKey();
-                    }
-                    else
-                    {
-                        GetAutoChatMenu();
+                        break;
                     }
 
+                    GetAutoChatMenu();
                     break;
                 case 4:
                     if (!CurrentSettings.Tools.PicknBan)
@@ -85,11 +79,10 @@ public class ToolsMenu
                         DisplayColor(" Please go to 'Settings' menu and enable it.", Colors.WarningColor, Colors.PrimaryColor);
                         DisplayColor(" Press Enter to continue...", Colors.WarningColor, Colors.PrimaryColor);
                         Console.ReadKey();
+                        break;
                     }
-                    else
-                    {
-                        GetPicknBanMenu();
-                    }
+
+                    GetPicknBanMenu();
                     break;
                 case 5:
                     GetLoLSettingsMenu();
@@ -97,9 +90,11 @@ public class ToolsMenu
             }
             ResetConsole();
         }
-
-        StartMenu();
     }
+
+    #endregion
+
+    #region Show Menus
 
     private static void ShowToolsMenu()
     {
@@ -126,4 +121,6 @@ public class ToolsMenu
         rectangle.Children.Add(border1);
         ConsoleRenderer.RenderDocument(rectangle);
     }
+
+    #endregion
 }

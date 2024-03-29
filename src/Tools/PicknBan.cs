@@ -29,29 +29,26 @@ public class PicknBan
 
     public static void LoadChampionsList()
     {
-        // TODO : Refactor this method
-        List<ChampItem> champs = new();
+        List<Champion> champsSplit = JsonConvert.DeserializeObject<List<Champion>>(
+            Requests.WaitSuccessClientRequest("GET", "lol-champions/v1/inventories/" + Global.SummonerLogged.SummonerId + "/champions-minimal", true)[1]
+        );
 
-        var ownedChamps = Requests.WaitSuccessClientRequest("GET", "lol-champions/v1/inventories/" + Global.SummonerLogged.SummonerId + "/champions-minimal", true);
-        dynamic champsSplit = JsonConvert.DeserializeObject(ownedChamps[1]);
-        if (champsSplit == null) return;
-
-        foreach (dynamic champ in champsSplit)
+        foreach (Champion champ in champsSplit)
         {
-            if (champ.id == -1) continue;
+            if (champ.Id == -1) continue;
 
-            string champName = champ.name;
-            if (champName == "Nunu & Willump") champName = "Nunu";
+            var champName = champ.Name;
+            if (champ.Id == 20) champName = "Nunu";
 
-            champs.Add(new ChampItem
-            {
-                Name = champName,
-                Id = champ.id,
-                Free = (bool)(champ.ownership.owned) || (bool)(champ.freeToPlay) || (bool)(champ.ownership.xboxGPReward)
-            });
+            Global.ChampionsList.Add(
+                new ChampItem
+                {
+                    Name = champName,
+                    Id = champ.Id.ToString(),
+                    Free = champ.Ownership.Owned || champ.FreeToPlay || champ.Ownership.XboxGPReward || champ.Ownership.LoyaltyReward
+                }
+            );
         }
-
-        foreach (ChampItem champ in champs) Global.ChampionsList.Add(champ);
     }
 
     private static void MarkPhaseStart(int actionId)

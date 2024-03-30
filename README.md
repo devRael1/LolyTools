@@ -18,8 +18,9 @@ You can download the latest version of **LolyTools** [here](https://github.com/d
 - [x] Multi-region support (DE, FR, ES, JP, CN...)
 - [x] Lobby Revealer/Shower (Ranked/Draft/Normal games)
 - [x] Auto Accept match (Auto accept matchmaking)
-- [x] Auto Pick and Ban champion (By roles => Top, Jungle, Mid, ADC, Support)
+- [x] Auto Pick and Ban champion (By roles => Top, Jungle, Mid, ADC, Support
 - [x] Import / Export League of Legends settings for all accounts
+- [x] Auto send logs when an error occurs (Discord Webhook)
 - [x] Auto Chat (Auto send messages when champ select start)
 - [x] Get U.GG stats of your team (SoloQ & DuoQ / FlexQ...)
 - [x] Advanced Logs system (Real Time & Persistent)
@@ -86,6 +87,7 @@ My Discord: `1043813027205619804`
 - [x] Upgrade the error management system in the app (use `AppDomain.CurrentDomain.UnhandledException` for each error
 - [ ] Add a second option of champion pick in case of ban of the main champion ([#5 Suggestion](https://github.com/devRael1/LolyTools/issues/5))
 - [ ] Update screenshots in `README.md` with Release V3.0.0
+- [	] Add a screenshot exemple for auto send logs (Discord Webhook) system
 - [x] Refactor the code of `Settings.cs` to make it more readable and optimized (create new class `Settings` in Class folder)
 
 ## `📝 License`

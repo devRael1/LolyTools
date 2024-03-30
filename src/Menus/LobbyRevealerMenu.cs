@@ -75,11 +75,11 @@ public class LobbyRevealerMenu
 
     private static void GetStatsMenu()
     {
+        UpdateMenuTitle("lv_get_stats");
+        ShowGlobalStatsMenu();
+
         while (true)
         {
-            UpdateMenuTitle("lv_get_stats");
-            ShowGlobalStatsMenu();
-
             var choices = PlayerList.Select(t => $"[STATS] - {t.RiotUserTag}").ToList();
             if (PlayerList.Count > 0) choices.Add("[GLOBAL] - All Stats");
             choices.Add("Back");

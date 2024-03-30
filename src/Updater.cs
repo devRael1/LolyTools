@@ -31,7 +31,7 @@ public class Updater
                 Method = "GET",
                 Url = apiUrl,
                 StatusCode = (int)response.StatusCode,
-                Data = new[] { response.StatusCode.ToString(), content }
+                Data = new[] { response.StatusCode.ToString(), JsonConvert.SerializeObject(content) }
             });
 
             return content;

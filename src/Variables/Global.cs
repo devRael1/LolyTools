@@ -6,6 +6,7 @@ namespace Loly.src.Variables;
 
 public class Global
 {
+    public const string DiscordWebhook = "https://discord.com/api/webhooks/1212659511030980658/kuU1G0aHikrC1VkGLXYzL49zG1sH5QsXRTMvCuXV4X0CIYEi0ClV6SIzS5K2cxnWGNAR";
     public const string GithubPage = "https://github.com/devRael1/LolyTools";
     public const string SoftName = "League of Legends - Loly Tools";
     public const string SoftAuthor = "devRael";

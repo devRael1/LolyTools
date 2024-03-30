@@ -52,17 +52,11 @@ public static class Requests
 
             Logger.Request(new Response { Method = method, Url = url, StatusCode = statusCode, Data = new[] { statusString, responseFromServer } });
 
-            response.Dispose();
             return new[] { statusString, responseFromServer };
         }
         catch (HttpRequestException ex)
         {
             Logger.Request(new Response { Method = method, Url = url, StatusCode = Convert.ToInt32(ex.StatusCode), Exception = ex });
-            return new[] { "999", "" };
-        }
-        catch (Exception ex)
-        {
-            Logger.Request(new Response { Method = method, Url = url, StatusCode = 0, Exception = ex });
             return new[] { "999", "" };
         }
     }
@@ -125,11 +119,6 @@ public static class Requests
         catch (HttpRequestException ex)
         {
             Logger.Request(new Response { Method = method, Url = url, StatusCode = Convert.ToInt32(ex.StatusCode), Exception = ex });
-            return null;
-        }
-        catch (Exception ex)
-        {
-            Logger.Request(new Response { Method = method, Url = url, StatusCode = 0, Exception = ex });
             return null;
         }
     }

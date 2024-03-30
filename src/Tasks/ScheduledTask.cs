@@ -1,7 +1,6 @@
 ﻿using System.Timers;
 
 using Loly.src.Tools;
-using Loly.src.Variables.Enums;
 
 using Timer = System.Timers.Timer;
 
@@ -37,7 +36,7 @@ public class ScheduledTask
     {
         if (runNow)
         {
-            Utils.CreateBackgroundTask(taskAction, $"Task [{taskName}]", LogModule.Tasks);
+            Utils.CreateBackgroundTask(taskAction, $"Task [{taskName}]");
         }
 
         if (!infinite)
@@ -54,6 +53,6 @@ public class ScheduledTask
 
     private void TimerElapsed(object sender, ElapsedEventArgs e)
     {
-        Utils.CreateBackgroundTask(taskAction, $"Task [{taskName}]", LogModule.Tasks);
+        Utils.CreateBackgroundTask(taskAction, $"Task [{taskName}]");
     }
 }

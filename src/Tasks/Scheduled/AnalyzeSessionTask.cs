@@ -110,7 +110,7 @@ public class AnalyzeSessionTask
         if (CurrentSettings.Tools.AutoAccept && CurrentSettings.AutoAccept.AutoAcceptOnce) CurrentSettings.Tools.AutoAccept = false;
         if (CurrentSettings.Tools.LobbyRevealer && !FetchedPlayers && !LobbyRevealingStarted)
         {
-            CreateBackgroundTask(LobbyRevealer.GetLobbyRevealing, $"LobbyRevealing the current lobby", LogModule.Loly);
+            CreateBackgroundTask(LobbyRevealer.GetLobbyRevealing, $"LobbyRevealing the current lobby");
             LobbyRevealingStarted = true;
         }
         if (CurrentSettings.Tools.AutoChat || CurrentSettings.Tools.PicknBan) ChampSelectSession.HandleChampSelect();

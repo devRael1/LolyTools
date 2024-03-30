@@ -54,11 +54,11 @@ public static class Utils
         return result;
     }
 
-    public static void LogNewError(string actionName, LogModule logModule, Exception ex)
+    public static void LogNewError(string actionName, Exception ex)
     {
-        Logger.Error(logModule, $"An error occured to execute : {actionName}", null);
-        Logger.Error(logModule, "Please check the logs file for more information", null);
-        Logger.Error(logModule, "Error : ", ex);
+        Logger.Error($"An error occured to execute : {actionName}", null);
+        Logger.Error("Please check the logs file for more information", null);
+        Logger.Error("Error : ", ex);
     }
 
     public static string FormatStr(string str)
@@ -101,12 +101,12 @@ public static class Utils
         return $"{(bytes / Math.Pow(k, i)).ToString($"F{dm}")} {sizes[i]}{(seconds ? "/s" : "")}";
     }
 
-    public static void CreateBackgroundTask(Action action, string errorMessage, LogModule logModule)
+    public static void CreateBackgroundTask(Action action, string errorMessage)
     {
         Task.Run(action)
             .ContinueWith(t =>
             {
-                if (t.IsFaulted) LogNewError(errorMessage, logModule, t.Exception);
+                if (t.IsFaulted) throw new Exception(errorMessage, t.Exception);
             });
     }
 

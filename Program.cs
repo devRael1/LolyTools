@@ -14,9 +14,7 @@ internal class Program
     private static void Main()
     {
         AppDomain.CurrentDomain.UnhandledException += UnhandledException;
-
         SettingsManager.CreateOrUpdateSettings();
-
         if (Global.CurrentSettings.EnableAutoUpdate) Updater.CheckUpdate();
 
         TaskCore tasks = new();
@@ -32,6 +30,11 @@ internal class Program
 
     private static void UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
-        Utils.LogNewError("Unhandled exception", LogModule.Loly, (Exception)e.ExceptionObject);
+        if (e.ExceptionObject.GetType() == typeof(HttpRequestException)) return;
+
+        Utils.LogNewError("Unhandled exception", (Exception)e.ExceptionObject);
+        if (!Global.CurrentSettings.EnableAutoSendLogs) return;
+        AutoSendLogs.ErrorReporter((Exception)e.ExceptionObject);
+        Logger.Info(LogModule.Loly, "Logs of exception have been sent to the developer");
     }
 }

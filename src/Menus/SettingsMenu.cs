@@ -23,11 +23,12 @@ public class SettingsMenu
 
             List<string> choices = new()
             {
-                $"Auto Update     - {CheckBoolean(CurrentSettings.EnableAutoUpdate)}",
-                $"Lobby Revealer  - {CheckBoolean(CurrentSettings.Tools.LobbyRevealer)}",
-                $"Auto Accept     - {CheckBoolean(CurrentSettings.Tools.AutoAccept)}",
-                $"Auto Chat       - {CheckBoolean(CurrentSettings.Tools.AutoChat)}",
-                $"Pick and Ban    - {CheckBoolean(CurrentSettings.Tools.PicknBan)}",
+                $"Auto Update       - {CheckBoolean(CurrentSettings.EnableAutoUpdate)}",
+                $"Auto Send Logs    - {CheckBoolean(CurrentSettings.EnableAutoSendLogs)}",
+                $"Lobby Revealer    - {CheckBoolean(CurrentSettings.Tools.LobbyRevealer)}",
+                $"Auto Accept       - {CheckBoolean(CurrentSettings.Tools.AutoAccept)}",
+                $"Auto Chat         - {CheckBoolean(CurrentSettings.Tools.AutoChat)}",
+                $"Pick and Ban      - {CheckBoolean(CurrentSettings.Tools.PicknBan)}",
                 "Back"
             };
 
@@ -42,10 +43,11 @@ public class SettingsMenu
             switch (choice)
             {
                 case 1: CurrentSettings.EnableAutoUpdate = !CurrentSettings.EnableAutoUpdate; break;
-                case 2: CurrentSettings.Tools.LobbyRevealer = !CurrentSettings.Tools.LobbyRevealer; break;
-                case 3: CurrentSettings.Tools.AutoAccept = !CurrentSettings.Tools.AutoAccept; break;
-                case 4: CurrentSettings.Tools.AutoChat = !CurrentSettings.Tools.AutoChat; break;
-                case 5: CurrentSettings.Tools.PicknBan = !CurrentSettings.Tools.PicknBan; break;
+                case 2: CurrentSettings.EnableAutoSendLogs = !CurrentSettings.EnableAutoSendLogs; break;
+                case 3: CurrentSettings.Tools.LobbyRevealer = !CurrentSettings.Tools.LobbyRevealer; break;
+                case 4: CurrentSettings.Tools.AutoAccept = !CurrentSettings.Tools.AutoAccept; break;
+                case 5: CurrentSettings.Tools.AutoChat = !CurrentSettings.Tools.AutoChat; break;
+                case 6: CurrentSettings.Tools.PicknBan = !CurrentSettings.Tools.PicknBan; break;
             }
 
             SettingsManager.SaveFileSettings();

@@ -28,28 +28,15 @@ public class ClearLogsFilesTask
 
             if (Math.Round(diff.TotalDays) < CurrentSettings.ClearLogsFilesDays) continue;
 
-            try
-            {
-                var details = $"\n\tDelete folder '{directory.Name}' in '{directory.Parent}' folder.";
-                details += $"\n\tDetails of deleted folder :";
-                details += $"\n\t\tCreation time : {directory.CreationTime:G}";
-                details += $"\n\t\tSize : {Utils.FormatBytes(directory.EnumerateFiles().Sum(file => file.Length), false)}";
-                details += $"\n\t\tNumber of files : {directory.EnumerateFiles().Count()}";
+            var details = $"\n\tDelete folder '{directory.Name}' in '{directory.Parent}' folder.";
+            details += $"\n\tDetails of deleted folder :";
+            details += $"\n\t\tCreation time : {directory.CreationTime:G}";
+            details += $"\n\t\tSize : {Utils.FormatBytes(directory.EnumerateFiles().Sum(file => file.Length), false)}";
+            details += $"\n\t\tNumber of files : {directory.EnumerateFiles().Count()}";
 
-                Logger.Info(LogModule.Tasks, details, Global.LogsMenuEnable ? LogType.Both : LogType.File);
-                Directory.Delete(folder, true);
-                count++;
-            }
-            catch (IOException ex)
-            {
-                Logger.Error(LogModule.Tasks, $"Cannot delete folder '{folder}' because it's in use by another process...", ex);
-                continue;
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                Logger.Error(LogModule.Tasks, $"Cannot delete folder '{folder}' because i don't have permission to access to this folder...", ex);
-                continue;
-            }
+            Logger.Info(LogModule.Tasks, details, Global.LogsMenuEnable ? LogType.Both : LogType.File);
+            Directory.Delete(folder, true);
+            count++;
         }
         return count;
     }

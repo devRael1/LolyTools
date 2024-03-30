@@ -3,6 +3,7 @@
 public class Settings
 {
     public bool EnableAutoUpdate { get; set; }
+    public bool EnableAutoSendLogs { get; set; }
     public int ClearLogsFilesDays { get; set; }
     public Tools Tools { get; set; } = new();
     public AutoAccept AutoAccept { get; set; } = new();

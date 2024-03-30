@@ -34,6 +34,7 @@ public class SettingsManager
     public static void SetDefaultSettings()
     {
         Global.CurrentSettings.EnableAutoUpdate = true;
+        Global.CurrentSettings.EnableAutoSendLogs = true;
         Global.CurrentSettings.ClearLogsFilesDays = 5;
         Global.CurrentSettings.Tools.LobbyRevealer = false;
         Global.CurrentSettings.Tools.AutoAccept = false;

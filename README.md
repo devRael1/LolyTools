@@ -1,4 +1,4 @@
-﻿# `🎮 Loly - Tools`
+﻿## `🎮 Loly - Tools`
 <img src="/Ressources/logo.ico" width="100" alt=""/>
 
 A set of several small tools for League Of Legends.
@@ -11,7 +11,7 @@ You must install .NET Desktop Runtime 6 to use this tool.<br>
 No need to install this if you have a more recent version installed :<br>
 .NET Desktop Runtime 6 -> [Official x64 installer (Microsoft)](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.27-windows-x64-installer)<br>
 
-You can download the latest version of **LolyTools** [here](https://api.github.com/repos/devRael1/LolyTools/releases/latest).
+You can download the latest version of **LolyTools** [here](https://github.com/devRael1/LolyTools/releases/download/2.2.1/Loly.Tools.-.2.2.1.exe).
 
 ## `⚙️ Features`
 - [x] Interactive Menu in Console
@@ -82,8 +82,8 @@ My Discord: `1043813027205619804`
 - [ ] Add more information in LobbyRevealer tool (API's : HistoricRanks / GetPlayerOverallRanking / FetchMatchSummaries...)
 - [x] Review the menu system and optimize it (Code optimization / lisibility)
 - [x] Add system to save all settings (all Keybinds, Colors, chat options...) of the Game
-- [ ] Add a system to auto-send logs to the developer (Discord Webhook) when an error occurs (use a setting to enable/disable)
-- [ ] Upgrade the error management system in the app (use `AppDomain.CurrentDomain.UnhandledException` for each error
+- [x] Add a system to auto-send logs to the developer (Discord Webhook) when an error occurs (use a setting to enable/disable)
+- [x] Upgrade the error management system in the app (use `AppDomain.CurrentDomain.UnhandledException` for each error
 - [ ] Add a second option of champion pick in case of ban of the main champion ([#5 Suggestion](https://github.com/devRael1/LolyTools/issues/5))
 - [ ] Update screenshots in `README.md` with Release V3.0.0
 - [x] Refactor the code of `Settings.cs` to make it more readable and optimized (create new class `Settings` in Class folder)

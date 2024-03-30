@@ -13,13 +13,14 @@ public static class Logger
 {
     public const string LogFolder = "Logs";
     public const string LolSettingsFolder = "LoLSettings";
-    private const string LogTempFile = $"{LogFolder}/temp_loly.log";
-    private const string LogReqsFile = $"{LogFolder}/temp_request_loly.log";
+    private const string LogLolyFile = $"{LogFolder}/temp_loly.log";
+    private const string LogReqsFile = $"{LogFolder}/temp_requests.log";
+    private const string LogErrorsFile = $"{LogFolder}/temp_errors.log";
 
     private static readonly object Lock = new();
     private static readonly object Lock2 = new();
     private static readonly object Lock3 = new();
-    private static readonly object Lock4 = new();
+
     private static bool _headerPrinted;
 
     static Logger()
@@ -28,16 +29,23 @@ public static class Logger
         Directory.CreateDirectory(LolSettingsFolder);
     }
 
-    private static void Log(LogSeverity s, LogModule from, string message, Exception e = null, LogType logType = LogType.None)
+    private static void Log(LogSeverity s, LogModule from, string message, LogType logType = LogType.None)
     {
-        if (logType == LogType.Both) Lock.Lock(() => Execute(s, from, message, e));
-        else if (logType == LogType.File) Lock2.Lock(() => ExecuteWithoutConsole(s, from, message, e));
-        else Lock3.Lock(() => ExecuteOnlyInConsole(s, from, message));
+        if (logType == LogType.Both) Lock.Lock(() => Execute(s, from, message, null));
+        else if (logType == LogType.File) Lock.Lock(() => ExecuteWithoutConsole(s, from, message, null));
+        else Lock.Lock(() => ExecuteOnlyInConsole(s, from, message));
     }
 
     private static void Log(IRequest value)
     {
-        Lock4.Lock(() => ExecuteLogRequest(value));
+        Lock2.Lock(() => ExecuteLogRequest(value));
+    }
+
+    private static void Log(string message, Exception e, LogType logType = LogType.None)
+    {
+        if (logType == LogType.Both) Lock3.Lock(() => Execute(LogSeverity.Error, LogModule.Loly, message, e));
+        else if (logType == LogType.File) Lock3.Lock(() => ExecuteWithoutConsole(LogSeverity.Error, LogModule.Loly, message, e));
+        else Lock3.Lock(() => ExecuteOnlyInConsole(LogSeverity.Error, LogModule.Loly, message));
     }
 
     public static void PrintHeader()
@@ -53,19 +61,19 @@ public static class Logger
     public static void Info(LogModule src, string message, LogType logType = LogType.None)
     {
         if (logType == LogType.None) logType = Global.LogsMenuEnable ? LogType.Both : LogType.File;
-        Log(LogSeverity.Info, src, message, null, logType);
+        Log(LogSeverity.Info, src, message, logType);
     }
 
-    public static void Error(LogModule src, string message, Exception e = null, LogType logType = LogType.None)
+    public static void Error(string message, Exception e = null, LogType logType = LogType.None)
     {
         if (logType == LogType.None) logType = Global.LogsMenuEnable ? LogType.Both : LogType.File;
-        Log(LogSeverity.Error, src, message, e, logType);
+        Log(message, e, logType);
     }
 
-    public static void Warn(LogModule src, string message, Exception e = null, LogType logType = LogType.None)
+    public static void Warn(LogModule src, string message, LogType logType = LogType.None)
     {
         if (logType == LogType.None) logType = Global.LogsMenuEnable ? LogType.Both : LogType.File;
-        Log(LogSeverity.Warning, src, message, e, logType);
+        Log(LogSeverity.Warning, src, message, logType);
     }
 
     public static void Request(IRequest value)
@@ -87,17 +95,15 @@ public static class Logger
         contentFile.Append($"{value}» ");
 
         if (!string.IsNullOrWhiteSpace(message)) Append(message, color, ref contentFile);
-
-        if (e != null)
-        {
-            var toWrite = $"{Environment.NewLine}{e}";
-            Append(toWrite, ConsoleColor.DarkRed, ref contentFile);
-        }
+        if (e != null) Append(Environment.NewLine + e.ToString(), Colors.ErrorColor);
 
         Console.Write(Environment.NewLine);
 
         contentFile.AppendLine();
-        File.AppendAllText(NormalizeLogFilePath(LogTempFile, DateTime.Now, LogFolder), contentFile.ToString());
+        if (s != LogSeverity.Error) File.AppendAllText(NormalizeLogFilePath(LogLolyFile, DateTime.Now, LogFolder), contentFile.ToString());
+        else File.AppendAllText(NormalizeLogFilePath(LogErrorsFile, DateTime.Now, LogFolder), contentFile.ToString());
+
+        if (e != null) File.AppendAllText(NormalizeLogFilePath(LogErrorsFile, DateTime.Now, LogFolder), e.ToString() + Environment.NewLine);
     }
 
     private static void ExecuteWithoutConsole(LogSeverity s, LogModule module, string message, Exception e)
@@ -113,18 +119,14 @@ public static class Logger
 
         if (!string.IsNullOrWhiteSpace(message)) contentFile.Append(message);
 
-        if (e != null)
-        {
-            var toWrite = $"{Environment.NewLine}{e.Message}{Environment.NewLine}{e.StackTrace}";
-            contentFile.Append(toWrite);
-        }
-
         contentFile.AppendLine();
-        File.AppendAllText(NormalizeLogFilePath(LogTempFile, DateTime.Now, LogFolder), contentFile.ToString());
-        if (e != null) File.AppendAllText(NormalizeLogFilePath(LogTempFile, DateTime.Now, LogFolder), e.ToString() + Environment.NewLine);
+        if (s != LogSeverity.Error) File.AppendAllText(NormalizeLogFilePath(LogLolyFile, DateTime.Now, LogFolder), contentFile.ToString());
+        else File.AppendAllText(NormalizeLogFilePath(LogErrorsFile, DateTime.Now, LogFolder), contentFile.ToString());
+
+        if (e != null) File.AppendAllText(NormalizeLogFilePath(LogErrorsFile, DateTime.Now, LogFolder), e.ToString() + Environment.NewLine);
     }
 
-    private static void ExecuteOnlyInConsole(LogSeverity s, LogModule module, string message)
+    private static void ExecuteOnlyInConsole(LogSeverity s, LogModule module, string message, Exception e = null)
     {
         (ConsoleColor color, var value) = VerifySeverity(s);
         Append($"{value}", color);
@@ -137,6 +139,7 @@ public static class Logger
             Append(message, color);
         }
 
+        if (e != null) Append(Environment.NewLine + e.ToString(), Colors.ErrorColor);
         Console.Write(Environment.NewLine);
     }
 

@@ -15,7 +15,7 @@ internal class Program
     {
         AppDomain.CurrentDomain.UnhandledException += UnhandledException;
         SettingsManager.CreateOrUpdateSettings();
-        if (Global.CurrentSettings.EnableAutoUpdate) Updater.CheckUpdate();
+        if (Global.CurrentSettings.EnableAutoUpdate && !Version.IsDevelopment) Updater.CheckUpdate();
 
         TaskCore tasks = new();
         tasks.StartAllTasks();

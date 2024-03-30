@@ -30,7 +30,7 @@ public class Global
     public static bool IsLeagueOpen { get; set; } = false;
     public static bool LogsMenuEnable { get; set; } = false;
     public static string Region { get; set; } = "";
-    public static bool IsProdEnvironment { get; set; } = true;
+    public static bool IsProdEnvironment { get; set; } = false;
     public static int TopLength { get; set; } = 0;
     public static string LeagueClientPath { get; set; } = "";
 

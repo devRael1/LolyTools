@@ -31,16 +31,17 @@ public class LobbyRevealerMenu
             if (choice == choices.Length) break;
             if (PlayerList.Count == 0)
             {
-                DisplayColor("`[WARNING]»` No Players in the list.", Colors.WarningColor, Colors.PrimaryColor);
-                DisplayColor("`[WARNING]»` Loly Tools did not detect a champ select in progress.", Colors.WarningColor, Colors.PrimaryColor);
-                DisplayColor("`[WARNING]»` Press Enter to return to 'Lobby Revealer' menu", Colors.WarningColor, Colors.PrimaryColor);
+                DisplayColor("`[WARNING]»` No Players in the list.", Colors.InfoColor, Colors.WarningColor);
+                DisplayColor("`[WARNING]»` Loly Tools did not detect a champ select in progress.", Colors.InfoColor, Colors.WarningColor);
+                DisplayColor("`[WARNING]»` Press Enter to return to 'Lobby Revealer' menu", Colors.InfoColor, Colors.WarningColor);
                 Console.ReadKey();
                 ResetConsole();
-                break;
             }
-
-            if (choice == 1) GetUggMenu();
-            else GetStatsMenu();
+            else
+            {
+                if (choice == 1) GetUggMenu();
+                else GetStatsMenu();
+            }
         }
     }
 

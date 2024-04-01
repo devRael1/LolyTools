@@ -104,7 +104,6 @@ public class AnalyzeSessionTask
 
     private static void HandleChampSelectPhase()
     {
-        // TODO: Create the detection of dodge champ select system
         AcceptedCurrentMatch = false;
 
         if (CurrentSettings.Tools.AutoAccept && CurrentSettings.AutoAccept.AutoAcceptOnce) CurrentSettings.Tools.AutoAccept = false;

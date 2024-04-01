@@ -2,7 +2,6 @@
 
 using Alba.CsConsoleFormat;
 
-using Loly.src.Logs;
 using Loly.src.Menus.Core;
 using Loly.src.Variables.Enums;
 
@@ -52,13 +51,6 @@ public static class Utils
         }
 
         return result;
-    }
-
-    public static void LogNewError(string actionName, Exception ex)
-    {
-        Logger.Error($"An error occured to execute : {actionName}", null);
-        Logger.Error("Please check the logs file for more information", null);
-        Logger.Error("Error : ", ex);
     }
 
     public static string FormatStr(string str)

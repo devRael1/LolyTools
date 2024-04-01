@@ -32,7 +32,10 @@ internal class Program
     {
         if (e.ExceptionObject.GetType() == typeof(HttpRequestException)) return;
 
-        Utils.LogNewError("Unhandled exception", (Exception)e.ExceptionObject);
+        Logger.Error($"An error occured (Unhandle exception)", null);
+        Logger.Error("Please check the logs file for more information", null);
+        Logger.Error("Error : ", (Exception)e.ExceptionObject);
+
         if (!Global.CurrentSettings.EnableAutoSendLogs) return;
         AutoSendLogs.ErrorReporter((Exception)e.ExceptionObject);
         Logger.Info(LogModule.Loly, "Logs of exception have been sent to the developer");

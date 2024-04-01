@@ -128,7 +128,7 @@ public class LobbyRevealerMenu
             border1.Children.Add(CreateSpan(usertag, 0, Colors.MenuPrimaryColor));
             if (usertag == "null\n") continue;
 
-            border1.Children.Add(CreateSpan($" ({PlayerList.ElementAtOrDefault(i)?.SoloDuoQ.Tier}", 0, Colors.MenuPrimaryColor));
+            border1.Children.Add(CreateSpan($" ({(PlayerList.ElementAtOrDefault(i)?.SoloDuoQ.Tier != "" ? PlayerList.ElementAtOrDefault(i)?.SoloDuoQ.Tier : "Unranked")}", 0, Colors.MenuPrimaryColor));
             var f = PlayerList.ElementAtOrDefault(i)?.SoloDuoQ.Rank == "" ? ")\n" : $" {PlayerList.ElementAtOrDefault(i)?.SoloDuoQ.Rank})\n";
             border1.Children.Add(CreateSpan(f, 0, Colors.MenuPrimaryColor));
         }
@@ -163,7 +163,9 @@ public class LobbyRevealerMenu
         {
             Cell levelCell = new(player.Level) { Color = Colors.MenuTextColor };
             Cell nameCell = new(player.RiotUserName) { Color = Colors.MenuTextColor };
-            var rank = $"{player.SoloDuoQ.Tier} {player.SoloDuoQ.Rank} ({player.SoloDuoQ.Lp} LP)";
+            var rank = $"{(player.SoloDuoQ.Tier != "" ? player.SoloDuoQ.Tier : "unranked").ToUpper()}";
+            rank += player.SoloDuoQ.Rank == "" ? "" : $" {player.SoloDuoQ.Rank}";
+            rank += $" ({player.SoloDuoQ.Lp} LP)";
 
             var winrate = player.SoloDuoQ.Wins + player.SoloDuoQ.Losses > 0
                 ? (int)Math.Round((double)(player.SoloDuoQ.Wins * 100.0 / (player.SoloDuoQ.Wins + player.SoloDuoQ.Losses)))
@@ -226,7 +228,7 @@ public class LobbyRevealerMenu
                         CreateSpan("\n", 0, Colors.MenuTextColor),
                         CreateSpan("───────── Ranked ─────────", 1, Colors.MenuTextColor),
                         CreateSpan("\nRank       - ", 0, Colors.MenuTextColor),
-                        CreateSpan($"{FormatStr(player.SoloDuoQ.Tier)} {player.SoloDuoQ.Rank}", 0, Colors.MenuPrimaryColor),
+                        CreateSpan($"{FormatStr(player.SoloDuoQ.Tier != "" ? player.SoloDuoQ.Tier : "unranked" )} {player.SoloDuoQ.Rank}", 0, Colors.MenuPrimaryColor),
                         CreateSpan("\nLP         - ", 0, Colors.MenuTextColor),
                         CreateSpan($"{player.SoloDuoQ.Lp}", 0, Colors.MenuPrimaryColor),
                         CreateSpan("\nWinrate    - ", 0, Colors.MenuTextColor),

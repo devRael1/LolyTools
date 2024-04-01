@@ -14,13 +14,12 @@ public class Global
 
     private static SessionPhase _session = SessionPhase.None;
 
-    public static Settings CurrentSettings = new();
-    public static List<Player> PlayerList = new();
-    public static List<ChampItem> ChampionsList = new();
+    public static Settings CurrentSettings { get; set; } = new();
 
-    public static Dictionary<string, string> AuthRiot = new();
-    public static Dictionary<string, string> AuthClient = new();
-
+    public static List<Player> PlayerList { get; set; } = new();
+    public static List<ChampItem> ChampionsList { get; set; } = new();
+    public static Dictionary<string, string> AuthRiot { get; set; } = new();
+    public static Dictionary<string, string> AuthClient { get; set; } = new();
     public static CurrentSummoner SummonerLogged { get; set; } = new();
     public static string LastChatRoom { get; set; } = "";
     public static int LastActionId { get; set; } = 0;

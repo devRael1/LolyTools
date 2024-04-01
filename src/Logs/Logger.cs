@@ -88,7 +88,7 @@ public static class Logger
         Append($"{value}", color);
 
         DateTime dt = DateTime.Now.ToLocalTime();
-        contentFile.Append($"[{dt.FormatDate()}] {value}» ");
+        contentFile.Append($"[{dt.FormatDate()}]{value}");
 
         (color, value) = VerifySource(module);
         Append($"{value}» ", color);
@@ -112,7 +112,7 @@ public static class Logger
 
         (_, var value) = VerifySeverity(s);
         DateTime dt = DateTime.Now.ToLocalTime();
-        contentFile.Append($"[{dt.FormatDate()}] {value}» ");
+        contentFile.Append($"[{dt.FormatDate()}]{value}");
 
         (_, value) = VerifySource(module);
         contentFile.Append($"{value}» ");
@@ -149,7 +149,7 @@ public static class Logger
 
         (_, var value) = VerifySeverity(LogSeverity.Debug);
         DateTime dt = DateTime.Now.ToLocalTime();
-        contentFile.Append($"[{dt.FormatDate()}] {value}» ");
+        contentFile.Append($"[{dt.FormatDate()}]{value}");
 
         (_, value) = VerifySource(LogModule.Request);
         contentFile.Append($"{value}» ");

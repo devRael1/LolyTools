@@ -1,5 +1,4 @@
 ﻿using Loly.src.Logs;
-using Loly.src.Variables;
 using Loly.src.Variables.Class;
 using Loly.src.Variables.Enums;
 
@@ -31,14 +30,14 @@ public class AutoChat
             var httpRes = "";
             while (httpRes != "200" && attempts < 5)
             {
-                var body = "{\"type\":\"chat\",\"fromId\":\"" + currentChatId + "\",\"fromSummonerId\":" + Global.SummonerLogged.SummonerId +
+                var body = "{\"type\":\"chat\",\"fromId\":\"" + currentChatId + "\",\"fromSummonerId\":" + SummonerLogged.SummonerId +
                               ",\"isHistorical\":false,\"timestamp\":\"" + timestamp + "\",\"body\":\"" + msg + "\"}";
-                var response = Requests.ClientRequest("POST", "lol-chat/v1/conversations/" + Global.LastChatRoom + "/messages", true, body);
+                var response = Requests.ClientRequest("POST", "lol-chat/v1/conversations/" + LastChatRoom + "/messages", true, body);
                 attempts++;
                 httpRes = response[0];
                 if (httpRes == "200") count++;
 
-                Thread.Sleep(attempts * 100);
+                Thread.Sleep(attempts * 200);
             }
         }
 

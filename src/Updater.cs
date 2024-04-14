@@ -14,7 +14,7 @@ public class Updater
     private static string GetLatestVersionFromGithub(string owner, string repo)
     {
         var apiUrl = $"https://api.github.com/repos/{owner}/{repo}/releases/latest";
-        Logger.Request(new Request { Method = "GET", Url = Global.DiscordWebhook, Body = null });
+        Logger.Request(new Request { Method = "GET", Url = apiUrl, Body = null });
 
         try
         {

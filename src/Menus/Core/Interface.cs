@@ -38,14 +38,11 @@ public class Interface
         const string text3 = "League Of Legends";
         Console.SetCursorPosition((Console.WindowWidth - text3.Length) / 2, Console.CursorTop);
         DisplayColor("`L`eague `O`f `L`egends ", Colors.InfoColor, Colors.PrimaryColor);
-        var text4 = $"Loly Tools by {SoftAuthor}";
-        Console.SetCursorPosition((Console.WindowWidth - text4.Length) / 2, Console.CursorTop);
-        DisplayColor($"Loly Tools by `{SoftAuthor}`", Colors.InfoColor, Colors.PrimaryColor);
         ShowLoggedUser();
         Console.Write(Environment.NewLine);
         Console.Write(Environment.NewLine);
 
-        TopLength = array.Length + 4;
+        TopLength = array.Length + 3;
     }
 
     public static void ShowLogsArt()

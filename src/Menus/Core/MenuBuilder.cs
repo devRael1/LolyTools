@@ -8,18 +8,20 @@ public class MenuBuilder
     private readonly int _drawMenuRowPos;
     private readonly string[] _options;
     private int _currentSelection;
+    private readonly bool _groupOptions;
 
-    private MenuBuilder(string[] options, int row, int col)
+    private MenuBuilder(string[] options, int row, int col, bool groupOptions)
     {
         _options = options;
         _currentSelection = 1;
         _drawMenuRowPos = row;
         _drawMenuColumnPos = col;
+        _groupOptions = groupOptions;
     }
 
-    public static MenuBuilder BuildMenu(string[] choices, int topLength)
+    public static MenuBuilder BuildMenu(string[] choices, int topLength, bool groupOptions = false)
     {
-        MenuBuilder menu = new(choices, topLength + 1, 1);
+        MenuBuilder menu = new(choices, topLength + 1, 1, groupOptions);
         menu.ModifyMenuLeftJustified();
         ResetCursorVisible();
         SetCursorVisibility(false);
@@ -33,7 +35,7 @@ public class MenuBuilder
         var space = "";
 
         var maximumWidth = _options.Select(t => t.Length).Prepend(0).Max();
-        maximumWidth += 6;
+        maximumWidth += 4;
 
         for (var i = 0; i < _options.Length; i++)
         {
@@ -104,7 +106,14 @@ public class MenuBuilder
         for (var i = 0; i < _options.Length; i++)
         {
             Console.ResetColor();
-            SetCursorPosition(_drawMenuRowPos + i, _drawMenuColumnPos);
+            if (_groupOptions)
+            {
+                SetCursorPosition(_drawMenuRowPos + i % 5, _drawMenuColumnPos + (i / 5) * (_options.Max(o => o.Length) + 3));
+            }
+            else
+            {
+                SetCursorPosition(_drawMenuRowPos + i, _drawMenuColumnPos);
+            }
             SetConsoleTextColor(ConsoleColor.White);
             if (i == _currentSelection - 1)
             {

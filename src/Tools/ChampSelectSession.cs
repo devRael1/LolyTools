@@ -16,8 +16,8 @@ public class ChampSelectSession
     public static bool LockedBan { get; set; }
     public static bool CanSentMessages { get; set; }
     public static long ChampSelectStart { get; set; }
-    public static InitRole CurrentRole { get; set; }
-    public static string AssignedRole { get; set; }
+    public static Role CurrentRole { get; set; }
+    public static Dictionary<ActionType, List<ChampItem>> PickBanChampions { get; set; } = new();
 
     public static void HandleChampSelect()
     {
@@ -51,37 +51,36 @@ public class ChampSelectSession
             if (!member.SummonerId.Equals(SummonerLogged.SummonerId)) continue;
 
             var position = member.AssignedPosition;
-            var assignedRole = position.ToLower() switch
+            CurrentRole = position.ToLower() switch
             {
-                "utility" => "Support",
-                "middle" => "Mid",
-                "jungle" => "Jungle",
-                "bottom" => "Adc",
-                "top" => "Top",
-                _ => "Default"
+                "utility" => Role.Support,
+                "middle" => Role.Mid,
+                "jungle" => Role.Jungle,
+                "bottom" => Role.ADC,
+                "top" => Role.Top,
+                _ => Role.Default
             };
 
-            CurrentRole = (InitRole)CurrentSettings.PicknBan.GetType().GetProperty(assignedRole).GetValue(CurrentSettings.PicknBan);
+            var _role = (RolePicknBan)CurrentSettings.PicknBan.GetType().GetProperty(CurrentRole.ToString()).GetValue(CurrentSettings.PicknBan);
+            PickBanChampions.Clear();
+            PickBanChampions.Add(ActionType.Pick, _role.Picks);
+            PickBanChampions.Add(ActionType.Ban, _role.Bans);
             break;
         }
 
-        if (CurrentRole.PickChamp.Id == null)
+        if (PickBanChampions.GetValueOrDefault(ActionType.Pick).Count == 0)
         {
             HoverPick = true;
             LockedPick = true;
         }
 
-        if (CurrentRole.BanChamp.Id == null)
+        if (PickBanChampions.GetValueOrDefault(ActionType.Ban).Count == 0)
         {
             HoverBan = true;
             LockedBan = true;
         }
 
-        if (CurrentSettings.Tools.AutoChat && CurrentSettings.AutoChat.ChatMessages.Count > 0)
-        {
-            if (LastChatRoom != currentChatRoom) CanSentMessages = true;
-        }
-
+        if (CurrentSettings.Tools.AutoChat && CurrentSettings.AutoChat.ChatMessages.Count > 0) if (LastChatRoom != currentChatRoom) CanSentMessages = true;
         LastChatRoom = currentChatRoom;
 
         if (CurrentSettings.Tools.AutoChat && CanSentMessages) AutoChat.HandleChampSelectAutoChat();

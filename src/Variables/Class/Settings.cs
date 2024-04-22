@@ -31,10 +31,16 @@ public class AutoChat
 
 public class PicknBan
 {
-    public InitRole Default { get; set; } = new();
-    public InitRole Top { get; set; } = new();
-    public InitRole Jungle { get; set; } = new();
-    public InitRole Mid { get; set; } = new();
-    public InitRole Adc { get; set; } = new();
-    public InitRole Support { get; set; } = new();
+    public RolePicknBan Default { get; set; } = new();
+    public RolePicknBan Top { get; set; } = new();
+    public RolePicknBan Jungle { get; set; } = new();
+    public RolePicknBan Mid { get; set; } = new();
+    public RolePicknBan ADC { get; set; } = new();
+    public RolePicknBan Support { get; set; } = new();
+}
+
+public class RolePicknBan
+{
+    public List<ChampItem> Picks { get; set; } = new();
+    public List<ChampItem> Bans { get; set; } = new();
 }

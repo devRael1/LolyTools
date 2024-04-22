@@ -1,8 +1,11 @@
-﻿using Alba.CsConsoleFormat;
+﻿using System.Data;
+
+using Alba.CsConsoleFormat;
 
 using Loly.src.Menus.Core;
 using Loly.src.Tools;
 using Loly.src.Variables.Class;
+using Loly.src.Variables.Enums;
 
 using static Loly.src.Menus.Core.Interface;
 using static Loly.src.Tools.PicknBan;
@@ -13,8 +16,8 @@ namespace Loly.src.Menus;
 
 public class PicknBanMenu
 {
-    private static string _role;
-    private static InitRole _cachedRole;
+    private static Role CachedRole { get; set; }
+    private static Dictionary<ActionType, List<ChampItem>> PickBanChampions { get; set; } = new();
 
     #region Get Menus
 
@@ -25,7 +28,7 @@ public class PicknBanMenu
             UpdateMenuTitle("pnb");
             ShowRoleMenu();
 
-            string[] choices = { "Default (Blind mode)", "Top", "Jungle", "Mid", "Adc", "Support", "Back" };
+            string[] choices = { "Default (Blind mode)", "Top", "Jungle", "Mid", "ADC", "Support", "Back" };
             var pickNBanMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
             var choice = 0;
             while (choice == 0) choice = pickNBanMenu.RunMenu();
@@ -33,8 +36,13 @@ public class PicknBanMenu
 
             if (choice == choices.Length) break;
 
-            _role = choice == 1 ? "Default" : choices[choice - 1];
-            _cachedRole = (InitRole)CurrentSettings.PicknBan.GetType().GetProperty(_role).GetValue(CurrentSettings.PicknBan);
+            var role = choice == 1 ? "Default" : choices[choice - 1];
+            var _rolePicknBan = (RolePicknBan)CurrentSettings.PicknBan.GetType().GetProperty(role).GetValue(CurrentSettings.PicknBan);
+            CachedRole = Enum.Parse<Role>(role);
+            PickBanChampions.Clear();
+            PickBanChampions.Add(ActionType.Pick, _rolePicknBan.Picks);
+            PickBanChampions.Add(ActionType.Ban, _rolePicknBan.Bans);
+
             GetChoicePickorBanMenu();
         }
     }
@@ -46,7 +54,7 @@ public class PicknBanMenu
             UpdateMenuTitle("pnb_pob");
             ShowPickorBanMenu();
 
-            string[] choices = { "Pick Options", "Ban Options", "Back" };
+            string[] choices = { "Pick(s) Options", "Ban(s) Options", "Back" };
             var pickOrBanMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
             var choice = 0;
             while (choice == 0) choice = pickOrBanMenu.RunMenu();
@@ -55,19 +63,21 @@ public class PicknBanMenu
 
             if (choice == choices.Length) break;
 
-            GetOptionPicknBanMenu(choice == 1);
+            GetOptionPicknBanMenu(choice == 1 ? ActionType.Pick : ActionType.Ban);
         }
     }
 
-    private static void GetOptionPicknBanMenu(bool pick)
+    private static void GetOptionPicknBanMenu(ActionType actionType)
     {
         while (true)
         {
-            UpdateMenuTitle(pick ? "pnb_pick" : "pnb_ban");
-            ShowPicknBanMenu(pick);
+            UpdateMenuTitle(actionType == ActionType.Pick ? "pnb_pick" : "pnb_ban");
+            ShowPicknBanMenu(actionType);
 
-            var choices = pick ? new[] { "Pick Champion", "Remove Champion", "Pick Delay", "Back" } : new[] { "Ban Champion", "Remove Champion", "Ban Delay", "Back" };
-            var pickNBanMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+            var choices = actionType == ActionType.Pick
+                ? new[] { "Pick Champion (Add)", "Pick Champion (Remove)", "Pick Delay", "Pick List", "Back" }
+                : new[] { "Ban Champion (Add)", "Ban Champion (Remove)", "Ban Delay", "Ban List", "Back" };
+            var pickNBanMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
             var choice = 0;
             while (choice == 0) choice = pickNBanMenu.RunMenu();
 
@@ -91,194 +101,269 @@ public class PicknBanMenu
                         break;
                     }
 
-                    GetAskChampionNameMenu(pick);
+                    GetAddChampionByFirstCharacterMenu(actionType);
                     break;
                 case 2:
-                    ChampItem champ = pick ? _cachedRole.PickChamp : _cachedRole.BanChamp;
-                    if (champ.Id == null)
+                    if (PickBanChampions.GetValueOrDefault(actionType).Count == 0)
                     {
-                        ResetConsole();
-
-                        DisplayColor("`[WARNING]»` You can't remove the champion because it is not configured.", Colors.InfoColor, Colors.WarningColor);
+                        DisplayColor($"`[WARNING]»` You can't remove a champion because there aren't any configured for '{actionType}' (Role : {CachedRole})", Colors.InfoColor, Colors.WarningColor);
+                        DisplayColor("`[WARNING]»` You must add at least 1 champion before removing one", Colors.InfoColor, Colors.WarningColor);
                         DisplayColor("`[WARNING]»` Press any key to continue...", Colors.InfoColor, Colors.WarningColor);
                         Console.ReadKey();
+                        ResetConsole();
                         break;
                     }
 
-                    GetConfirmRemoveChampionMenu(pick);
+                    GetRemoveChampionMenu(actionType);
                     break;
-                default:
-                    GetAskDelayMenu(pick);
+                case 3:
+                    if (PickBanChampions.GetValueOrDefault(actionType).Count == 0)
+                    {
+                        DisplayColor($"`[WARNING]»` You can't configure delay because there aren't any champion(s) configured for '{actionType}' (Role : {CachedRole})", Colors.InfoColor, Colors.WarningColor);
+                        DisplayColor("`[WARNING]»` You must add at least 1 champion before configuring delay", Colors.InfoColor, Colors.WarningColor);
+                        DisplayColor("`[WARNING]»` Press any key to continue...", Colors.InfoColor, Colors.WarningColor);
+                        Console.ReadKey();
+                        ResetConsole();
+                        break;
+                    }
+
+                    GetAskDelayMenu(actionType);
+                    break;
+                case 4:
+                    if (PickBanChampions.GetValueOrDefault(actionType).Count == 0)
+                    {
+                        DisplayColor($"`[WARNING]»` You can't show the list because there aren't any champion(s) configured for '{actionType}' (Role : {CachedRole})", Colors.InfoColor, Colors.WarningColor);
+                        DisplayColor("`[WARNING]»` You must add at least 1 champion before showing the list", Colors.InfoColor, Colors.WarningColor);
+                        DisplayColor("`[WARNING]»` Press any key to continue...", Colors.InfoColor, Colors.WarningColor);
+                        Console.ReadKey();
+                        ResetConsole();
+                        break;
+                    }
+
+                    GetListChampionMenu(actionType);
                     break;
             }
         }
     }
 
-    private static void GetAskChampionNameMenu(bool pick)
+    private static void GetAddChampionByFirstCharacterMenu(ActionType actionType)
     {
-        UpdateMenuTitle(pick ? "pnb_pick_c" : "pnb_ban_c");
+        UpdateMenuTitle(actionType == ActionType.Pick ? "pnb_pick_c" : "pnb_ban_c");
         MenuBuilder.SetCursorVisibility(true);
 
-        var action = pick ? "pick" : "ban";
-        var champName = "";
+        var role = (RolePicknBan)CurrentSettings.PicknBan.GetType().GetProperty(CachedRole.ToString()).GetValue(CurrentSettings.PicknBan);
+        var character = "";
+        var action = actionType == ActionType.Pick ? "PICK" : "BAN";
 
-        while (champName == "")
+        DisplayColor($"`{DateTime.Now:[hh:mm:ss]}»` Enter the `FIRST` letter of champion name you want to add in AUTO-{action} (Ex: Yone = Y, Annie = A...) :", Colors.InfoColor, Colors.PrimaryColor);
+        if (actionType == ActionType.Pick)
         {
-            DisplayColor($"`{DateTime.Now:[hh:mm:ss]}»` Enter name of champion you want to auto '{action}':", Colors.InfoColor, Colors.PrimaryColor);
+            DisplayColor($"`{DateTime.Now:[hh:mm:ss]}»` To AUTO-PICK a champion, he must meet the following `conditions` :", Colors.InfoColor, Colors.PrimaryColor);
+            DisplayColor($" - Free rotation", Colors.InfoColor, Colors.PrimaryColor);
+            DisplayColor($" - Champion gifted", Colors.InfoColor, Colors.PrimaryColor);
+            DisplayColor($" - Champion owned (buyed)", Colors.InfoColor, Colors.PrimaryColor);
+            DisplayColor($" - Champion not already added", Colors.InfoColor, Colors.PrimaryColor);
+        }
+
+        while (character == "")
+        {
             Console.Write("» ");
 
-            try
+            character = Console.ReadLine()?.Trim().ToLower();
+            if (character.Length != 1)
             {
-                champName = Console.ReadLine().ToLower();
-
-                if (champName == "")
-                {
-                    DisplayColor("`[WARNING]»` Champion name cannot be empty !", Colors.InfoColor, Colors.WarningColor);
-                    continue;
-                }
-
-                ChampItem champ = ChampionsList.Find(x => x.Name.ToLower() == champName);
-                if (champ == null)
-                {
-                    DisplayColor($"`[WARNING]»` Champion \"{FormatStr(champName)}\" does not exist !", Colors.WarningColor, Colors.PrimaryColor);
-                    champName = "";
-                }
-                else if (!champ.Free && action != "ban")
-                {
-                    DisplayColor($"`[WARNING]»` You can't select the '{FormatStr(champName)}' champion because you don't own it.", Colors.InfoColor, Colors.WarningColor);
-                    DisplayColor("`[WARNING]»` Please buy the champion, restart the software and try again !", Colors.InfoColor, Colors.WarningColor);
-                    champName = "";
-                }
-                else
-                {
-                    var role = (InitRole)CurrentSettings.PicknBan.GetType().GetProperty(_role).GetValue(CurrentSettings.PicknBan);
-
-                    if (action == "pick")
-                    {
-                        role.PickChamp.Name = champ.Name;
-                        role.PickChamp.Id = champ.Id;
-                        role.PickChamp.Free = champ.Free;
-                    }
-                    else
-                    {
-                        role.BanChamp.Name = champ.Name;
-                        role.BanChamp.Id = champ.Id;
-                        role.BanChamp.Free = champ.Free;
-                    }
-
-                    CurrentSettings.PicknBan.GetType().GetProperty(_role).SetValue(CurrentSettings.PicknBan, _cachedRole);
-                    SettingsManager.SaveFileSettings();
-                    _cachedRole = role;
-
-                    Console.Write(Environment.NewLine);
-                    DisplayColor($"`[SUCCESS]»` Champion '{FormatStr(champName)}' selected successfully for {action} !", Colors.InfoColor, Colors.SuccessColor);
-                    DisplayColor("`[SUCCESS]»` Press any key to continue...", Colors.InfoColor, Colors.SuccessColor);
-                    Console.ReadKey();
-                    ResetConsole();
-                }
+                character = "";
+                DisplayColor("`[WARNING]»` You must enter only `ONE` character", Colors.InfoColor, Colors.WarningColor);
+                DisplayColor("`[WARNING]»` Please try again...", Colors.InfoColor, Colors.WarningColor);
+                continue;
             }
-            catch
+
+            if (!char.IsLetter(character[0]))
             {
-                DisplayColor($"`[WARNING]»` Champion \"{FormatStr(champName)}\" does not exist !", Colors.InfoColor, Colors.WarningColor);
-                champName = "";
+                character = "";
+                DisplayColor("`[WARNING]»` You must enter a `LETTER` character like 'e' / 'a' / 'y'...", Colors.InfoColor, Colors.WarningColor);
+                DisplayColor("`[WARNING]»` Please try again...", Colors.InfoColor, Colors.WarningColor);
+                continue;
             }
+
+            if (actionType == ActionType.Pick && !ChampionsList.Any(x => x.Name.ToLower().StartsWith(character) && x.Usable && !role.Picks.Any(r => r.Id == x.Id)))
+            {
+                DisplayColor($"`[WARNING]»` No champion usable found with the letter : '{character}'", Colors.InfoColor, Colors.WarningColor);
+                DisplayColor("`[WARNING]»` Please try again with an another letter...", Colors.InfoColor, Colors.WarningColor);
+                character = "";
+                continue;
+            }
+            break;
         }
+
+        ResetConsole();
+        DisplayColor($"`{DateTime.Now:[hh:mm:ss]}»` Select the champion you want to AUTO-{action} :", Colors.InfoColor, Colors.PrimaryColor);
+
+        List<ChampItem> champions = actionType == ActionType.Pick
+            ? ChampionsList.Where(x => x.Name.ToLower().StartsWith(character) && x.Usable && !role.Picks.Any(r => r.Id == x.Id)).ToList()
+            : ChampionsList.Where(x => x.Name.ToLower().StartsWith(character) && !role.Bans.Any(r => r.Id == x.Id)).ToList();
+        var choices = champions.Select(c => c.Name).ToList();
+        choices.Add("[BACK] Cancel");
+
+        var addChampionMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop, true);
+        var choice = 0;
+        while (choice == 0) choice = addChampionMenu.RunMenu();
+
+        if (choice != choices.Count)
+        {
+            ChampItem selectedChampion = champions[choice - 1];
+
+            if (actionType == ActionType.Pick) role.Picks.Add(selectedChampion);
+            else role.Bans.Add(selectedChampion);
+
+            CurrentSettings.PicknBan.GetType().GetProperty(CachedRole.ToString()).SetValue(CurrentSettings.PicknBan, role);
+            SettingsManager.SaveFileSettings();
+
+            DisplayColor($"`[SUCCESS]»` Champion '{FormatStr(selectedChampion.Name)}' added successfully for AUTO-{action} !", Colors.InfoColor, Colors.SuccessColor);
+            DisplayColor("`[SUCCESS]»` Press any key to return to the 'Pick' and 'Ban' option menu...", Colors.InfoColor, Colors.SuccessColor);
+            Console.ReadKey();
+        }
+
+        ResetConsole();
     }
 
-    private static void GetAskDelayMenu(bool pick)
+    private static void GetAskDelayMenu(ActionType actionType)
     {
-        UpdateMenuTitle(pick ? "pnb_pick_delay" : "pnb_ban_delay");
-        MenuBuilder.SetCursorVisibility(true);
+        UpdateMenuTitle(actionType == ActionType.Pick ? "pnb_pick_delay" : "pnb_ban_delay");
 
-        var action = pick ? "pick" : "ban";
+        var action = actionType == ActionType.Pick ? "PICK" : "BAN";
+        var role = (RolePicknBan)CurrentSettings.PicknBan.GetType().GetProperty(CachedRole.ToString()).GetValue(CurrentSettings.PicknBan);
+
+        DisplayColor($"`{DateTime.Now:[hh:mm:ss]}»` Select the champion you want to configure delay for AUTO-{action} :", Colors.InfoColor, Colors.PrimaryColor);
+        List<ChampItem> champions = actionType == ActionType.Pick ? role.Picks : role.Bans;
+        var choices = champions.Select(c => c.Name).ToList();
+        choices.Add("[BACK] Cancel");
+
+        var addDelayMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop, true);
+        var choice = 0;
+        while (choice == 0) choice = addDelayMenu.RunMenu();
+
+        if (choice == choices.Count)
+        {
+            ResetConsole();
+            return;
+        }
+
+        ChampItem selectedChampion = champions[choice - 1];
+
         var input = "";
         var delay = 0;
-        var minDelay = pick ? 1000 : 1500;
-        var maxDelay = pick ? 20000 : 15000;
+        var minDelay = 1500;
+        var maxDelay = 15000;
+
+        ResetConsole();
+        MenuBuilder.SetCursorVisibility(true);
+
+        DisplayColor($"`{DateTime.Now:[hh:mm:ss]}»` Enter the delay to {action} '{selectedChampion.Name}' (recommanded {minDelay}-{maxDelay} in ms) :", Colors.InfoColor, Colors.PrimaryColor);
+        DisplayColor($"`{DateTime.Now:[hh:mm:ss]}»` The delay is the time between the champion selection and the confirmation in milliseconds", Colors.InfoColor, Colors.PrimaryColor);
+        DisplayColor($"`{DateTime.Now:[hh:mm:ss]}»` Enter the delay in miliseconds (ex: 1500 = 1,5sec, 4000 = 4sec...)", Colors.InfoColor, Colors.PrimaryColor);
 
         while (delay == 0 || delay < minDelay || delay > maxDelay)
         {
-            DisplayColor($"`{DateTime.Now:[hh:mm:ss]}»` Enter the delay to auto '{action}' champion (recommanded {minDelay}-{maxDelay}ms):", Colors.InfoColor, Colors.PrimaryColor);
-            DisplayColor($"`{DateTime.Now:[hh:mm:ss]}»` Enter the delay in miliseconds (ex: 1500 = 1,5sec, 4000 = 4sec...)", Colors.InfoColor, Colors.PrimaryColor);
             Console.Write("» ");
 
             try
             {
-                input = Console.ReadLine();
+                input = Console.ReadLine()?.Trim();
                 delay = Convert.ToInt32(input);
 
                 if (delay == 0 || delay < minDelay || delay > maxDelay)
                 {
                     DisplayColor($"`[WARNING]»` Delay must be between {minDelay}ms and {maxDelay}ms !", Colors.InfoColor, Colors.WarningColor);
+                    DisplayColor("`[WARNING]»` Please try again...", Colors.InfoColor, Colors.WarningColor);
+                    continue;
                 }
-                else
-                {
-                    if (action == "pick") _cachedRole.PickChamp.Delay = delay;
-                    else _cachedRole.BanChamp.Delay = delay;
 
-                    CurrentSettings.PicknBan.GetType().GetProperty(_role).SetValue(CurrentSettings.PicknBan, _cachedRole);
-                    SettingsManager.SaveFileSettings();
+                if (actionType == ActionType.Pick) role.Picks.FirstOrDefault(x => x.Id == selectedChampion.Id).Delay = delay;
+                else role.Bans.FirstOrDefault(x => x.Id == selectedChampion.Id).Delay = delay;
+                CurrentSettings.PicknBan.GetType().GetProperty(CachedRole.ToString()).SetValue(CurrentSettings.PicknBan, role);
+                SettingsManager.SaveFileSettings();
 
-                    Console.Write(Environment.NewLine);
-                    DisplayColor($"`[SUCCESS]»` The {delay}ms delay has been configured correctly for auto {action} !", Colors.InfoColor, Colors.SuccessColor);
-                    DisplayColor("`[SUCCESS]»` Press any key to continue...", Colors.InfoColor, Colors.SuccessColor);
-
-                    Console.ReadKey();
-                    ResetConsole();
-                }
+                DisplayColor($"`[SUCCESS]»` Delay '{delay}ms' added successfully for AUTO-{action} '{selectedChampion.Name}' !", Colors.InfoColor, Colors.SuccessColor);
+                DisplayColor("`[SUCCESS]»` Press any key to return to the 'Pick' and 'Ban' option menu...", Colors.InfoColor, Colors.SuccessColor);
+                Console.ReadKey();
+                ResetConsole();
             }
             catch
             {
                 DisplayColor($"`[WARNING]»` Unable to convert '{input}' to delay !", Colors.InfoColor, Colors.WarningColor);
                 DisplayColor("`[WARNING]»` Please try again... ", Colors.InfoColor, Colors.WarningColor);
-                input = "";
                 delay = 0;
+                continue;
             }
         }
     }
 
-    private static void GetConfirmRemoveChampionMenu(bool pick)
+    private static void GetRemoveChampionMenu(ActionType actionType)
     {
-        UpdateMenuTitle(pick ? "pnb_pick_del_c" : "pnb_ban_del_c");
-        ResetConsole();
-        ShowConfirmMenu(pick);
+        UpdateMenuTitle(actionType == ActionType.Pick ? "pnb_pick_del_c" : "pnb_ban_del_c");
 
-        string[] choices = { "Yes", "No" };
+        var action = actionType == ActionType.Pick ? "PICK" : "BAN";
+        var role = (RolePicknBan)CurrentSettings.PicknBan.GetType().GetProperty(CachedRole.ToString()).GetValue(CurrentSettings.PicknBan);
 
-        var removeChampMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop);
+        DisplayColor($"`{DateTime.Now:[hh:mm:ss]}»` Select the champion you want to remove for AUTO-{action} :", Colors.InfoColor, Colors.PrimaryColor);
+        List<ChampItem> champions = actionType == ActionType.Pick ? role.Picks : role.Bans;
+        var choices = champions.Select(c => c.Name).ToList();
+        choices.Add("[BACK] Cancel");
+
+        var addDelayMenu = MenuBuilder.BuildMenu(choices.ToArray(), Console.CursorTop, true);
         var choice = 0;
+        while (choice == 0) choice = addDelayMenu.RunMenu();
+
+        if (choice == choices.Count)
+        {
+            ResetConsole();
+            return;
+        }
+
+        ChampItem selectedChampion = champions[choice - 1];
+
+        ResetConsole();
+        ShowConfirmMenu(actionType, selectedChampion);
+
+        string[] yesOrNo = { "Yes", "No" };
+        var removeChampMenu = MenuBuilder.BuildMenu(yesOrNo, Console.CursorTop);
+        choice = 0;
         while (choice == 0) choice = removeChampMenu.RunMenu();
 
-        if (choice == 1)
+        if (choice != yesOrNo.Length)
         {
-            var role = (InitRole)CurrentSettings.PicknBan.GetType().GetProperty(_role).GetValue(CurrentSettings.PicknBan);
-            var cacheName = pick ? role.PickChamp.Name : role.BanChamp.Name;
-            var action = pick ? "pick" : "ban";
+            if (actionType == ActionType.Pick) role.Picks.Remove(selectedChampion);
+            else role.Bans.Remove(selectedChampion);
 
-            if (pick)
-            {
-                role.PickChamp.Name = null;
-                role.PickChamp.Id = null;
-                role.PickChamp.Free = false;
-            }
-            else
-            {
-                role.BanChamp.Name = null;
-                role.BanChamp.Id = null;
-                role.BanChamp.Free = false;
-            }
-
-            CurrentSettings.PicknBan.GetType().GetProperty(_role).SetValue(CurrentSettings.PicknBan, role);
+            CurrentSettings.PicknBan.GetType().GetProperty(CachedRole.ToString()).SetValue(CurrentSettings.PicknBan, role);
             SettingsManager.SaveFileSettings();
-            _cachedRole = role;
-            ResetConsole();
 
-            DisplayColor($"`[SUCCESS]»` Champion '{FormatStr(cacheName)}' removed successfully for {action} !", Colors.InfoColor, Colors.SuccessColor);
+            DisplayColor($"`[SUCCESS]»` Champion '{FormatStr(selectedChampion.Name)}' removed successfully for AUTO-{action} !", Colors.InfoColor, Colors.SuccessColor);
             DisplayColor("`[SUCCESS]»` Press any key to continue...", Colors.InfoColor, Colors.SuccessColor);
             Console.ReadKey();
         }
 
         ResetConsole();
+    }
+
+    private static void GetListChampionMenu(ActionType actionType)
+    {
+        UpdateMenuTitle(actionType == ActionType.Pick ? "pnb_pick_list" : "pnb_ban_list");
+
+        while (true)
+        {
+            ShowListMenu(actionType);
+
+            string[] choices = { "Back" };
+            var choice = 0;
+            var seeMessageMenu = MenuBuilder.BuildMenu(choices, Console.CursorTop + 1);
+            while (choice == 0) choice = seeMessageMenu.RunMenu();
+
+            ResetConsole();
+
+            if (choice == choices.Length) break;
+        }
     }
 
     #endregion
@@ -292,8 +377,8 @@ public class PicknBanMenu
         Document rectangle = new();
         Border border1 = new()
         {
-            MinWidth = 60,
-            MaxWidth = 60,
+            MinWidth = 70,
+            MaxWidth = 70,
             Stroke = LineThickness.None,
             Align = Align.Center,
             TextAlign = TextAlign.Center,
@@ -302,31 +387,11 @@ public class PicknBanMenu
             Children =
             {
                 CreateSpan("Pick or Ban\nRole: ", 0, Colors.MenuTextColor),
-                CreateSpan(_role, 0, Colors.MenuPrimaryColor),
+                CreateSpan(CachedRole.ToString(), 0, Colors.MenuPrimaryColor),
                 new Separator(),
-                CreateSpan("Choose pick or ban to configure champion and delay\n", 0, Colors.MenuTextColor)
+                CreateSpan("Choose 'Pick' or 'Ban' option to manage champion(s) and delay(s)\n", 0, Colors.MenuTextColor)
             }
         };
-
-        Border border2 = new()
-        {
-            MinWidth = 60,
-            MaxWidth = 60,
-            Stroke = LineThickness.None,
-            Align = Align.Center,
-            TextAlign = TextAlign.Justify,
-            Color = Colors.MenuPrimaryColor,
-            TextWrap = TextWrap.WordWrap,
-            Children =
-            {
-                CreateSpan("Current Pick    - ", 8, Colors.MenuTextColor),
-                CreateSpan($"{FormatStr(_cachedRole.PickChamp.Name ?? "None")} (Delay: {_cachedRole.PickChamp.Delay}ms)\n", 0, Colors.MenuPrimaryColor),
-                CreateSpan("Current Ban     - ", 8, Colors.MenuTextColor),
-                CreateSpan($"{FormatStr(_cachedRole.BanChamp.Name ?? "None")} (Delay: {_cachedRole.BanChamp.Delay}ms)\n", 0, Colors.MenuPrimaryColor)
-            }
-        };
-
-        border1.Children.Add(border2);
 
         rectangle.Children.Add(border1);
         ConsoleRenderer.RenderDocument(rectangle);
@@ -350,7 +415,7 @@ public class PicknBanMenu
             {
                 CreateSpan("Pick and Ban", 0, Colors.MenuTextColor),
                 new Separator(),
-                CreateSpan("Choose role to configure Pick and Ban.", 0, Colors.MenuTextColor)
+                CreateSpan("Choose role to configure Pick and Ban", 0, Colors.MenuTextColor)
             }
         };
 
@@ -358,15 +423,20 @@ public class PicknBanMenu
         ConsoleRenderer.RenderDocument(rectangle);
     }
 
-    private static void ShowPicknBanMenu(bool pick)
+    private static void ShowPicknBanMenu(ActionType actionType)
     {
         Console.SetCursorPosition(0, TopLength);
+
+        var action = actionType == ActionType.Pick ? "Pick" : "Ban";
+        List<ChampItem> selected = actionType == ActionType.Pick
+            ? PickBanChampions.GetValueOrDefault(ActionType.Pick)
+            : PickBanChampions.GetValueOrDefault(ActionType.Ban);
 
         Document rectangle = new();
         Border border1 = new()
         {
-            MinWidth = 65,
-            MaxWidth = 65,
+            MinWidth = 75,
+            MaxWidth = 75,
             Stroke = LineThickness.None,
             Align = Align.Center,
             TextAlign = TextAlign.Center,
@@ -374,48 +444,30 @@ public class PicknBanMenu
             TextWrap = TextWrap.WordWrap,
             Children =
             {
-                CreateSpan("Pick and Ban\n", 0, Colors.MenuTextColor),
-                CreateSpan(_role, 0, Colors.MenuTextColor),
+                CreateSpan("Pick and Ban", 0, Colors.MenuTextColor),
                 new Separator(),
-                CreateSpan("Configure which champion to auto pick ban and delay\n", 0, Colors.MenuTextColor)
+                CreateSpan($"Manage champion(s) to AUTO-{action} and delay(s) for '{CachedRole}' role\n", 0, Colors.MenuTextColor),
+                CreateSpan("For more information, go to the 'Pick List' menu", 0, Colors.MenuTextColor),
+                new Separator() { Color = ConsoleColor.Black },
+                CreateSpan($"Current {action}      - ", 0, Colors.MenuTextColor),
+                CreateSpan($"{selected.Count} champion(s)", 0, Colors.MenuPrimaryColor)
             }
         };
 
-        var action = pick ? "Pick" : "Ban";
-        ChampItem selected = pick ? _cachedRole.PickChamp : _cachedRole.BanChamp;
-
-        Border border2 = new()
-        {
-            MinWidth = 60,
-            MaxWidth = 60,
-            Stroke = LineThickness.None,
-            Align = Align.Center,
-            TextAlign = TextAlign.Justify,
-            Color = Colors.MenuPrimaryColor,
-            TextWrap = TextWrap.WordWrap,
-            Children =
-            {
-                CreateSpan($"Current {action}      - ", 8, Colors.MenuTextColor),
-                CreateSpan($"{FormatStr(selected.Name ?? "None")} (Delay: {selected.Delay}ms)\n", 0, Colors.MenuPrimaryColor)
-            }
-        };
-
-        border1.Children.Add(border2);
         rectangle.Children.Add(border1);
         ConsoleRenderer.RenderDocument(rectangle);
     }
 
-    private static void ShowConfirmMenu(bool pick)
+    private static void ShowConfirmMenu(ActionType actionType, ChampItem champ)
     {
         Console.SetCursorPosition(0, TopLength);
 
-        var action = pick ? "Pick" : "Ban";
-
+        var action = actionType == ActionType.Pick ? "Pick" : "Ban";
         Document rectangle = new();
         Border border1 = new()
         {
-            MinWidth = 65,
-            MaxWidth = 65,
+            MinWidth = 70,
+            MaxWidth = 70,
             Stroke = LineThickness.None,
             Align = Align.Center,
             TextAlign = TextAlign.Center,
@@ -425,12 +477,71 @@ public class PicknBanMenu
             {
                 CreateSpan("Confirmation", 0, Colors.MenuTextColor),
                 new Separator(),
-                CreateSpan($"Confirm if you want to delete the champion for '{action}'\n\n", 0, Colors.MenuTextColor),
+                CreateSpan($"Confirm if you want to delete the champion for '", 0, Colors.MenuTextColor),
+                CreateSpan(action, 0, Colors.MenuPrimaryColor),
+                CreateSpan("'", 0, Colors.MenuTextColor),
+                new Separator() { Color = ConsoleColor.Black },
                 CreateSpan("Champion     - ", 0, Colors.MenuTextColor),
-                CreateSpan(pick ? FormatStr(_cachedRole.PickChamp.Name) : FormatStr(_cachedRole.BanChamp.Name), 0, Colors.MenuPrimaryColor)
+                CreateSpan(FormatStr(champ.Name), 0, Colors.MenuPrimaryColor),
+                CreateSpan(" (Role : ", 0, Colors.MenuTextColor),
+                CreateSpan(CachedRole.ToString(), 0, Colors.MenuPrimaryColor),
+                CreateSpan(")", 0, Colors.MenuTextColor)
             }
         };
 
+        rectangle.Children.Add(border1);
+        ConsoleRenderer.RenderDocument(rectangle);
+    }
+
+    private static void ShowListMenu(ActionType actionType)
+    {
+        Console.SetCursorPosition(0, TopLength);
+
+        var action = actionType == ActionType.Pick ? "PICK" : "BAN";
+        Document rectangle = new();
+        Border border1 = new()
+        {
+            MinWidth = 90,
+            MaxWidth = 90,
+            Stroke = LineThickness.None,
+            Align = Align.Center,
+            TextAlign = TextAlign.Center,
+            Color = Colors.MenuPrimaryColor,
+            TextWrap = TextWrap.WordWrap,
+            Children =
+            {
+                CreateSpan("Pick and Ban", 0, Colors.MenuTextColor),
+                new Separator(),
+                CreateSpan($"List of all champion(s) to AUTO-{action} for '{CachedRole}' role\n", 0, Colors.MenuTextColor),
+                CreateSpan("The order lets the application know which champion to select first\n", 0, Colors.MenuTextColor),
+                CreateSpan("If champion is banned or already pick, we try to select the next champ", 0, Colors.MenuTextColor),
+            }
+        };
+        Grid grid = new()
+        {
+            Stroke = LineThickness.None,
+            Align = Align.Center,
+            Columns = { GridLength.Char(20), GridLength.Char(30) },
+            Color = Colors.MenuPrimaryColor,
+            MaxWidth = 50,
+            Children =
+            {
+                new Cell("Order") { Stroke = LineThickness.None, Padding = new Thickness(0, 1), TextAlign = TextAlign.Center },
+                new Cell("Champion") { Stroke = LineThickness.None, Padding = new Thickness(0, 1), TextAlign = TextAlign.Justify }
+            }
+        };
+
+        var count = 0;
+        var role = (RolePicknBan)CurrentSettings.PicknBan.GetType().GetProperty(CachedRole.ToString()).GetValue(CurrentSettings.PicknBan);
+        List<ChampItem> champions = actionType == ActionType.Pick ? role.Picks : role.Bans;
+        foreach (ChampItem champ in champions)
+        {
+            count++;
+            grid.Children.Add(new Cell($"N°{count}") { Color = Colors.MenuTextColor, Stroke = LineThickness.None, TextAlign = TextAlign.Center });
+            grid.Children.Add(new Cell($"{champ.Name} (ID : {champ.Id})") { Color = Colors.MenuTextColor, Stroke = LineThickness.None, TextAlign = TextAlign.Justify });
+        }
+
+        border1.Children.Add(grid);
         rectangle.Children.Add(border1);
         ConsoleRenderer.RenderDocument(rectangle);
     }

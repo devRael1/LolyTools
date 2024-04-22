@@ -21,14 +21,14 @@ public class PicknBan
             foreach (Action action in arrActions)
             {
                 if (action.ActorCellId != ChampSelectResponse.LocalPlayerCellId || action.Completed) continue;
-                if (action.Type == "pick") HandlePickAction(action);
-                if (action.Type == "ban") HandleBanAction(action);
+                HandleAction(action, action.Type == "pick" ? ActionType.Pick : ActionType.Ban);
             }
         }
     }
 
     public static void LoadChampionsList()
     {
+        Global.ChampionsList.Clear();
         List<Champion> champsSplit = JsonConvert.DeserializeObject<List<Champion>>(
             Requests.WaitSuccessClientRequest("GET", "lol-champions/v1/inventories/" + Global.SummonerLogged.SummonerId + "/champions-minimal", true)[1]
         );
@@ -37,15 +37,12 @@ public class PicknBan
         {
             if (champ.Id == -1) continue;
 
-            var champName = champ.Name;
-            if (champ.Id == 20) champName = "Nunu";
-
             Global.ChampionsList.Add(
                 new ChampItem
                 {
-                    Name = champName,
+                    Name = champ.Name,
                     Id = champ.Id.ToString(),
-                    Free = champ.Ownership.Owned || champ.FreeToPlay || champ.Ownership.XboxGPReward || champ.Ownership.LoyaltyReward
+                    Usable = champ.Ownership.Owned || champ.FreeToPlay || champ.Ownership.XboxGPReward || champ.Ownership.LoyaltyReward
                 }
             );
         }
@@ -57,46 +54,39 @@ public class PicknBan
         Global.LastActionId = actionId;
     }
 
-    private static void HandlePickAction(Action action)
+    private static ChampItem GetChamp(ActionType actionType)
     {
-        if (ChampSelectSession.CurrentRole.PickChamp.Id == null) return;
+        return ChampSelectSession.PickBanChampions.GetValueOrDefault(actionType).FirstOrDefault();
+    }
 
-        if (!ChampSelectSession.HoverPick)
+    private static void HandleAction(Action action, ActionType actionType)
+    {
+        if (ChampSelectSession.PickBanChampions.GetValueOrDefault(actionType).Count == 0) return;
+
+        var isHovered = actionType == ActionType.Pick ? ChampSelectSession.HoverPick : ChampSelectSession.HoverBan;
+        var isLocked = actionType == ActionType.Pick ? ChampSelectSession.LockedPick : ChampSelectSession.LockedBan;
+        var champSelectPhase = ChampSelectResponse.Timer.Phase;
+
+        if (!isHovered)
         {
-            var champSelectPhase = ChampSelectResponse.Timer.Phase;
             var currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-
-            if (currentTime - 3000 > ChampSelectSession.ChampSelectStart || champSelectPhase != "PLANNING") HoverChampion(action.Id, ActionType.Pick);
+            if (currentTime - 3000 > ChampSelectSession.ChampSelectStart || champSelectPhase != "PLANNING") HoverChampion(action.Id, actionType);
         }
 
         if (!action.IsInProgress) return;
 
         MarkPhaseStart(action.Id);
-        if (ChampSelectSession.LockedPick) return;
+        if (isLocked) return;
 
-        Thread.Sleep(ChampSelectSession.CurrentRole.PickChamp.Delay);
-        LockChampion(action.Id, ActionType.Pick);
-    }
-
-    private static void HandleBanAction(Action action)
-    {
-        if (ChampSelectSession.CurrentRole.BanChamp.Id == null) return;
-        var champSelectPhase = ChampSelectResponse.Timer.Phase;
-        if (!action.IsInProgress || champSelectPhase == "PLANNING") return;
-
-        MarkPhaseStart(action.Id);
-
-        if (!ChampSelectSession.HoverBan) HoverChampion(action.Id, ActionType.Ban);
-        if (ChampSelectSession.LockedBan) return;
-
-        Thread.Sleep(ChampSelectSession.CurrentRole.BanChamp.Delay);
-        LockChampion(action.Id, ActionType.Ban);
+        ChampItem champion = GetChamp(actionType);
+        Thread.Sleep(champion.Delay);
+        LockChampion(action.Id, actionType);
     }
 
     private static void HoverChampion(int actionId, ActionType actionType)
     {
-        ChampItem champion = actionType == ActionType.Pick ? ChampSelectSession.CurrentRole.PickChamp : ChampSelectSession.CurrentRole.BanChamp;
-        Logger.Info(LogModule.PickAndBan, $"Hover '{champion.Name}' champion for {actionType}");
+        ChampItem champion = GetChamp(actionType);
+        Logger.Info(LogModule.PickAndBan, $"Hover '{champion.Name}' champion for '{actionType}'");
 
         var champSelectAction = Requests.ClientRequest("PATCH", $"lol-champ-select/v1/session/actions/{actionId}", true, $"{{\"championId\":{champion.Id}}}");
         if (champSelectAction[0] != "204") return;
@@ -112,14 +102,16 @@ public class PicknBan
         }
 
         Logger.Info(LogModule.PickAndBan, $"'{champion.Name}' has been hovered for {actionType}");
-        var delay = actionType == ActionType.Pick ? ChampSelectSession.CurrentRole.PickChamp.Delay : ChampSelectSession.CurrentRole.BanChamp.Delay;
-        Logger.Info(LogModule.PickAndBan, $"Waiting {delay}ms to '{actionType}' him");
+        Logger.Info(LogModule.PickAndBan, $"Waiting {champion.Delay}ms to '{actionType}' him");
     }
 
     private static void LockChampion(int actionId, ActionType actionType)
     {
-        ChampItem champion = actionType == ActionType.Pick ? ChampSelectSession.CurrentRole.PickChamp : ChampSelectSession.CurrentRole.BanChamp;
-        Logger.Info(LogModule.PickAndBan, $"Locking '{champion.Name}' champion for {actionType}");
+        ChampItem champion = GetChamp(actionType);
+        Logger.Info(LogModule.PickAndBan, $"Locking '{champion.Name}' champion for '{actionType}'");
+
+        // TODO : Faire le système pour détecter si on ne peut pas lock le champion car il est déjà lock / ban par un autre joueur (equipe adverse à prendre en compte)
+        // Check la tableau "actions" pour analyser les bans et les picks de chaque joueur dans la partie
 
         var champSelectAction = Requests.ClientRequest("PATCH", $"lol-champ-select/v1/session/actions/{actionId}", true,
             $"{{\"completed\":true,\"championId\":{champion.Id}}}");

@@ -106,6 +106,8 @@ public class Interface
             "pnb_ban_delay" => $"{SoftName} by {SoftAuthor} > Pick'n'Ban - Ban Champion Delay Menu",
             "pnb_pick_del_c" => $"{SoftName} by {SoftAuthor} > Pick'n'Ban - Remove Pick Champion Menu",
             "pnb_ban_del_c" => $"{SoftName} by {SoftAuthor} > Pick'n'Ban - Remove Ban Champion Menu",
+            "pnb_pick_list" => $"{SoftName} by {SoftAuthor} > Pick'n'Ban - Pick Champion List Menu",
+            "pnb_ban_list" => $"{SoftName} by {SoftAuthor} > Pick'n'Ban - Ban Champion List Menu",
             "ac" => $"{SoftName} by {SoftAuthor} - Auto Chat Menu",
             "ac_add" => $"{SoftName} by {SoftAuthor} > Auto Chat - Add Message Menu",
             "ac_del" => $"{SoftName} by {SoftAuthor} > Auto Chat - Delete Message Menu",

@@ -23,6 +23,7 @@ public class MemberTeam
 public class Action
 {
     public int ActorCellId { get; set; }
+    public int ChampionId { get; set; }
     public bool Completed { get; set; }
     public string Type { get; set; }
     public int Id { get; set; }

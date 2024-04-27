@@ -40,7 +40,7 @@ public class ChampSelectSession
 
         if (LockedPick && LockedBan)
         {
-            Logger.Info(LogModule.PickAndBan, "Pick and Ban are locked. Waiting for game to start");
+            Logger.Info(LogModule.PickAndBan, "Pick and Ban are finished. Waiting for game to start");
             Thread.Sleep(TimeSpan.FromSeconds(10));
             return;
         }

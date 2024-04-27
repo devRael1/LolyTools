@@ -92,7 +92,7 @@ My Discord: `1043813027205619804`
 - [x] Add system to save all settings (all Keybinds, Colors, chat options...) of the Game
 - [x] Add a system to auto-send logs to the developer (Discord Webhook) when an error occurs (use a setting to enable/disable)
 - [x] Upgrade the error management system in the app (use `AppDomain.CurrentDomain.UnhandledException` for each error
-- [ ] Add a second option of champion pick in case of ban of the main champion ([#5 Suggestion](https://github.com/devRael1/LolyTools/issues/5))
+- [x] Add a second option of champion pick in case of ban of the main champion ([#5 Suggestion](https://github.com/devRael1/LolyTools/issues/5))
 - [x] Add an option in PicknBan menu to show the list of champions by roles (Top, Jungle, Mid, ADC, Support, Default) and by Pick and or Ban
 - [ ] Update screenshots in `README.md` with Release V3.0.0
 - [x] Add a screenshot exemple for auto send logs (Discord Webhook) system

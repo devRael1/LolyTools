@@ -4,7 +4,7 @@
 A set of several small tools for League Of Legends.
 *If you want to support the project, please leave a __star__ on the Github directory*
 
-### Works with the latest `14.6` update of League of Legends ([Patch Notes : 14.6](https://na.leagueoflegends.com/en-us/news/game-updates/patch-14-6-notes/))
+### Works with the latest `14.7` update of League of Legends ([Patch Notes : 14.7](https://na.leagueoflegends.com/en-us/news/game-updates/patch-14-7-notes/))
 ![Loly - Tools](/Ressources/mainMenu.png)
 
 ## `❗ Usage`
@@ -19,7 +19,7 @@ You can download the latest version of **LolyTools** [here](https://github.com/d
 - [x] Multi-region support (DE, FR, ES, JP, CN...)
 - [x] Lobby Revealer/Shower (Ranked/Draft/Normal games)
 - [x] Auto Accept match (Auto accept matchmaking)
-- [x] Auto Pick and Ban champion (By roles => Top, Jungle, Mid, ADC, Support)
+- [x] Auto Pick and Ban multiple champions (By roles => Top, Jungle, Mid, ADC, Support)
 - [x] Import / Export League of Legends settings for all accounts
 - [x] Auto send logs when an error occurs (Discord Webhook)
 - [x] Auto Chat (Auto send messages when champ select start)
@@ -92,12 +92,12 @@ My Discord: `1043813027205619804`
 - [x] Add system to save all settings (all Keybinds, Colors, chat options...) of the Game
 - [x] Add a system to auto-send logs to the developer (Discord Webhook) when an error occurs (use a setting to enable/disable)
 - [x] Upgrade the error management system in the app (use `AppDomain.CurrentDomain.UnhandledException` for each error
-- [x] Add a second option of champion pick in case of ban of the main champion ([#5 Suggestion](https://github.com/devRael1/LolyTools/issues/5))
+- [ ] Add a second option of champion pick in case of ban of the main champion ([#5 Suggestion](https://github.com/devRael1/LolyTools/issues/5))
 - [x] Add an option in PicknBan menu to show the list of champions by roles (Top, Jungle, Mid, ADC, Support, Default) and by Pick and or Ban
 - [ ] Update screenshots in `README.md` with Release V3.0.0
 - [x] Add a screenshot exemple for auto send logs (Discord Webhook) system
 - [x] Refactor the code of `Settings.cs` to make it more readable and optimized (create new class `Settings` in Class folder)
-- [ ] Update system with Version of the app (delete global variable in `Global.cs`)
+- [x] Update system with Version of the app (delete global variable in `Global.cs`)
 
 ## `📝 License`
 Copyright © 2024 devRael<br>

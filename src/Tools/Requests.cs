@@ -37,11 +37,7 @@ public static class Requests
             client.BaseAddress = new Uri("https://127.0.0.1:" + port + "/");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", token);
             HttpRequestMessage request = new(new HttpMethod(method), url);
-            if (!string.IsNullOrEmpty(body))
-            {
-                request.Content = new StringContent(body, Encoding.UTF8, "application/json");
-            }
-
+            if (!string.IsNullOrEmpty(body)) request.Content = new StringContent(body, Encoding.UTF8, "application/json");
             Logger.Request(new Request { Method = method, Url = url, Body = body });
 
             HttpResponseMessage response = client.SendAsync(request).GetAwaiter().GetResult();

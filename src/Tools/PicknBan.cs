@@ -91,15 +91,8 @@ public class PicknBan
         var champSelectAction = Requests.ClientRequest("PATCH", $"lol-champ-select/v1/session/actions/{actionId}", true, $"{{\"championId\":{champion.Id}}}");
         if (champSelectAction[0] != "204") return;
 
-        switch (actionType)
-        {
-            case ActionType.Pick:
-                ChampSelectSession.HoverPick = true;
-                break;
-            case ActionType.Ban:
-                ChampSelectSession.HoverBan = true;
-                break;
-        }
+        if (actionType == ActionType.Pick) ChampSelectSession.HoverPick = true;
+        else ChampSelectSession.HoverBan = true;
 
         Logger.Info(LogModule.PickAndBan, $"'{champion.Name}' has been hovered for {actionType}");
         Logger.Info(LogModule.PickAndBan, $"Waiting {champion.Delay}ms to '{actionType}' him");
@@ -117,15 +110,8 @@ public class PicknBan
             $"{{\"completed\":true,\"championId\":{champion.Id}}}");
         if (champSelectAction[0] != "204") return;
 
-        switch (actionType)
-        {
-            case ActionType.Pick:
-                ChampSelectSession.LockedPick = true;
-                break;
-            case ActionType.Ban:
-                ChampSelectSession.LockedBan = true;
-                break;
-        }
+        if (actionType == ActionType.Pick) ChampSelectSession.LockedPick = true;
+        else ChampSelectSession.LockedBan = true;
 
         Logger.Info(LogModule.PickAndBan, $"'{champion.Name}' has been locked for {actionType}");
     }

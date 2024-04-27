@@ -37,22 +37,6 @@ public static class Utils
         }
     }
 
-    public static string LrParse(string source, string left, string right, int innt = 0)
-    {
-        if (source == null) return null;
-
-        var length = left.Length;
-        var result = "";
-        var num = source.IndexOf(left, innt, StringComparison.Ordinal);
-        var num2 = source.IndexOf(right, num + length, StringComparison.Ordinal);
-        if (num != -1 & num2 != -1)
-        {
-            result = source[(num + length)..num2];
-        }
-
-        return result;
-    }
-
     public static string FormatStr(string str)
     {
         str = str.ToLower();

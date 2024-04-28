@@ -1,22 +1,22 @@
 ﻿namespace Loly.src.Variables.UGG.APIs.HistoricRanks;
 
-internal class HistoricRanksResponse
+public class HistoricRanksResponse
 {
-    internal Data Data { get; set; }
-    internal List<Error> Errors { get; set; }
+    public Data Data { get; set; }
+    public List<Error> Errors { get; set; }
 }
 
-internal class Data
+public class Data
 {
-    internal List<HistoricPlayerRank> GetHistoricRanks { get; set; }
+    public List<HistoricPlayerRank> GetHistoricRanks { get; set; }
 }
 
-internal class HistoricPlayerRank
+public class HistoricPlayerRank
 {
-    internal int? Lp { get; set; }
-    internal int? QueueId { get; set; }
-    internal string Rank { get; set; }
-    internal string RegionId { get; set; }
-    internal int? Season { get; set; }
-    internal string Tier { get; set; }
+    public int? Lp { get; set; }
+    public int? QueueId { get; set; }
+    public string Rank { get; set; }
+    public string RegionId { get; set; }
+    public int? Season { get; set; }
+    public string Tier { get; set; }
 }

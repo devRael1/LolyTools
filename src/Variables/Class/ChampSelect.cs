@@ -1,41 +1,41 @@
 ﻿namespace Loly.src.Variables.Class;
 
-internal class ChampSelectResponse
+public class ChampSelectResponse
 {
-    internal List<List<Action>> Actions { get; set; }
-    internal ChatDetails ChatDetails { get; set; }
-    internal List<MemberTeam> MyTeam { get; set; }
-    internal Timer Timer { get; set; }
-    internal int LocalPlayerCellId { get; set; }
+    public List<List<Action>> Actions { get; set; }
+    public ChatDetails ChatDetails { get; set; }
+    public List<MemberTeam> MyTeam { get; set; }
+    public Timer Timer { get; set; }
+    public int LocalPlayerCellId { get; set; }
 }
 
-internal class ChatDetails
+public class ChatDetails
 {
-    internal string MultiUserChatId { get; set; }
+    public string MultiUserChatId { get; set; }
 }
 
-internal class MemberTeam
+public class MemberTeam
 {
-    internal string AssignedPosition { get; set; }
-    internal string SummonerId { get; set; }
+    public string AssignedPosition { get; set; }
+    public string SummonerId { get; set; }
 }
 
-internal class Action
+public class Action
 {
-    internal int ActorCellId { get; set; }
-    internal int ChampionId { get; set; }
-    internal bool Completed { get; set; }
-    internal string Type { get; set; }
-    internal int Id { get; set; }
-    internal bool IsInProgress { get; set; }
+    public int ActorCellId { get; set; }
+    public int ChampionId { get; set; }
+    public bool Completed { get; set; }
+    public string Type { get; set; }
+    public int Id { get; set; }
+    public bool IsInProgress { get; set; }
 }
 
-internal class Timer
+public class Timer
 {
-    internal string Phase { get; set; }
+    public string Phase { get; set; }
 }
 
-internal class ChatMe
+public class ChatMe
 {
-    internal string Id { get; set; }
+    public string Id { get; set; }
 }

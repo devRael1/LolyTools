@@ -5,7 +5,7 @@ namespace Loly.src.Variables.UGG.APIs.HistoricRanks;
 public class HistoricRanks : IPayload
 {
     [JsonProperty("operationName")] public string OperationName { get; set; } = "historicRanks";
-    [JsonProperty("variables")] internal HistoricRanksVariables Variables { get; set; } = new();
+    [JsonProperty("variables")] public HistoricRanksVariables Variables { get; set; } = new();
     [JsonProperty("query")] public string Query { get; set; } = Queries.HistoricRanks;
 
     internal string ToFormattedString()

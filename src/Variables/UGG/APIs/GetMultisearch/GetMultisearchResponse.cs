@@ -1,53 +1,53 @@
 ﻿namespace Loly.src.Variables.UGG.APIs.GetMultisearch;
 
-internal class GetMultisearchResponse
+public class GetMultisearchResponse
 {
-    internal Data Data { get; set; }
+    public Data Data { get; set; }
 }
 
-internal class Data
+public class Data
 {
-    internal List<Multisearch> GetMultisearch { get; set; }
+    public List<Multisearch> GetMultisearch { get; set; }
 }
 
-internal class Multisearch
+public class Multisearch
 {
-    internal List<ChampionStats> BestChamps { get; set; }
-    internal RankScore RankData { get; set; }
-    internal string RiotTagLine { get; set; }
-    internal string RiotUserName { get; set; }
-    internal List<MultisearchRoleStats> RoleStats { get; set; }
-    internal int? TotalGamesLastFifteen { get; set; }
-    internal double? Winperc { get; set; }
-    internal int? WinsLastFifteen { get; set; }
-    internal int? Winstreak { get; set; }
-    internal List<ChampionStats> WorstChamps { get; set; }
+    public List<ChampionStats> BestChamps { get; set; }
+    public RankScore RankData { get; set; }
+    public string RiotTagLine { get; set; }
+    public string RiotUserName { get; set; }
+    public List<MultisearchRoleStats> RoleStats { get; set; }
+    public int? TotalGamesLastFifteen { get; set; }
+    public double? Winperc { get; set; }
+    public int? WinsLastFifteen { get; set; }
+    public int? Winstreak { get; set; }
+    public List<ChampionStats> WorstChamps { get; set; }
 }
 
-internal class MultisearchRoleStats
+public class MultisearchRoleStats
 {
-    internal int Games { get; set; }
-    internal string RoleName { get; set; }
-    internal int Wins { get; set; }
+    public int Games { get; set; }
+    public string RoleName { get; set; }
+    public int Wins { get; set; }
 }
 
-internal class RankScore
+public class RankScore
 {
-    internal int Losses { get; set; }
-    internal int Lp { get; set; }
-    internal string QueueType { get; set; }
-    internal string Rank { get; set; }
-    internal int SeasonId { get; set; }
-    internal string Tier { get; set; }
-    internal int Wins { get; set; }
+    public int Losses { get; set; }
+    public int Lp { get; set; }
+    public string QueueType { get; set; }
+    public string Rank { get; set; }
+    public int SeasonId { get; set; }
+    public string Tier { get; set; }
+    public int Wins { get; set; }
 }
 
-internal class ChampionStats
+public class ChampionStats
 {
-    internal int Assists { get; set; }
-    internal int ChampId { get; set; }
-    internal int Deaths { get; set; }
-    internal int Games { get; set; }
-    internal int Kills { get; set; }
-    internal int Wins { get; set; }
+    public int Assists { get; set; }
+    public int ChampId { get; set; }
+    public int Deaths { get; set; }
+    public int Games { get; set; }
+    public int Kills { get; set; }
+    public int Wins { get; set; }
 }

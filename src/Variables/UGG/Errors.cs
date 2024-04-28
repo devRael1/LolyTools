@@ -1,14 +1,14 @@
 ﻿namespace Loly.src.Variables.UGG;
 
-internal class Error
+public class Error
 {
-    internal List<Location> Locations { get; set; }
-    internal string Message { get; set; }
-    internal List<string> Path { get; set; }
+    public List<Location> Locations { get; set; }
+    public string Message { get; set; }
+    public List<string> Path { get; set; }
 }
 
-internal class Location
+public class Location
 {
-    internal int Column { get; set; } = 0;
-    internal int Line { get; set; } = 0;
+    public int Column { get; set; } = 0;
+    public int Line { get; set; } = 0;
 }

@@ -1,46 +1,46 @@
 ﻿namespace Loly.src.Variables.Class;
 
-internal class Settings
+public class Settings
 {
-    internal bool EnableAutoUpdate { get; set; }
-    internal bool EnableAutoSendLogs { get; set; }
-    internal int ClearLogsFilesDays { get; set; }
-    internal Tools Tools { get; set; } = new();
-    internal AutoAccept AutoAccept { get; set; } = new();
-    internal AutoChat AutoChat { get; set; } = new();
-    internal PicknBan PicknBan { get; set; } = new();
+    public bool EnableAutoUpdate { get; set; }
+    public bool EnableAutoSendLogs { get; set; }
+    public int ClearLogsFilesDays { get; set; }
+    public Tools Tools { get; set; } = new();
+    public AutoAccept AutoAccept { get; set; } = new();
+    public AutoChat AutoChat { get; set; } = new();
+    public PicknBan PicknBan { get; set; } = new();
 }
 
-internal class Tools
+public class Tools
 {
-    internal bool LobbyRevealer { get; set; }
-    internal bool AutoAccept { get; set; }
-    internal bool PicknBan { get; set; }
-    internal bool AutoChat { get; set; }
+    public bool LobbyRevealer { get; set; }
+    public bool AutoAccept { get; set; }
+    public bool PicknBan { get; set; }
+    public bool AutoChat { get; set; }
 }
 
-internal class AutoAccept
+public class AutoAccept
 {
-    internal bool AutoAcceptOnce { get; set; }
+    public bool AutoAcceptOnce { get; set; }
 }
 
-internal class AutoChat
+public class AutoChat
 {
-    internal List<string> ChatMessages { get; set; } = new();
+    public List<string> ChatMessages { get; set; } = new();
 }
 
-internal class PicknBan
+public class PicknBan
 {
-    internal RolePicknBan Default { get; set; } = new();
-    internal RolePicknBan Top { get; set; } = new();
-    internal RolePicknBan Jungle { get; set; } = new();
-    internal RolePicknBan Mid { get; set; } = new();
-    internal RolePicknBan ADC { get; set; } = new();
-    internal RolePicknBan Support { get; set; } = new();
+    public RolePicknBan Default { get; set; } = new();
+    public RolePicknBan Top { get; set; } = new();
+    public RolePicknBan Jungle { get; set; } = new();
+    public RolePicknBan Mid { get; set; } = new();
+    public RolePicknBan ADC { get; set; } = new();
+    public RolePicknBan Support { get; set; } = new();
 }
 
-internal class RolePicknBan
+public class RolePicknBan
 {
-    internal List<ChampItem> Picks { get; set; } = new();
-    internal List<ChampItem> Bans { get; set; } = new();
+    public List<ChampItem> Picks { get; set; } = new();
+    public List<ChampItem> Bans { get; set; } = new();
 }

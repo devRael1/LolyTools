@@ -41,7 +41,7 @@ internal static class ToolsMenu
                     {
                         DisplayColor(" < Lobby Revealer > is not enabled in the settings.", Colors.WarningColor, Colors.PrimaryColor);
                         DisplayColor(" Please go to 'Settings' menu and enable it.", Colors.WarningColor, Colors.PrimaryColor);
-                        DisplayColor(" Press Enter to continue...", Colors.WarningColor, Colors.PrimaryColor);
+                        DisplayColor(" Press 'Enter' to continue...", Colors.WarningColor, Colors.PrimaryColor);
                         Console.ReadKey();
                         break;
                     }
@@ -53,7 +53,7 @@ internal static class ToolsMenu
                     {
                         DisplayColor(" < Auto Accept > is not enabled in the settings.", Colors.WarningColor, Colors.PrimaryColor);
                         DisplayColor(" Please go to 'Settings' menu and enable it.", Colors.WarningColor, Colors.PrimaryColor);
-                        DisplayColor(" Press Enter to continue...", Colors.WarningColor, Colors.PrimaryColor);
+                        DisplayColor(" Press 'Enter' to continue...", Colors.WarningColor, Colors.PrimaryColor);
                         Console.ReadKey();
                         break;
                     }
@@ -65,7 +65,7 @@ internal static class ToolsMenu
                     {
                         DisplayColor(" < Auto Chat > is not enabled in the settings.", Colors.WarningColor, Colors.PrimaryColor);
                         DisplayColor(" Please go to 'Settings' menu and enable it.", Colors.WarningColor, Colors.PrimaryColor);
-                        DisplayColor(" Press Enter to continue...", Colors.WarningColor, Colors.PrimaryColor);
+                        DisplayColor(" Press 'Enter' to continue...", Colors.WarningColor, Colors.PrimaryColor);
                         Console.ReadKey();
                         break;
                     }
@@ -77,7 +77,16 @@ internal static class ToolsMenu
                     {
                         DisplayColor(" < Pick and Ban > is not enabled in the settings.", Colors.WarningColor, Colors.PrimaryColor);
                         DisplayColor(" Please go to 'Settings' menu and enable it.", Colors.WarningColor, Colors.PrimaryColor);
-                        DisplayColor(" Press Enter to continue...", Colors.WarningColor, Colors.PrimaryColor);
+                        DisplayColor(" Press 'Enter' to continue...", Colors.WarningColor, Colors.PrimaryColor);
+                        Console.ReadKey();
+                        break;
+                    }
+
+                    if (!IsLeagueOpen)
+                    {
+                        DisplayColor(" < Pick and Ban > requires League of Legends to be open.", Colors.WarningColor, Colors.PrimaryColor);
+                        DisplayColor(" Please open League of Legends and try again.", Colors.WarningColor, Colors.PrimaryColor);
+                        DisplayColor(" Press 'Enter' to continue...", Colors.WarningColor, Colors.PrimaryColor);
                         Console.ReadKey();
                         break;
                     }
@@ -85,6 +94,15 @@ internal static class ToolsMenu
                     GetPicknBanMenu();
                     break;
                 case 5:
+                    if (!IsLeagueOpen)
+                    {
+                        DisplayColor(" < Import/Export LoL Settings > requires League of Legends to be open.", Colors.WarningColor, Colors.PrimaryColor);
+                        DisplayColor(" Please open League of Legends and try again.", Colors.WarningColor, Colors.PrimaryColor);
+                        DisplayColor(" Press 'Enter' to continue...", Colors.WarningColor, Colors.PrimaryColor);
+                        Console.ReadKey();
+                        break;
+                    }
+
                     GetLoLSettingsMenu();
                     break;
             }

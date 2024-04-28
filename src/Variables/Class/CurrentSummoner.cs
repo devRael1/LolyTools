@@ -1,16 +1,16 @@
 ﻿namespace Loly.src.Variables.Class;
 
-internal class CurrentSummoner
+public class CurrentSummoner
 {
-    internal string AccountId { get; set; }
-    internal string DisplayName { get; set; }
-    internal string GameName { get; set; }
-    internal string TagLine { get; set; }
-    internal string Puuid { get; set; }
-    internal string SummonerId { get; set; }
-    internal string SummonerLevel { get; set; }
+    public string AccountId { get; set; }
+    public string DisplayName { get; set; }
+    public string GameName { get; set; }
+    public string TagLine { get; set; }
+    public string Puuid { get; set; }
+    public string SummonerId { get; set; }
+    public string SummonerLevel { get; set; }
 
-    internal string GetFullGameName()
+    public string GetFullGameName()
     {
         return $"{GameName}#{TagLine}";
     }

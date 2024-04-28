@@ -2,47 +2,47 @@
 
 namespace Loly.src.Variables.UGG.APIs.GetSummonerProfile;
 
-internal class GetSummonerProfileResponse
+public class GetSummonerProfileResponse
 {
-    internal Data Data { get; set; }
-    internal List<Error> Errors { get; set; }
+    public Data Data { get; set; }
+    public List<Error> Errors { get; set; }
 }
 
-internal class Data
+public class Data
 {
-    internal FetchProfileRanks FetchProfileRanks { get; set; }
-    internal ProfileInitSimple ProfileInitSimple { get; set; }
+    public FetchProfileRanks FetchProfileRanks { get; set; }
+    public ProfileInitSimple ProfileInitSimple { get; set; }
 }
 
-internal class ProfileInitSimple
+public class ProfileInitSimple
 {
-    internal CustomizationData CustomizationData { get; set; }
-    internal string LastModified { get; set; }
-    internal string MemberStatus { get; set; }
-    internal PlayerInfo PlayerInfo { get; set; }
+    public CustomizationData CustomizationData { get; set; }
+    public string LastModified { get; set; }
+    public string MemberStatus { get; set; }
+    public PlayerInfo PlayerInfo { get; set; }
 }
 
-internal class PlayerInfo
+public class PlayerInfo
 {
-    internal int AccountIdV3 { get; set; }
-    internal string AccountIdV4 { get; set; }
-    internal string ExodiaUuid { get; set; }
-    internal int IconId { get; set; }
-    internal string PuuidV4 { get; set; }
-    internal string RegionId { get; set; }
-    internal string RiotTagLine { get; set; }
-    internal string RiotUserName { get; set; }
-    internal int SummonerIdV3 { get; set; }
-    internal string SummonerIdV4 { get; set; }
-    internal int SummonerLevel { get; set; }
+    public int AccountIdV3 { get; set; }
+    public string AccountIdV4 { get; set; }
+    public string ExodiaUuid { get; set; }
+    public int IconId { get; set; }
+    public string PuuidV4 { get; set; }
+    public string RegionId { get; set; }
+    public string RiotTagLine { get; set; }
+    public string RiotUserName { get; set; }
+    public int SummonerIdV3 { get; set; }
+    public string SummonerIdV4 { get; set; }
+    public int SummonerLevel { get; set; }
 }
 
-internal class CustomizationData
+public class CustomizationData
 {
-    internal string HeaderBg { get; set; }
+    public string HeaderBg { get; set; }
 }
 
-internal class FetchProfileRanks
+public class FetchProfileRanks
 {
-    internal List<RankScore> RankScores { get; set; }
+    public List<RankScore> RankScores { get; set; }
 }

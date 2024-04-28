@@ -25,14 +25,16 @@ internal static class Requests
 
             if (useclient)
             {
-                port = Convert.ToInt32(Global.AuthClient["port"]);
-                token = Global.AuthClient["token"];
+                port = Convert.ToInt32(Global.AuthClient.GetValueOrDefault("port"));
+                token = Global.AuthClient.GetValueOrDefault("token");
             }
             else
             {
-                port = Convert.ToInt32(Global.AuthRiot["port"]);
-                token = Global.AuthRiot["token"];
+                port = Convert.ToInt32(Global.AuthRiot.GetValueOrDefault("port"));
+                token = Global.AuthRiot.GetValueOrDefault("token");
             }
+
+            if (string.IsNullOrEmpty(token) || port == 0) return new[] { "999", "" };
 
             client.BaseAddress = new Uri("https://127.0.0.1:" + port + "/");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", token);

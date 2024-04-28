@@ -108,7 +108,7 @@ public class PicknBanMenu
                 case 2:
                     if (PickBanChampions.GetValueOrDefault(ActionType).Count == 0)
                     {
-                        DisplayColor($"`[WARNING]»` You can't remove a champion because there aren't any configured for '{actionType}' (Role : {CachedRole})", Colors.InfoColor, Colors.WarningColor);
+                        DisplayColor($"`[WARNING]»` You can't remove a champion because there aren't any configured for '{ActionType}' (Role : {CachedRole})", Colors.InfoColor, Colors.WarningColor);
                         DisplayColor("`[WARNING]»` You must add at least 1 champion before removing one", Colors.InfoColor, Colors.WarningColor);
                         DisplayColor("`[WARNING]»` Press any key to continue...", Colors.InfoColor, Colors.WarningColor);
                         Console.ReadKey();
@@ -121,7 +121,7 @@ public class PicknBanMenu
                 case 3:
                     if (PickBanChampions.GetValueOrDefault(ActionType).Count == 0)
                     {
-                        DisplayColor($"`[WARNING]»` You can't configure delay because there aren't any champion(s) configured for '{actionType}' (Role : {CachedRole})", Colors.InfoColor, Colors.WarningColor);
+                        DisplayColor($"`[WARNING]»` You can't configure delay because there aren't any champion(s) configured for '{ActionType}' (Role : {CachedRole})", Colors.InfoColor, Colors.WarningColor);
                         DisplayColor("`[WARNING]»` You must add at least 1 champion before configuring delay", Colors.InfoColor, Colors.WarningColor);
                         DisplayColor("`[WARNING]»` Press any key to continue...", Colors.InfoColor, Colors.WarningColor);
                         Console.ReadKey();
@@ -134,7 +134,7 @@ public class PicknBanMenu
                 case 4:
                     if (PickBanChampions.GetValueOrDefault(ActionType).Count == 0)
                     {
-                        DisplayColor($"`[WARNING]»` You can't show the list because there aren't any champion(s) configured for '{actionType}' (Role : {CachedRole})", Colors.InfoColor, Colors.WarningColor);
+                        DisplayColor($"`[WARNING]»` You can't show the list because there aren't any champion(s) configured for '{ActionType}' (Role : {CachedRole})", Colors.InfoColor, Colors.WarningColor);
                         DisplayColor("`[WARNING]»` You must add at least 1 champion before showing the list", Colors.InfoColor, Colors.WarningColor);
                         DisplayColor("`[WARNING]»` Press any key to continue...", Colors.InfoColor, Colors.WarningColor);
                         Console.ReadKey();

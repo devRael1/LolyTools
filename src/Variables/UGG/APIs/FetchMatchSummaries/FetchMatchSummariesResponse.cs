@@ -1,86 +1,86 @@
 ﻿namespace Loly.src.Variables.UGG.APIs.FetchMatchSummaries;
 
-public class FetchMatchSummariesResponse
+internal class FetchMatchSummariesResponse
 {
-    public Data Data { get; set; }
-    public List<Error> Errors { get; set; }
+    internal Data Data { get; set; }
+    internal List<Error> Errors { get; set; }
 }
 
-public class Data
+internal class Data
 {
-    public FetchPlayerMatchSummaries FetchPlayerMatchSummaries { get; set; }
+    internal FetchPlayerMatchSummaries FetchPlayerMatchSummaries { get; set; }
 }
 
-public class FetchPlayerMatchSummaries
+internal class FetchPlayerMatchSummaries
 {
-    public bool FinishedMatchSummaries { get; set; }
-    public List<MatchSummary> MatchSummaries { get; set; }
-    public int? TotalNumMatches { get; set; }
+    internal bool FinishedMatchSummaries { get; set; }
+    internal List<MatchSummary> MatchSummaries { get; set; }
+    internal int? TotalNumMatches { get; set; }
 }
 
-public class MatchSummary
+internal class MatchSummary
 {
-    public int? Kills { get; set; }
-    public int? PrimaryStyle { get; set; }
-    public int? SubStyle { get; set; }
-    public int? VisionScore { get; set; }
-    public List<TeamData> TeamA { get; set; }
-    public List<int> Items { get; set; }
-    public bool Win { get; set; }
-    public int? Deaths { get; set; }
-    public int? ChampionId { get; set; }
-    public List<int> Runes { get; set; }
-    public int? Level { get; set; }
-    public int? PsHardCarry { get; set; }
-    public List<int> SummonerSpells { get; set; }
-    public long MatchCreationTime { get; set; }
-    public int? KillParticipation { get; set; }
-    public int? Gold { get; set; }
-    public int? Cs { get; set; }
-    public string RiotUserName { get; set; }
-    public string Version { get; set; }
-    public List<int> Augments { get; set; }
-    public int? PsTeamPlay { get; set; }
-    public string RegionId { get; set; }
-    public int? MatchDuration { get; set; }
-    public List<TeamData> TeamB { get; set; }
-    public int? MaximumKillStreak { get; set; }
-    public int? Damage { get; set; }
-    public int? JungleCs { get; set; }
-    public long MatchId { get; set; }
-    public string RiotTagLine { get; set; }
-    public int? Role { get; set; }
-    public string SummonerName { get; set; }
-    public LpInfo LpInfo { get; set; }
-    public string QueueType { get; set; }
-    public int? Assists { get; set; }
+    internal int? Kills { get; set; }
+    internal int? PrimaryStyle { get; set; }
+    internal int? SubStyle { get; set; }
+    internal int? VisionScore { get; set; }
+    internal List<TeamData> TeamA { get; set; }
+    internal List<int> Items { get; set; }
+    internal bool Win { get; set; }
+    internal int? Deaths { get; set; }
+    internal int? ChampionId { get; set; }
+    internal List<int> Runes { get; set; }
+    internal int? Level { get; set; }
+    internal int? PsHardCarry { get; set; }
+    internal List<int> SummonerSpells { get; set; }
+    internal long MatchCreationTime { get; set; }
+    internal int? KillParticipation { get; set; }
+    internal int? Gold { get; set; }
+    internal int? Cs { get; set; }
+    internal string RiotUserName { get; set; }
+    internal string Version { get; set; }
+    internal List<int> Augments { get; set; }
+    internal int? PsTeamPlay { get; set; }
+    internal string RegionId { get; set; }
+    internal int? MatchDuration { get; set; }
+    internal List<TeamData> TeamB { get; set; }
+    internal int? MaximumKillStreak { get; set; }
+    internal int? Damage { get; set; }
+    internal int? JungleCs { get; set; }
+    internal long MatchId { get; set; }
+    internal string RiotTagLine { get; set; }
+    internal int? Role { get; set; }
+    internal string SummonerName { get; set; }
+    internal LpInfo LpInfo { get; set; }
+    internal string QueueType { get; set; }
+    internal int? Assists { get; set; }
 }
 
-public class TeamData
+internal class TeamData
 {
-    public int? ChampionId { get; set; }
-    public double HardCarry { get; set; }
-    public int? Placement { get; set; }
-    public int? PlayerSubteamId { get; set; }
-    public string RiotTagLine { get; set; }
-    public string RiotUserName { get; set; }
-    public int? Role { get; set; }
-    public string SummonerName { get; set; }
-    public int? TeamId { get; set; }
-    public double Teamplay { get; set; }
+    internal int? ChampionId { get; set; }
+    internal double HardCarry { get; set; }
+    internal int? Placement { get; set; }
+    internal int? PlayerSubteamId { get; set; }
+    internal string RiotTagLine { get; set; }
+    internal string RiotUserName { get; set; }
+    internal int? Role { get; set; }
+    internal string SummonerName { get; set; }
+    internal int? TeamId { get; set; }
+    internal double Teamplay { get; set; }
 }
 
-public class LpInfo
+internal class LpInfo
 {
-    public int? Lp { get; set; }
-    public int? Placement { get; set; }
-    public string PromoProgress { get; set; }
-    public string PromoTarget { get; set; }
-    public PromotedRank PromotedTo { get; set; }
+    internal int? Lp { get; set; }
+    internal int? Placement { get; set; }
+    internal string PromoProgress { get; set; }
+    internal string PromoTarget { get; set; }
+    internal PromotedRank PromotedTo { get; set; }
 }
 
-public class PromotedRank
+internal class PromotedRank
 {
-    public string Rank { get; set; }
-    public string Tier { get; set; }
+    internal string Rank { get; set; }
+    internal string Tier { get; set; }
 }

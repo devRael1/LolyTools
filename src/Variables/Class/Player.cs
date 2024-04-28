@@ -2,16 +2,16 @@
 
 namespace Loly.src.Variables.Class;
 
-public class Player
+internal class Player
 {
-    public string RiotTagLine { get; set; }
-    public string RiotUserName { get; set; }
-    public string RiotUserTag { get; set; }
-    public string RiotUserTagEncoded { get; set; }
-    public int Level { get; set; }
-    public List<MultisearchRoleStats> RoleStats { get; set; }
-    public int Winstreak { get; set; }
-    public string Link { get; set; }
-    public RankScore SoloDuoQ { get; set; }
-    public RankScore FlexQ { get; set; }
+    internal string RiotTagLine { get; set; }
+    internal string RiotUserName { get; set; }
+    internal string RiotUserTag { get; set; }
+    internal string RiotUserTagEncoded { get; set; }
+    internal int Level { get; set; }
+    internal List<MultisearchRoleStats> RoleStats { get; set; }
+    internal int Winstreak { get; set; }
+    internal string Link { get; set; }
+    internal RankScore SoloDuoQ { get; set; }
+    internal RankScore FlexQ { get; set; }
 }

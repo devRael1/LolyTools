@@ -9,12 +9,12 @@ using Action = Loly.src.Variables.Class.Action;
 
 namespace Loly.src.Tools;
 
-public class PicknBan
+internal static class PicknBan
 {
-    public static ChampSelectResponse ChampSelectResponse { get; set; }
+    internal static ChampSelectResponse ChampSelectResponse { get; set; }
     private static ActionType ActionType { get; set; }
 
-    public static void HandleChampSelectActions()
+    internal static void HandleChampSelectActions()
     {
         List<List<Action>> champSelectActions = ChampSelectResponse.Actions;
         foreach (List<Action> arrActions in champSelectActions)
@@ -29,7 +29,7 @@ public class PicknBan
         }
     }
 
-    public static void LoadChampionsList()
+    internal static void LoadChampionsList()
     {
         Global.ChampionsList.Clear();
         List<Champion> champsSplit = JsonConvert.DeserializeObject<List<Champion>>(

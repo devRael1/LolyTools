@@ -5,7 +5,7 @@ namespace Loly.src.Variables.UGG.APIs.FetchMatchSummaries;
 public class FetchMatchSummaries : IPayload
 {
     [JsonProperty("operationName")] public string OperationName { get; set; } = "FetchMatchSummaries";
-    [JsonProperty("variables")] public FetchMatchSummariesVariables Variables { get; set; } = new();
+    [JsonProperty("variables")] internal FetchMatchSummariesVariables Variables { get; set; } = new();
     [JsonProperty("query")] public string Query { get; set; } = Queries.FetchMatchSummaries;
 
     public string ToFormattedString()

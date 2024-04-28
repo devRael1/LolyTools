@@ -11,11 +11,11 @@ using static Loly.src.Variables.Global;
 
 namespace Loly.src.Menus;
 
-public class LobbyRevealerMenu
+internal static class LobbyRevealerMenu
 {
     #region Get Menus
 
-    public static void GetLobbyRevealerMenu()
+    internal static void GetLobbyRevealerMenu()
     {
         while (true)
         {

@@ -1,6 +1,6 @@
 ﻿namespace Loly.src.Variables.Enums;
 
-public enum ActionChampionType
+internal enum ActionChampionType
 {
     Hover,
     Lock

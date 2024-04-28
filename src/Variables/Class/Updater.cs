@@ -2,16 +2,16 @@
 
 namespace Loly.src.Variables.Class;
 
-public class UpdaterResponse
+internal class UpdaterResponse
 {
-    [JsonProperty("tag_name")] public string TagName { get; set; }
-    public List<Asset> Assets { get; set; }
+    [JsonProperty("tag_name")] internal string TagName { get; set; }
+    internal List<Asset> Assets { get; set; }
 }
 
-public class Asset
+internal class Asset
 {
-    public long Size { get; set; }
-    [JsonProperty("download_count")] public int DownloadCount { get; set; }
-    [JsonProperty("created_at")] public string CreatedAt { get; set; }
-    [JsonProperty("browser_download_url")] public string BrowserDownloadUrl { get; set; }
+    internal long Size { get; set; }
+    [JsonProperty("download_count")] internal int DownloadCount { get; set; }
+    [JsonProperty("created_at")] internal string CreatedAt { get; set; }
+    [JsonProperty("browser_download_url")] internal string BrowserDownloadUrl { get; set; }
 }

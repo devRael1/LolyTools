@@ -1,6 +1,6 @@
 ﻿namespace Loly.src.Variables.Enums;
 
-public enum DevelopmentStage
+internal enum DevelopmentStage
 {
     Development,
     Release

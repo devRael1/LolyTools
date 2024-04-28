@@ -12,11 +12,11 @@ using static Loly.src.Variables.Global;
 
 namespace Loly.src.Menus;
 
-public class LolSettingsMenu
+internal static class LolSettingsMenu
 {
     #region Get Menus
 
-    public static void GetLoLSettingsMenu()
+    internal static void GetLoLSettingsMenu()
     {
         while (true)
         {

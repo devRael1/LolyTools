@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Loly.src.Tools;
 
-public class SettingsManager
+internal static class SettingsManager
 {
     private const string SettingsFile = "LolySettings.json";
 
@@ -17,7 +17,7 @@ public class SettingsManager
         return items;
     }
 
-    public static void CreateOrUpdateSettings()
+    internal static void CreateOrUpdateSettings()
     {
         if (!File.Exists(SettingsFile))
         {
@@ -31,7 +31,7 @@ public class SettingsManager
         }
     }
 
-    public static void SetDefaultSettings()
+    internal static void SetDefaultSettings()
     {
         Global.CurrentSettings.EnableAutoUpdate = true;
         Global.CurrentSettings.EnableAutoSendLogs = true;
@@ -43,7 +43,7 @@ public class SettingsManager
         Global.CurrentSettings.Tools.PicknBan = false;
     }
 
-    public static void SaveFileSettings()
+    internal static void SaveFileSettings()
     {
         var json = JsonConvert.SerializeObject(Global.CurrentSettings, Formatting.Indented);
         File.WriteAllText(SettingsFile, json);

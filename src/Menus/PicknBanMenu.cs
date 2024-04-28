@@ -14,7 +14,7 @@ using static Loly.src.Variables.Global;
 
 namespace Loly.src.Menus;
 
-public class PicknBanMenu
+internal static class PicknBanMenu
 {
     private static Role CachedRole { get; set; }
     private static Dictionary<ActionType, List<ChampItem>> PickBanChampions { get; set; } = new();
@@ -22,7 +22,7 @@ public class PicknBanMenu
 
     #region Get Menus
 
-    public static void GetPicknBanMenu()
+    internal static void GetPicknBanMenu()
     {
         while (true)
         {

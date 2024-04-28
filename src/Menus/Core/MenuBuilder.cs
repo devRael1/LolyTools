@@ -2,7 +2,7 @@
 
 namespace Loly.src.Menus.Core;
 
-public class MenuBuilder
+internal class MenuBuilder
 {
     private readonly int _drawMenuColumnPos;
     private readonly int _drawMenuRowPos;
@@ -19,7 +19,7 @@ public class MenuBuilder
         _groupOptions = groupOptions;
     }
 
-    public static MenuBuilder BuildMenu(string[] choices, int topLength, bool groupOptions = false)
+    internal static MenuBuilder BuildMenu(string[] choices, int topLength, bool groupOptions = false)
     {
         MenuBuilder menu = new(choices, topLength + 1, 1, groupOptions);
         menu.ModifyMenuLeftJustified();
@@ -57,7 +57,7 @@ public class MenuBuilder
         Console.CursorVisible = Console.CursorVisible != true;
     }
 
-    public static void SetCursorVisibility(bool visible)
+    internal static void SetCursorVisibility(bool visible)
     {
         Console.CursorVisible = visible;
     }
@@ -68,7 +68,7 @@ public class MenuBuilder
         if (column > 0 && column < Console.WindowWidth) Console.CursorLeft = column;
     }
 
-    public int RunMenu()
+    internal int RunMenu()
     {
         var run = true;
         DrawMenu();

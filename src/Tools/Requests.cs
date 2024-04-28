@@ -8,9 +8,9 @@ using Loly.src.Variables.Class;
 
 namespace Loly.src.Tools;
 
-public static class Requests
+internal static class Requests
 {
-    public static string[] ClientRequest(string method, string url, bool useclient, string body = null)
+    internal static string[] ClientRequest(string method, string url, bool useclient, string body = null)
     {
         HttpClientHandler handler = new()
         {
@@ -57,7 +57,7 @@ public static class Requests
         }
     }
 
-    public static string[] WaitSuccessClientRequest(string method, string url, bool useclient, string body = null)
+    internal static string[] WaitSuccessClientRequest(string method, string url, bool useclient, string body = null)
     {
         string[] request = { "000", "" };
         while (request[0][..1] != "2")
@@ -81,7 +81,7 @@ public static class Requests
         return request;
     }
 
-    public static string WebRequest(string method, string url, string body = null, bool logResponse = true)
+    internal static string WebRequest(string method, string url, string body = null, bool logResponse = true)
     {
         try
         {

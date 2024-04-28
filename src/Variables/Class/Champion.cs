@@ -1,17 +1,17 @@
 ﻿namespace Loly.src.Variables.Class;
 
-public class Champion
+internal class Champion
 {
-    public bool FreeToPlay { get; set; }
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public Ownership Ownership { get; set; }
+    internal bool FreeToPlay { get; set; }
+    internal int Id { get; set; }
+    internal string Name { get; set; }
+    internal Ownership Ownership { get; set; }
 }
 
-public class Ownership
+internal class Ownership
 {
-    public bool LoyaltyReward { get; set; }
-    public bool Owned { get; set; }
-    public bool XboxGPReward { get; set; }
+    internal bool LoyaltyReward { get; set; }
+    internal bool Owned { get; set; }
+    internal bool XboxGPReward { get; set; }
 }
 

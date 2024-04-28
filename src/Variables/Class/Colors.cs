@@ -1,13 +1,13 @@
 ﻿namespace Loly.src.Variables.Class;
 
-public class Colors
+internal class Colors
 {
-    public const ConsoleColor MenuTextColor = ConsoleColor.White;
-    public const ConsoleColor MenuPrimaryColor = ConsoleColor.Cyan;
+    internal const ConsoleColor MenuTextColor = ConsoleColor.White;
+    internal const ConsoleColor MenuPrimaryColor = ConsoleColor.Cyan;
 
-    public static readonly ConsoleColor PrimaryColor = ConsoleColor.Cyan;
-    public static readonly ConsoleColor InfoColor = ConsoleColor.White;
-    public static readonly ConsoleColor SuccessColor = ConsoleColor.Green;
-    public static readonly ConsoleColor ErrorColor = ConsoleColor.Red;
-    public static readonly ConsoleColor WarningColor = ConsoleColor.DarkYellow;
+    internal static readonly ConsoleColor PrimaryColor = ConsoleColor.Cyan;
+    internal static readonly ConsoleColor InfoColor = ConsoleColor.White;
+    internal static readonly ConsoleColor SuccessColor = ConsoleColor.Green;
+    internal static readonly ConsoleColor ErrorColor = ConsoleColor.Red;
+    internal static readonly ConsoleColor WarningColor = ConsoleColor.DarkYellow;
 }

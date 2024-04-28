@@ -2,10 +2,10 @@
 
 namespace Loly.src.Logs;
 
-public struct LogMessage
+internal struct LogMessage
 {
-    public LogSeverity Severity { get; private set; }
-    public LogModule Module { get; private set; }
-    public string Message { get; private set; }
-    public Exception Exception { get; private set; }
+    internal LogSeverity Severity { get; private set; }
+    internal LogModule Module { get; private set; }
+    internal string Message { get; private set; }
+    internal Exception Exception { get; private set; }
 }

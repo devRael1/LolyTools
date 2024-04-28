@@ -13,9 +13,9 @@ using Newtonsoft.Json;
 
 namespace Loly.src.Tools;
 
-public class LobbyRevealer
+internal static class LobbyRevealer
 {
-    public static void GetLobbyRevealing()
+    internal static void GetLobbyRevealing()
     {
         Thread.Sleep(TimeSpan.FromSeconds(5));
 
@@ -25,7 +25,7 @@ public class LobbyRevealer
         Global.LobbyRevealingStarted = false;
     }
 
-    public static void GetPlayers(string req)
+    internal static void GetPlayers(string req)
     {
         Global.PlayerList.Clear();
 
@@ -72,13 +72,13 @@ public class LobbyRevealer
             $"{Global.PlayerList.Select(p => $"{p.RiotUserName}#{p.RiotTagLine}").Join(" / ")}");
     }
 
-    public static void GetAdvancedPlayersStats()
+    internal static void GetAdvancedPlayersStats()
     {
         Logger.Info(LogModule.LobbyRevealer, $"Fetching advanced stats of {Global.PlayerList.Count} players in background");
         Parallel.ForEach(Global.PlayerList, player => GetPlayerStats(player));
     }
 
-    public static void GetPlayerStats(Player player)
+    internal static void GetPlayerStats(Player player)
     {
         GetSummonerProfile body = new()
         {

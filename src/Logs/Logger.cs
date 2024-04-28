@@ -9,10 +9,10 @@ using Loly.src.Variables.Enums;
 
 namespace Loly.src.Logs;
 
-public static class Logger
+internal static class Logger
 {
-    public const string LogFolder = "Logs";
-    public const string LolSettingsFolder = "LoLSettings";
+    internal const string LogFolder = "Logs";
+    internal const string LolSettingsFolder = "LoLSettings";
     private const string LogLolyFile = $"{LogFolder}/temp_loly.log";
     private const string LogReqsFile = $"{LogFolder}/temp_requests.log";
     private const string LogErrorsFile = $"{LogFolder}/temp_errors.log";
@@ -48,7 +48,7 @@ public static class Logger
         else Lock3.Lock(() => ExecuteOnlyInConsole(LogSeverity.Error, LogModule.Loly, message));
     }
 
-    public static void PrintHeader()
+    internal static void PrintHeader()
     {
         if (!_headerPrinted)
         {
@@ -58,25 +58,25 @@ public static class Logger
         }
     }
 
-    public static void Info(LogModule src, string message, LogType logType = LogType.None)
+    internal static void Info(LogModule src, string message, LogType logType = LogType.None)
     {
         if (logType == LogType.None) logType = Global.LogsMenuEnable ? LogType.Both : LogType.File;
         Log(LogSeverity.Info, src, message, logType);
     }
 
-    public static void Error(string message, Exception e = null, LogType logType = LogType.None)
+    internal static void Error(string message, Exception e = null, LogType logType = LogType.None)
     {
         if (logType == LogType.None) logType = Global.LogsMenuEnable ? LogType.Both : LogType.File;
         Log(message, e, logType);
     }
 
-    public static void Warn(LogModule src, string message, LogType logType = LogType.None)
+    internal static void Warn(LogModule src, string message, LogType logType = LogType.None)
     {
         if (logType == LogType.None) logType = Global.LogsMenuEnable ? LogType.Both : LogType.File;
         Log(LogSeverity.Warning, src, message, logType);
     }
 
-    public static void Request(IRequest value)
+    internal static void Request(IRequest value)
     {
         Log(value);
     }

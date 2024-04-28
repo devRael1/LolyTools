@@ -8,10 +8,9 @@ using static Loly.src.Variables.Global;
 
 namespace Loly.src.Tools;
 
-public class AutoChat
+internal static class AutoChat
 {
-
-    public static void HandleChampSelectAutoChat()
+    internal static void HandleChampSelectAutoChat()
     {
         Logger.Info(LogModule.AutoChat, "Fetching Chat information & Summoner ID");
         var myChatProfile = Requests.ClientRequest("GET", "lol-chat/v1/me", true);

@@ -2,19 +2,19 @@
 
 namespace Loly.src.Variables.UGG.APIs.GetPlayerOverallRanking;
 
-public class GetPlayerOverallRankingResponse
+internal class GetPlayerOverallRankingResponse
 {
-    public Data Data { get; set; }
-    public List<Error> Errors { get; set; }
+    internal Data Data { get; set; }
+    internal List<Error> Errors { get; set; }
 }
 
-public class Data
+internal class Data
 {
-    public OverallRanking OverallRanking { get; set; }
+    internal OverallRanking OverallRanking { get; set; }
 }
 
-public class OverallRanking
+internal class OverallRanking
 {
-    [JsonProperty("overallRanking")] public int? OverallRank { get; set; }
-    public int? TotalPlayerCount { get; set; }
+    [JsonProperty("overallRanking")] internal int? OverallRank { get; set; }
+    internal int? TotalPlayerCount { get; set; }
 }

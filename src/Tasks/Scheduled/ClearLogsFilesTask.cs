@@ -7,9 +7,9 @@ using static Loly.src.Variables.Global;
 
 namespace Loly.src.Tasks.Scheduled;
 
-public class ClearLogsFilesTask
+internal static class ClearLogsFilesTask
 {
-    public static void RunClearLogsFiles()
+    internal static void RunClearLogsFiles()
     {
         var filesBotLogs = ClearLogsFiles(Directory.GetDirectories(Logger.LogFolder));
 

@@ -1,6 +1,6 @@
 ﻿namespace Loly.src.Variables.Enums;
 
-public enum SessionPhase
+internal enum SessionPhase
 {
     Lobby,
     Matchmaking,

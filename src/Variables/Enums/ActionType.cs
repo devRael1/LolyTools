@@ -1,6 +1,6 @@
 ﻿namespace Loly.src.Variables.Enums;
 
-public enum ActionType
+internal enum ActionType
 {
     Pick,
     Ban

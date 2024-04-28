@@ -1,6 +1,6 @@
 ﻿namespace Loly.src.Variables.Enums;
 
-public enum Region
+internal enum Region
 {
     BR,
     EUN,

@@ -14,11 +14,11 @@ using static Loly.src.Variables.Global;
 
 namespace Loly.src.Menus;
 
-public class ToolsMenu
+internal static class ToolsMenu
 {
     #region Get Menus
 
-    public static void GetToolsMenu()
+    internal static void GetToolsMenu()
     {
         while (true)
         {

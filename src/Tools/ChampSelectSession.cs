@@ -8,18 +8,18 @@ using static Loly.src.Variables.Global;
 
 namespace Loly.src.Tools;
 
-public class ChampSelectSession
+internal static class ChampSelectSession
 {
-    public static bool HoverPick { get; set; }
-    public static bool LockedPick { get; set; }
-    public static bool HoverBan { get; set; }
-    public static bool LockedBan { get; set; }
-    public static bool CanSentMessages { get; set; }
-    public static long ChampSelectStart { get; set; }
-    public static Role CurrentRole { get; set; }
-    public static Dictionary<ActionType, List<ChampItem>> PickBanChampions { get; set; } = new();
+    internal static bool HoverPick { get; set; }
+    internal static bool LockedPick { get; set; }
+    internal static bool HoverBan { get; set; }
+    internal static bool LockedBan { get; set; }
+    internal static bool CanSentMessages { get; set; }
+    internal static long ChampSelectStart { get; set; }
+    internal static Role CurrentRole { get; set; }
+    internal static Dictionary<ActionType, List<ChampItem>> PickBanChampions { get; set; } = new();
 
-    public static void HandleChampSelect()
+    internal static void HandleChampSelect()
     {
         var currentChampSelect = Requests.ClientRequest("GET", "lol-champ-select/v1/session", true);
         if (currentChampSelect[0] != "200") return;

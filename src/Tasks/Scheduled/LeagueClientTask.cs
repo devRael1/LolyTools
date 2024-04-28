@@ -14,11 +14,11 @@ using static Loly.src.Tools.Utils;
 
 namespace Loly.src.Tasks.Scheduled;
 
-public class LeagueClientTask
+internal static class LeagueClientTask
 {
     private static int _lcuPid;
 
-    public static void LolClientTask()
+    internal static void LolClientTask()
     {
         if (LeagueClientIsOpen())
         {
@@ -50,7 +50,7 @@ public class LeagueClientTask
         }
     }
 
-    public static bool LeagueClientIsOpen()
+    internal static bool LeagueClientIsOpen()
     {
         Process client = Process.GetProcessesByName("LeagueClientUx").FirstOrDefault();
         return client != null;

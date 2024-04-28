@@ -6,7 +6,7 @@ using Timer = System.Timers.Timer;
 
 namespace Loly.src.Tasks.Scheduled;
 
-public class ScheduledTask
+internal class ScheduledTask
 {
     private readonly Action taskAction;
     private readonly Timer timer;
@@ -14,7 +14,7 @@ public class ScheduledTask
     private readonly bool runNow;
     private readonly bool infinite;
 
-    public ScheduledTask(Action taskAction, string taskName, TimeSpan interval, bool runNow, bool infinite)
+    internal ScheduledTask(Action taskAction, string taskName, TimeSpan interval, bool runNow, bool infinite)
     {
         this.taskAction = taskAction;
         this.taskName = taskName;
@@ -32,7 +32,7 @@ public class ScheduledTask
         }
     }
 
-    public void Start()
+    internal void Start()
     {
         if (runNow)
         {
@@ -45,7 +45,7 @@ public class ScheduledTask
         }
     }
 
-    public void Stop()
+    internal void Stop()
     {
         timer.Stop();
         timer.Dispose();

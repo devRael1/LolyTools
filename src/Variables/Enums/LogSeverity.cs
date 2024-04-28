@@ -1,6 +1,6 @@
 ﻿namespace Loly.src.Variables.Enums;
 
-public enum LogSeverity
+internal enum LogSeverity
 {
     Debug,
     Info,

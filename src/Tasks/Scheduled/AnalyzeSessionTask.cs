@@ -6,9 +6,9 @@ using static Loly.src.Variables.Global;
 
 namespace Loly.src.Tasks.Scheduled;
 
-public class AnalyzeSessionTask
+internal static class AnalyzeSessionTask
 {
-    public static void AnalyzeSession()
+    internal static void AnalyzeSession()
     {
         while (true)
         {

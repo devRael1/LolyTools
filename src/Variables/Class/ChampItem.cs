@@ -1,9 +1,9 @@
 ﻿namespace Loly.src.Variables.Class;
 
-public class ChampItem
+internal class ChampItem
 {
-    public string Name { get; set; }
-    public string Id { get; set; }
-    public bool Usable { get; set; }
-    public int Delay { get; set; } = 2000;
+    internal string Name { get; set; }
+    internal string Id { get; set; }
+    internal bool Usable { get; set; }
+    internal int Delay { get; set; } = 2000;
 }

@@ -1,11 +1,11 @@
 ﻿namespace Loly.src.Variables.Class;
 
-public class PlayerRegion
+internal class PlayerRegion
 {
-    public PlayerRegion(string region)
+    internal PlayerRegion(string region)
     {
         Region = region;
     }
 
-    public string Region { get; }
+    internal string Region { get; }
 }

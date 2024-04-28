@@ -5,9 +5,9 @@ using static Loly.src.Variables.Global;
 
 namespace Loly.src.Menus.Core;
 
-public class Interface
+internal static class Interface
 {
-    public const string ArtName = @"
+    internal const string ArtName = @"
 ██╗      ██████╗ ██╗  ██╗   ██╗    ████████╗ ██████╗  ██████╗ ██╗     ███████╗    
 ██║     ██╔═══██╗██║  ╚██╗ ██╔╝    ╚══██╔══╝██╔═══██╗██╔═══██╗██║     ██╔════╝    
 ██║     ██║   ██║██║   ╚████╔╝        ██║   ██║   ██║██║   ██║██║     ███████╗    
@@ -15,7 +15,7 @@ public class Interface
 ███████╗╚██████╔╝███████╗██║          ██║   ╚██████╔╝╚██████╔╝███████╗███████║    
 ╚══════╝ ╚═════╝ ╚══════╝╚═╝          ╚═╝    ╚═════╝  ╚═════╝ ╚══════╝╚══════╝    ";
 
-    public const string ArtNameLogs = @"
+    internal const string ArtNameLogs = @"
 ██╗      ██████╗ ██╗  ██╗   ██╗    ██╗      ██████╗  ██████╗ ███████╗
 ██║     ██╔═══██╗██║  ╚██╗ ██╔╝    ██║     ██╔═══██╗██╔════╝ ██╔════╝
 ██║     ██║   ██║██║   ╚████╔╝     ██║     ██║   ██║██║  ███╗███████╗
@@ -23,7 +23,7 @@ public class Interface
 ███████╗╚██████╔╝███████╗██║       ███████╗╚██████╔╝╚██████╔╝███████║
 ╚══════╝ ╚═════╝ ╚══════╝╚═╝       ╚══════╝ ╚═════╝  ╚═════╝ ╚══════╝";
 
-    public static void ShowArt()
+    internal static void ShowArt()
     {
         var array = ArtName.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
         uint num2 = 0;
@@ -45,7 +45,7 @@ public class Interface
         TopLength = array.Length + 3;
     }
 
-    public static void ShowLogsArt()
+    internal static void ShowLogsArt()
     {
         var array = ArtNameLogs.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
         uint num2 = 0;
@@ -83,7 +83,7 @@ public class Interface
         }
     }
 
-    public static void UpdateMenuTitle(string active)
+    internal static void UpdateMenuTitle(string active)
     {
         Console.Title = active switch
         {

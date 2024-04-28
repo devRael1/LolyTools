@@ -1,6 +1,6 @@
 ﻿namespace Loly.src.Variables.Enums;
 
-public enum LogType
+internal enum LogType
 {
     Console,
     File,

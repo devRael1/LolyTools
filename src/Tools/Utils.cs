@@ -7,9 +7,9 @@ using Loly.src.Variables.Enums;
 
 namespace Loly.src.Tools;
 
-public static class Utils
+internal static class Utils
 {
-    public static Span CreateSpan(string content, int espaces, ConsoleColor color)
+    internal static Span CreateSpan(string content, int espaces, ConsoleColor color)
     {
         var spaces = "";
         for (var i = 0; i < espaces; i++)
@@ -20,12 +20,12 @@ public static class Utils
         return new Span(spaces + content) { Color = color };
     }
 
-    public static string CheckBoolean(bool value)
+    internal static string CheckBoolean(bool value)
     {
         return value ? "On" : "Off";
     }
 
-    public static void OpenUrl(string url)
+    internal static void OpenUrl(string url)
     {
         try
         {
@@ -37,24 +37,24 @@ public static class Utils
         }
     }
 
-    public static string FormatStr(string str)
+    internal static string FormatStr(string str)
     {
         str = str.ToLower();
         return string.Concat(str[0].ToString().ToUpper(), str.AsSpan(1));
     }
 
-    public static string FormatMessage(string message)
+    internal static string FormatMessage(string message)
     {
         return message.Replace("\"", "'").Replace("\\", "");
     }
 
-    public static void ResetConsole()
+    internal static void ResetConsole()
     {
         Console.Clear();
         Interface.ShowArt();
     }
 
-    public static string FindString(string text, string from, string to)
+    internal static string FindString(string text, string from, string to)
     {
         var pFrom = text.IndexOf(from, StringComparison.Ordinal) + from.Length;
         var pTo = text.LastIndexOf(to, StringComparison.Ordinal);
@@ -62,7 +62,7 @@ public static class Utils
         return text[pFrom..pTo];
     }
 
-    public static string FormatBytes(long bytes, bool seconds, int decimals = 2)
+    internal static string FormatBytes(long bytes, bool seconds, int decimals = 2)
     {
         if (bytes == 0)
         {
@@ -77,7 +77,7 @@ public static class Utils
         return $"{(bytes / Math.Pow(k, i)).ToString($"F{dm}")} {sizes[i]}{(seconds ? "/s" : "")}";
     }
 
-    public static void CreateBackgroundTask(Action action, string errorMessage)
+    internal static void CreateBackgroundTask(Action action, string errorMessage)
     {
         Task.Run(action)
             .ContinueWith(t =>
@@ -86,7 +86,7 @@ public static class Utils
             });
     }
 
-    public static void DisplayColor(string message, ConsoleColor color, ConsoleColor color2)
+    internal static void DisplayColor(string message, ConsoleColor color, ConsoleColor color2)
     {
         var secondaryColor = false;
 
@@ -105,7 +105,7 @@ public static class Utils
         Console.ResetColor();
     }
 
-    public static string RegionId(Region region)
+    internal static string RegionId(Region region)
     {
         return region switch
         {

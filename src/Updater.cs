@@ -9,7 +9,7 @@ using static Loly.src.Tools.Utils;
 
 namespace Loly.src;
 
-public class Updater
+internal static class Updater
 {
     private static string GetLatestVersionFromGithub(string owner, string repo)
     {
@@ -43,7 +43,7 @@ public class Updater
         }
     }
 
-    public static void CheckUpdate()
+    internal static void CheckUpdate()
     {
         Console.Title = $"{Global.SoftName} - Checking for updates...";
         Logger.Info(LogModule.Updater, "[1/5] Fetching version info from Github repository...", LogType.Console);

@@ -10,9 +10,9 @@ using static Loly.src.Variables.Global;
 
 namespace Loly.src.Menus;
 
-public class MainMenu
+internal static class MainMenu
 {
-    public static void StartMenu()
+    internal static void StartMenu()
     {
         while (true)
         {

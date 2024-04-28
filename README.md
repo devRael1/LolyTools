@@ -97,6 +97,7 @@ My Discord: `1043813027205619804`
 - [ ] Update screenshots in `README.md` with Release V3.0.0
 - [x] Add a screenshot exemple for auto send logs (Discord Webhook) system
 - [x] Refactor the code of `Settings.cs` to make it more readable and optimized (create new class `Settings` in Class folder)
+- [x] Change all lisibility of code to improve code quality
 - [x] Update system with Version of the app (delete global variable in `Global.cs`)
 
 ## `📝 License`

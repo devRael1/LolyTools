@@ -6,9 +6,9 @@ using static Loly.src.Tools.Utils;
 
 namespace Loly.src.Menus;
 
-public class LogsMenu
+internal static class LogsMenu
 {
-    public static void GetLogsMenu()
+    internal static void GetLogsMenu()
     {
         UpdateMenuTitle("logs");
         Console.Clear();

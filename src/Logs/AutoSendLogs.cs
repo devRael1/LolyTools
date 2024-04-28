@@ -10,9 +10,9 @@ using Newtonsoft.Json;
 
 namespace Loly.src.Logs;
 
-public class AutoSendLogs
+internal static class AutoSendLogs
 {
-    public static void ErrorReporter(Exception exception)
+    internal static void ErrorReporter(Exception exception)
     {
         var zipPath = Path.Combine(Logger.LogFolder, $"{DateTime.Now.Month:00}-{DateTime.Now.Day:00}-{DateTime.Now.Year:00}.zip");
         if (File.Exists(zipPath)) File.Delete(zipPath);

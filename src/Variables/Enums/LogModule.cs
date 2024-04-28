@@ -1,6 +1,6 @@
 ﻿namespace Loly.src.Variables.Enums;
 
-public enum LogModule
+internal enum LogModule
 {
     PickAndBan,
     AutoChat,

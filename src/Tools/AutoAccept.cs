@@ -6,9 +6,9 @@ using static Loly.src.Tools.Requests;
 
 namespace Loly.src.Tools;
 
-public class AutoAccept
+internal static class AutoAccept
 {
-    public static void AutoAcceptQueue()
+    internal static void AutoAcceptQueue()
     {
         if (Global.AcceptedCurrentMatch) return;
 

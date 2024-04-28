@@ -1,8 +1,8 @@
 ﻿namespace Loly.src.Variables.UGG;
 
-public static class Queries
+internal static class Queries
 {
-    public static readonly string FetchMatchSummaries =
+    internal static readonly string FetchMatchSummaries =
         @"query FetchMatchSummaries($championId: [Int], $page: Int, $queueType: [Int], $duoRiotUserName: String, $duoRiotTagLine: String, $regionId: String!, $role: [Int], $seasonIds: [Int]!, $riotUserName: String!, $riotTagLine: String!) {
   fetchPlayerMatchSummaries(
     championId: $championId
@@ -95,7 +95,7 @@ public static class Queries
 }
 ";
 
-    public static readonly string GetSummonerProfile =
+    internal static readonly string GetSummonerProfile =
         @"query getSummonerProfile($regionId: String!, $seasonId: Int!, $riotUserName: String!, $riotTagLine: String!) {
   fetchProfileRanks(
     riotUserName: $riotUserName
@@ -148,7 +148,7 @@ public static class Queries
 }
 ";
 
-    public static readonly string GetPlayerOverallRanking =
+    internal static readonly string GetPlayerOverallRanking =
         @"query getPlayerOverallRanking($queueType: Int, $riotUserName: String, $riotTagLine: String, $regionId: String) {
   overallRanking(
     queueType: $queueType
@@ -163,7 +163,7 @@ public static class Queries
 }
 ";
 
-    public static readonly string GetMultisearch =
+    internal static readonly string GetMultisearch =
         @"query GetMultisearch($regionId: [String], $riotUserName: [String!], $riotTagLine: [String!]) {
   getMultisearch(
     regionId: $regionId
@@ -218,7 +218,7 @@ public static class Queries
 }
 ";
 
-    public static readonly string HistoricRanks =
+    internal static readonly string HistoricRanks =
         @"query historicRanks($queueType: Int!, $riotUserName: String!, $riotTagLine: String!, $regionId: String!) {
   getHistoricRanks(
     queueType: $queueType

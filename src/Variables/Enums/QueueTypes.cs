@@ -1,6 +1,6 @@
 ﻿namespace Loly.src.Variables.Enums;
 
-public enum QueueTypes
+internal enum QueueTypes
 {
     CustomGames = 0,
     BlindPick5v5 = 2,
